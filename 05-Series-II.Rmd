@@ -1,0 +1,654 @@
+# Séries chronologiques II {#series2}
+
+```{r setup, results='hide', warning=FALSE, include=FALSE}
+SciViews::R
+```
+
+##### Objectifs {-}
+
+- Pouvoir reconnaître les séries temporelles constituées d'addition de signaux élémentaires (modèle additif), ou de leur multiplication (modèle multiplicatif).
+
+- Maîtriser les principales manières de filtrer un signal spatio-temporelle pour en extraire une caractéristique particulière.
+
+- Être capable de décomposer une série régulière en ses différentes composantes, tendances, cycles et bruit blanc.
+
+- Pouvoir régulariser une série irrégulière dans le but de l'analyser ensuite.
+
+##### Prérequis {-}
+
+Ce module nécessite que vous maîtrisiez parfaitement toutes les notions et techniques abordées dans le précédent module.
+
+## Décomposition de séries
+
+Toutes les techniques présentées dans cette partie ont pour but de décomposer des séries spatio-temporelles régulières (donc, à pas de temps constant et sans trous) en deux ou plusieurs composantes. On extrait soit une composante issue d’un filtrage ou d’un lissage, ou alors correspondant à un modèle (variation cyclique, tendance linéaire, polynomiale, exponentielle, etc, …). Quel que soit le nombre de composantes obtenues, la dernière est toujours le résidu (*residuals* en anglais), c’est-à-dire, la fraction de la série initiale (*series*) qui ne se retrouve dans aucune des autres composantes (*components*) extraites.
+
+Pour un **modèle additif**, si nous extrayons par exemple deux composantes, on aura\ :
+
+**residuals** = **series** – **component1** - **component2**
+
+Un tel modèle est également appelé **linéaire** lorsque chaque composante est une combinaison linéaire de la ou des variables dépendantes, en l’occurrence pour les séries spatio-temporelles, le temps ou l’espace, ou les deux ensemble.
+
+Un **modèle multiplicatif** se définira selon un schéma équivalent, mais dans ce cas, c’est le produit des composantes qui donnera la série. Une des composantes (la série filtrée, la série désaisonnalisée ou la tendance générale, selon le contexte), est alors exprimée dans les mêmes unités que la série de départ, alors que les autres sont des facteurs multiplicatifs adimensionnels. Il est possible de transformer un modèle multiplicatif en un modèle additif par une transformation logarithmiques du signal observé, puisque le *logarithme d’un produit* est égal à la *somme des logarithmes des facteurs*. Si l’opération donne une combinaison linéaire des logarithmes des facteurs, on dit que l’on a **linéarisé** le signal par la transformation logarithmique.
+
+On pourrait encore définir des modèles **mixtes** où certaines composantes sont multiplicatives alors que d’autres sont additives, mais il n’y a alors plus moyen de les linéariser. Pour cette raison, de tels modèles sont très peu répandus. La nature de la ou des composantes dépend du traitement effectué. Par exemple pour un **filtrage**, il s’agit de la série filtrée, pour une **stationnarisation**, il s’agit de la tendance générale extraite, pour une **désaisonnalisation**, il s’agit du cycle saisonnier, etc.
+
+Lorsqu'un cycle et une tendance à long terme sont tous deux présents dans la série, nous pouvons aisément discerner le modèle additif du modèle multiplicatif. En effet, dans le premier cas, l'**amplitude** du signal cyclique ne varie pas en fonction de la tendance, contrairement au second cas, comme illustré ci-dessous.
+
+```{r, echo=FALSE}
+time <- 1:300
+trend1 <- 0.07 * time - 0.00035 * time^2 + 10
+cycle1 <- 1 * sin(time/2) + 4
+plot(time, trend1 + cycle1, type = "l", xlab = "Temps", ylab = "Série additive")
+trend2 <- 0.07 * time - 0.00035 * time^2 + 10
+cycle2 <- 0.5 * sin(time/2) + 1
+plot(time, trend2 * cycle2, type = "l", xlab = "Temps", ylab = "Série multiplicative")
+```
+
+<!-- Ici, une ou deux apps shiny où on doit retrouver un signal complexe en mélangeant deux signaux simples parmi un liste de possibilités. Je pensais à un modèle cycle + tendance multiplicatif, et un autre où il faut mélanger deux cycles de périodes différentes. -->
+
+##### À vous de jouer ! {-}
+
+`r h5p(35, height = 270, toc = "Stationnarisation d'une série")`
+
+### Fonction générale de décomposition
+
+Dans {pastecs}, toutes les techniques de décomposition de série fonctionnent selon le même canevas et renvoient toutes un objet **tsd** (*time series decomposition*). Cet objet contient à la fois les composantes de la ou des séries qui ont été décomposées, des informations sur la méthode utilisée, ainsi que des données supplémentaires qui servent au diagnostic du traitement réalisé.
+
+La fonction centrale qui effectue le traitement sur une ou plusieurs séries et renvoie un objet **tsd** est `tsd()`. Son argument `method=` permet de sélectionner une méthode de traitement à appliquer à toutes les séries à décomposer. Son argument `type=` indique si le modèle est additif ou multiplicatif. Cette fonction appelle d’autres fonctions plus simples `decxxx()` où `xxx` est le nom de la méthode (ex\ : `decmedian()` pour la méthode des médianes mobiles, par exemple, que nous étudierons plus loin). Les fonctions `decxxx()` ne peuvent traiter qu’une série à la fois, et ne sont normalement pas appelées directement par l'utilisateur^[Toutefois, étant donné que les fonctions `decxxx()` renvoient aussi des objets **tsd**, l’utilisateur avancé peut les préférer pour des questions de performance ou de simplicité dans ses propres scripts.].
+
+Une fois qu’une décomposition est réalisée, il est possible d’extraire les différentes composantes (grâce à `tseries()`) ou une partie d’entre elles (en utilisant la méthode `extract()`) et de les retransformer en objet séries régulières (objet **ts** ou **mts**). On peut ainsi appliquer de nouvelles méthodes de décomposition sur un ou plusieurs composants et approfondir l’analyse des séries par des traitements de décomposition en cascade jusqu’à ce qu’on ait extrait et analysé toute l’information pertinente contenue dans ces séries.
+
+##### À vous de jouer ! {-}
+
+`r h5p(34, height = 270, toc = "La fonction tsd()")`
+
+##### Exemple {-}
+
+Notre jeu de données `co2` est un bon point de départ pour explorer la décomposition d'une série spatio-temporelle.
+
+```{r}
+data("co2", package = "datasets")
+plot(co2)
+```
+
+En effet, nous voyons clairement deux composantes présentes\ : un cycle saisonnier d'une part, et une tendance à l'augmentation sur le long terme, d'autre part. De plus, le modèle est très clairement additif ici car l'amplitude du cycle ne dépend pas de la valeur atteinte par la tendance générale. Voyons en pratique comment se fait cette décomposition.
+
+Une technique efficace pour lisser une série, et en particulier, en éliminer un cycle est la décomposition par moyennes mobiles. Pour l'instant, concentrez-vous sur la façon d'utiliser ce filtrage et sur ce qui en résulte. Nous aborderons un peu plus loin le détail des techniques employées. Nous utilisons donc `tsd(<series>, method = "average", type = "additive", <autres arguments>)`.
+
+```{r, message=FALSE}
+library(pastecs)
+co2_dec <- tsd(co2, method = "average", type = "additive", order = 6, times = 3)
+plot(co2_dec, col = 1:3)
+```
+
+Nous verrons plus loin ce que `order=` et `times=` veut dire. A noter que `type = "additive"` est la valeur par défaut et peut donc être omise ici. La méthode `plot()` est ensuite utilisée sur l'objet résultant (ici en utilisant les couleurs de la palette par défaut, 1 = noir, 2 = rouge et 3 = vert pour mettre en évidence les différentes séries). L'axe des abscisses numérote ici les observations par ordre croissant pour les retrouver facilement dans l'objet de départ si nécessaire. En haut sur le graphique, la série de départ en noir, au milieu en rouge, la série filtrée, et en bas en vert, les résidus qui contiennent entre autres le cycle.
+
+L'objet `co2_dec` est de classe **tsd**.
+
+```{r}
+class(co2_dec)
+```
+
+Outre son graphique qui est des plus utiles pour juger le résultat de notre décomposition visuellement, nous pouvons retransformer toutes les composantes obtenues en un objet **mts** à l'aide de `tseries()`; ou alors, extraire une ou plusieurs composantes avec `extract()`. Effectuons les deux successivement. 
+
+```{r}
+co2_mts <- tseries(co2_dec)
+class(co2_mts)
+colnames(co2_mts) # Nom des séries dans l'objet mts
+plot(co2_mts)
+```
+
+En partant d'un objet **ts** qui contient une série unique, nous aboutissons donc à un objet **mts** qui contient deux composantes nommées `filtered` et `residuals` après avoir appliqué `tsd(method = "average")` suivi de `tseries()`. La composante `filtered` est essentiellement la tendance à long terme dans le cas présent, tandis que les résidus sont constitués par la série **stationnarisée** dont la tendance générale est retirée. Nous pouvons parfaitement continuer à travailler avec cet objet **mts**, et c'est d'ailleurs assez pratique de conserver les deux composantes dans un même objet. Les analyses se font comme d'habitude en sélectionnant la série à traiter à l'aide de l'opérateur `[,]`\ :
+
+```{r}
+acf(co2_mts[, "filtered"])
+```
+
+Nous avons ici un parfait exemple de fonction d'autocorrelation pour une tendance pure.
+
+Nous pouvons aussi **extraire** une ou plusieurs composantes de `co2_tsd`. Si nous souhaitons extraire la composante résiduelle uniquement sous forme d'un objet **ts** que nous appellerons `co2_stat`, nous ferons ceci\ :
+
+```{r}
+co2_stat <- extract(co2_dec, components = "residuals")
+class(co2_stat) # C'est bien une série univariée
+plot(co2_stat)
+```
+
+Comme `co2_stat` est maintenant une série stationnarisée, nous pouvons réaliser une analyse spectrale dessus.
+
+```{r}
+spectrum(co2_stat, span = c(5, 3))
+```
+
+Nous avons un cycle saisonnier très net, et un second pic mais tout juste pas significatif. Rien n'interdit de décomposer encore plus avant notre série, par exemple, en déterminant comment la composante saisonnière peut être ajustée ou non avec un signal sinusoïdal parfait (encore une fois, les détails de la technique seront abordés plus loin). Il nous suffit de construire un modèle sinusoïdal qui s'ajuste dans les données et d'utiliser ensuite `tsd(<series>, method = "reg", xreg = predict(<model>))` pour effectuer la décomposition de la série à l'aide de ce modèle (nous utilisons une astuce pour ajuster ce modèle sinusoïdal à l'aide de `lm()` que nous expliquerons, encore une fois, plus loin).
+
+```{r}
+t <- time(co2_stat) # t est la variable indépendante du modèle
+co2_lm <- lm(co2_stat ~ I(cos(2*pi*t)) + I(sin(2*pi*t)))
+plot(t, predict(co2_lm), type = "l")
+```
+
+L'objet `co2_lm` contient notre modèle. Sa méthode `predict()` permet de déterminer les valeurs de CO~2~ prédites par ce modèle, et c'est ces valeurs que nous utilisons ensuite pour notre décomposition\ :
+
+```{r}
+co2_dec2 <- tsd(co2_stat, method = "reg", xreg = predict(co2_lm))
+plot(co2_dec2, col = 1:3)
+```
+
+Ici, nos deux composantes se nomment `model` et `residuals`. Que donne l'analyse spectrale sur les résidus après avoir éliminé notre cycle saisonnier parfaitement sinusoïdal\ ?
+
+```{r}
+co2_resid <- extract(co2_dec2, components = "residuals")
+plot(co2_resid)
+spectrum(co2_resid, span = c(7, 5))
+```
+
+La composante saisonnière a bien été éliminée, mais une composante de période de 2 ans apparaît maintenant significative. Nous pouvons continuer la décomposition, mais à ce stade, il faut rester prudent car les techniques de décomposition peuvent introduire des biais. Donc, nous devons nous demander si cette composante cyclique à deux ans est réelle ou s'il s'agit d'un artéfact des méthodes utilisées en amont. La réponse dépendra essentiellement des propriétés des techniques de décomposition... que nous allons étudier maintenant dans les sections suivante de ce module.
+
+Les plus pointilleux d'entre vous auront remarqué un comportement bizarre de nos résidus à la seconde étape de décomposition, au début et en fin de série avec des valeurs qui deviennent très extrêmes. Ceci est un **effet de bord** lié à la façon dans les moyennes mobiles opèrent en début et fin de série. Cela ne se voit pas trop dans les résidus de la première décomposition, mais un effet d'amplification du biais apparaît lors de la seconde décomposition. **Vous devez toujours garder à l'esprit qu'aucune méthode de décomposition de série n'effectue un travail parfait. Des anomalies et des faux-positifs (par exemple, des "cycles fantômes") peuvent apparaître suite aux traitements réalisés antérieurement**. Ici, nous pouvons utiliser la fonction `window()` et raccourcir la série aux deux bouts pour éliminer l'artéfact. Cela n'aura pas trop de conséquences néfastes. Mais restez toujours vigilant\ ! Pour cette raison, et parce les séries combinant une tendance générale et un cycle saisonnier sont très fréquentes, les statisticiens ont mis au point des techniques qui permettent de séparer ces deux composantes des résidus *sans* artéfacts. L'une de ces techniques se nomme LOESS (prononcez "LO-ESSE", pas "LEUS"). Voici ce que cela donne sur `co2` (encore une fois, l'explication des arguments de la fonction sera réalisée plus loin).
+
+```{r}
+co2_loess <- tsd(co2, method = "loess", s.window = 13, trend = TRUE)
+plot(co2_loess, col = 1:4)
+```
+
+Contrairement à la décomposition précédente, notez que nous avons laissé plus de libertés au signal saisonnier en vert qui varie donc légèrement d'une année à l'autre. Nous aurions aussi pu imposer le même signal (mais pas *nécessairement* sinusoïdal) chaque année en indiquant `s.window = "periodic"`. Naturellement ici, si les caractéristiques des composantes `trend` et `seasonal` sont assez évidentes, nous pourrions nous poser des questions concernant `residuals`. Comme cette série est stationnaire, nous pouvons directement en faire une analyse spectrale pour rechercher un ou plusieurs autres cycles de fréquence différente de un an.
+
+```{r}
+co2_resid2 <- extract(co2_loess, components = "residuals")
+spectrum(co2_resid2, spans = c(5, 3))
+```
+
+Ici, tout se passe comme si nous avions éliminé totalement tout signal de fréquence entière (1, 2, 3, ...) et qu'ensuite d'autres signaux apparaissent. Ce sont probablement des cycles fantômes issus du traitement... tout comme le cycle à fréquence deux observé plus haut reste questionnable. **Gardez toujours votre esprit critique aiguisé en pareil situation\ !** Par exemple, quelle est l'étendue des signaux correspondants à nos trois composantes\ ? Pour la tendance, nous allons de 320 à 370 ppm, soit environ 50 ppm. Pour la composante saisonnière, l'amplitude du signal est de presque 3 ppm (le signal oscille entre 3 ppm et -3 ppm), soit une étendue de 6 ppm. Enfin, pour les résidus, l'échelle de l'axe s'étale de -0.6 à 0.4, soit 1 ppm, donc, une amplitude maximum de 0.5 ppm pour un éventuel cycle. Que peut-on encore extraire d'intéressant comme signal avec une si petite amplitude relative de presque un ordre de grandeur inférieur à l'amplitude du signal saisonnier qui lui, est bien concret dans notre série\ ? Voilà le type de raisonnement logique que vous devez utiliser, au delà de ce que les calculs vous montrent.
+
+```{block2, type = 'note'}
+Avec `tsd()` vous avez plusieurs méthodes de décomposition disponibles, même si nous n'en avons abordé jusqu'ici que deux. Avec `method=`\ :
+
+- `"average"` pour les moyennes mobiles,
+- `"median"` pour les médianes mobiles,
+- `"diff"` pour la méthode des différence,
+- `"evf"` pour le filtrage par les vecteurs propres de l'ACP,
+- `"reg"` pour décomposer selon un modèle (droite ou courbe de régression),
+- `"loess"` pour une décomposition plus complète en tendance générale, cycle saisonnier et résidus.
+```
+
+## Filtrage d’une série
+
+Le filtrage d’une série consiste à remplacer chaque valeur de cette série par une combinaison de ses diverses valeurs. Lorsque le filtre conduit à réduire la variance en éliminant notamment les très hautes fréquences, on parle aussi de **lissage** du signal (*smoothing* en anglais). Nous allons à présent aborder quelques techniques de filtrage et découvrir dans quelles situations elles sont utiles.
+
+### Moyennes mobiles
+
+Le principe d'une **fenêtre mobile** consiste à balader une fenêtre de taille définie dans la série, centrée sur une observation $X_t$, et de remplacer cette observation par le résultat du calcul dans la fenêtre. Ensuite, la fenêtre coulisse d'une observation vers la droite et est donc centrée sur l'observation $X_{t+1}$. À nouveau, un calcul est appliqué sur les valeurs contenues dans le fenêtre, et le résultat du calcul remplace cette observation $X_{t+1}$, et ainsi de suite jusqu'à ce que toutes les observations de la série sont remplacés.
+
+La taille de la fenêtre est définie par un paramètre *k* qui s'appelle l'**ordre** de la fenêtre mobile, correspondant au nombre d'observations comprises de part et d'autre de $X_t$ dans la fenêtre. Le nombre d'observations à l'intérieur de la fenêtre est donc de 2 *k* + 1 (*k* observations à gauche de $X_t$, $X_t$ lui-même et *k* observations à droite). Pour *k* = 2, chaque observation est donc remplacée par un calcul réalisé sur cinq observations successives.
+
+Un problème se pose aux deux extrémités car la fenêtre dépasse de la série et des valeurs manquantes apparaissent. Il est possible de dupliquer les valeurs extrêmes pour remplir ces trous, de faire le calcul en éliminant ces valeurs manquantes, voire encore d'autres stratégies. Mais à tous les coups, ces artifices généreront des effets indésirables aux deux extrémités\ : les effets de bord. Il est aussi possible de raccourcir la série aux deux extrémités pour éluder la question tout simplement.
+
+Dans le cas de la **moyenne mobile** (*moving average* en anglais), le calcul qui est réalisé à l'intérieur de la fenêtre est bien sûr la moyenne de ses observations. Pour reprendre le cas avec *k* = 2, si nous appelons $M_t$ la moyenne mobile calculée qui remplace $X_t$ dans la série filtrée, nous aurons\ :
+
+$$M_t = \frac{X_{t-2} + X_{t-1} + X_t + X_{t+1} + X_{t+2}}{5}$$
+et pour l'observation suivante\ :
+
+$$M_{t+1} = \frac{X_{t-1} + X_{t} + X_{t+1} + X_{t+2} + X_{t+3}}{5}$$
+
+et ainsi de suite... Cela se généralise bien sûr pour n'importe quelle valeur de *k*\ :
+
+$$M_{t=i} = \sum_{j = -k}^k \frac{X_{t=i+j}}{2k + 1}$$
+
+Nous avons donné **même poids** à chaque observation dans la fenêtre qui compte donc pour 1/5 chacune dans le cas *k* = 2. Dans ce cas, nous parlerons d'une moyenne mobile simple. Il est cependant possible de faire varier également les pondérations à l'intérieur de la fenêtre, mais nous n'utiliserons pas cette dernière variance ici.
+
+#### Propriétés
+
+Le filtrage effectue un *lissage* de la série, et la **bande de lissage** est égale à la largeur de la fenêtre, donc 2 *k* + 1. Cela signifie que cette technique de filtrage a la propriété d'**éliminer les signaux cycliques de fréquence égale à la bande de lissage**. Par exemple, pour des données mensuelles, nous pouvons éliminer l'effet saisonnier (on parle de **désaisonnalisation**) en utilisant une moyenne mobile de taille de fenêtre proche. Comme la taille doit être impaire, on choisira *k* = 6, ce qui donne une bande de lissage de 13 mois, pas trop éloignée des 12 mois visés.
+
+Pour un effet accru, il est possible d'effectuer successivement plusieurs lissages par moyenne mobile. C'est l'argument `times=` qui contrôle cela dans `decaverage()` et `tsd(method = "average")`. A noter enfin, que les cycles de fréquence égale à la bande de lissage ne sont pas les seuls à être éliminés. D'autres fréquences sont également affectées à des degrés divers. Par exemple pour une désaisonnalisation, les fréquences 6, 4, 3, 12/5 et 2 mois sont également impactées à des degrés divers. Comprenez ici que le filtre n'a pas un comportement parfait et que des artéfacts apparaissent, du moins si on se limite à considérer que la moyenne mobile n'élimine *que* le cycle de fréquence égale à la bande de lissage\ !
+
+Un autre phénomène qu'il faut connaître est l'**effet Slusky-Yule**. L'application d'un filtrage par moyenne mobile engendre une oscillation artificielle dont la période dépend à la fois de l'ordre de la fenêtre du lissage et le l'autocorrélation présente dans la série. Cette période peut se calculer (nous vous renvoyons au manuel de {pastecs} pour les détails de ce calcul).
+
+##### À vous de jouer ! {-}
+
+`r h5p(33, height = 270, toc = "Méthode des moyennes mobiles")`
+
+##### Exemple {-}
+
+Nous avons déjà réalisé une désaisonnalisation sur `co2` précédemment dans ce module. Voyons à présent comment ce filtre se comporte sur un signal cyclique complexe comme `lynx`.
+
+```{r}
+data("lynx", package = "datasets")
+plot(lynx)
+```
+
+Nous voyons clairement des pics tous les 10 ans... mais aussi des pics plus importants tous les 40 ans, suggérant la présent d'un second cycle superposé au premier. Commençons par lisser notre série avec une moyenne mobile d'ordre 5 pour cibler le cycle de 10 ans.
+
+```{r}
+library(pastecs)
+lynx_mb <- tsd(lynx, method = "average", order = 5, times = 1)
+plot(lynx_mb)
+```
+
+Le signal filtré est encore très chaotique, mais il se lisse très rapidement si nous répétons plusieurs fois le lissage. Voilà ce que cela donne déjà avec `times = 3`\ :
+
+```{r}
+lynx_mb <- tsd(lynx, method = "average", order = 5, times = 3)
+plot(lynx_mb)
+```
+
+Ici, nous voyons clairement une séparation du cycle à 40 ans qui reste dans la composante filtrée, tandis que le cycle à 10 ans a été éliminé dans la composante `residuals`. Maintenant, si nous choisissons plutôt un ordre *k* = 20, nous allons cibler le cycle à 40 ans.
+
+```{r}
+lynx_mb <- tsd(lynx, method = "average", order = 20, times = 3)
+plot(lynx_mb)
+```
+
+Mais ce faisant, nous avons *aussi* éliminé le cycle à 10 ans dans les résidus\ ! Rappelez-vous que la moyenne mobile filtre également des signaux de fréquences dont la bande de lissage est multiple, dont ici à 10 ans. Il nous reste alors une tendance générale qui diminue légèrement pour remonter ensuite.
+
+##### À vous de jouer ! {-}
+
+```{r, echo=FALSE, results='asis'}
+if (exists("assignation"))
+  assignation("C05Ga_tsd", 
+    url = "https://github.com/BioDataScience-Course/C05Ga_tsd",
+    course.urls = c(
+      'S-BIOG-025' = "https://classroom.github.com/a/V8--eYkL"),
+    toc = "Décomposition d'une série spatio-teporelle")
+```
+
+### Médianes mobiles
+
+Comme vous l'avez certainement deviné, les médianes mobiles fonctionnent comme les moyennes mobiles en baladant une fenêtre de largeur fixe le long de la série, mais cette fois-ci en calculant à chaque fois la médiane. Alors que la moyenne mobile s'exprime sous forme d'une somme de termes, ce qui l'associe à un modèle linéaire (on parle donc de filtrage linéaire), les médianes mobiles représentent par contre un *lissage non linéaire*. Il est possible de montrer que la répétition de cette opération conduit finalement à stabiliser le signal filtré. Cette courbe est caractérisée par une série de paliers successifs. Ainsi, la technique est utile pour *segmenter* une série, ce qui se rapproche des sommes cumulées pour détecter des transitions brusques dans la série (mais ici au lieu de les détecter, nous les mettons en évidence via le filtrage).
+
+##### À vous de jouer ! {-}
+
+`r h5p(36, height = 270, toc = "Méthode des médianes mobiles")`
+
+##### Exemple {-}
+
+Appliquons la méthode des médianes mobiles sur le signal de fluorescence dans `marphy`, dans l'espoir de séparer les masses d'eaux à niveaux de fluorescence différents.
+
+```{r}
+fluo <- ts(read("marphy", package = "pastecs")$Fluorescence)
+plot(fluo, xlab = "Transect Nice - Calvi (stations)")
+```
+
+Que donne une fenêtre d'ordre 5\ ? (ici, il faut essayer différentes valeurs, il n'y a pas de règle a priori).
+
+```{r}
+fluo_smooth <- tsd(fluo, method = "median", order = 5, times = 1)
+plot(fluo_smooth, xlab = "Transect Nice - Calvi (stations)")
+```
+
+L'effet n'est pas flagrant ici. Répétons l'opération trois fois.
+
+```{r}
+fluo_smooth <- tsd(fluo, method = "median", order = 5, times = 3)
+plot(fluo_smooth, xlab = "Transect Nice - Calvi (stations)")
+```
+
+... et puis dix fois.
+
+```{r}
+fluo_smooth <- tsd(fluo, method = "median", order = 5, times = 10)
+plot(fluo_smooth, xlab = "Transect Nice - Calvi (stations)")
+```
+
+Le signal est quasiment identique entre `times=3` et `times=10`. Nous avons effectivement stabilisé la courbe lissée par l'application répétée des médianes mobiles. Nous voyons ici clairement apparaître le pic de fluorescence caractéristique d'une production en phytoplancton importante au niveau du front (remontée d'eau froides profondes, riches en nutriments).
+
+Ce genre de lissage se représente mieux en superposant le signal de départ et la série lissée. Ceci est possible en indiquant `stack = FALSE` et `resid = FALSE` lors de l'appel de `plot()`\ :
+
+```{r}
+plot(fluo_smooth, stack = FALSE, resid = FALSE, col = 1:2,
+  xlab = "Transect Nice - Calvi (stations)")
+```
+
+Les pics sont bien ici remplacés par des paliers.
+
+### Filtrage par différences
+
+La méthode des différences a pour but d’éliminer la tendance. Ce n’est valable que si la série a une tendance monotone et non en "dents de scie". Autrement dit, cela suppose que la série est autocorrélée positivement ou négativement.
+
+Nous allons ici récupérer l'opérateur retard $LX_t$ vu tout au début du module 4. Cet opérateur décale la série d'une ou plusieurs observations (argument `lag=`) par rapport à la série d'origine. La méthode des différences consiste à **soustraire** la série ainsi décalée par rapport à la série de départ. Naturellement, le filtrage peut être répété plusieurs fois pour en amplifier l'effet. Ce filtrage est également *linéaire*.
+
+A condition de ne pas avoir également un cycle important, le filtrage par différences est efficace pour **éliminer une tendance monotone croissante ou décroissante**, voire une tendance de forme quelconque, mais dont la courbure varie lentement (signal à très haute fréquence). Dans ce cas, la méthode est très efficace pour **stationnariser** une série.
+
+##### À vous de jouer ! {-}
+
+`r h5p(32, height = 270, toc = "Méthode des différences")`
+
+##### Exemple {-}
+
+Toujours pour le signal de fluorescence dans `marphy`, nous pouvons éliminer la tendance générale comme ceci (les valeurs optimales pour `lag=` et `times=` sont à trouver de manière empirique ici)\ :
+
+```{r}
+fluo_stat <- tsd(fluo, method = "diff", lag = 2, times = 1)
+plot(fluo_stat, xlab = "Transect Nice - Calvi (stations)")
+```
+
+Malheureusement, en présence de cycles importants, la méthode n'est pas très efficace, même si le décalage est choisi pour coïncider avec le cycle. Ainsi pour `co2`, nous aurons\ :
+
+```{r}
+data("co2", package = "datasets")
+co2_stat <- tsd(co2, method = "diff", lag = 12, times = 1)
+plot(co2_stat)
+```
+
+Comme nous pouvons le voir, la tendance a bien été éliminée, mais malheureusement, le cycle saisonnier est également passé à la trappe, et ce malgré notre précaution de faire coïncider le décalage (`lag=`) avec les fréquence du cycle.
+
+### Filtrage par les valeurs propres
+
+Le filtrage par les valeurs propres (*eigenvector filtering* en anglais, ou EVF en abrégé) consiste à décomposer le signal original de la série via une analyse en composantes principales.
+
+**TODO: doit encore être rédigé (pour l'an prochain)\ !**
+
+## Régressions et séries
+
+Les régressions linéaires et non linéaires, surtout s'il s'agit de modèles ajustés par les moindres carrés, ne sont *a priori* pas compatibles avec les séries spatio-temporelles puisqu'elles nécessitent une indépendance des observation, une distribution Normale des résidus, etc. Mais en fait toutes ces conditions s'appliquent aux **tests d'hypothèses** autour de le régression. Si nous nous contentons d'utiliser la régression pour estimer la forme d'une composante, et ensuite que nous l'extrayons sans utiliser le tableau de l'ANOVA, les tests de Student sur les paramètres, etc., alors notre usage de cet outil sera approprié ici.
+
+### Estimation de la tendance par régression
+
+Les méthodes de filtrage présentées ci-dessus permettent d’extraire ou d’éliminer une tendance de forme quelconque (on n’a pas d’idée *a priori* de sa forme\ ; on ne cherche pas à la modéliser). Les méthodes d’estimation par régression, au contraire, font appel à des hypothèses très fortes quant à sa nature\ : on cherche à ajuster une ou plusieurs équations fonctionnelles à la tendance de la série.
+
+#### Tendance générale
+
+L’idée simple pour estimer une tendance générale est de vérifier son ajustement par une droite, une parabole, un polynôme d’ordre plus élevé simulant un mouvement pseudo-cyclique de forte période. Ces techniques reposent sur l’algorithme des moindres carrés\ : on minimise les carrés d’écarts entre les données observées et un polynôme de degré fixé à l’avance. 
+
+On pourrait imaginer bien d’autres formes de tendance générale (exponentielle, logistique, etc.). Certains de ces modèles prennent même en compte une autocorrélation entre les observations, aspect fondamental dans le cadre de l’analyse de séries spatio-temporelles. Ces modèles autorégressifs sont très importants dans le domaine, mais ils sont plutôt appliqués en économie, en physique, ... et moins en biologie. Nous ne les étudierons donc pas ici.
+
+##### Exemple {-}
+
+Nous reprenons ici l'exemple du manuel de {pastecs} qui illustre bien l'utilisation de différents modèles (linéaire, polynomial, non linéaire) pour estimer la tendance générale de la densité de l'eau le long du transect Nice - Calvi pour le jeu de données `marphy` (comme c'est un excès de densité par rapport à 1000 g/L qui est enregistrée dans le jeu de données, nous rajoutons 1000 pour rétablir la valeur).
+
+```{r}
+data("marphy", package = "pastecs")
+density <- ts(marphy$Density + 1000)
+plot(density, xlab = "Transect Nice - Calvi (stations)",
+  ylab = "Densité [g/L]")
+```
+
+Nous voyons très bien ici une nette tendance à l'augmentation. Ajustons tout d'abord une simple droite pour estimer (et extraire) la tendance générale\ :
+
+```{r}
+library(pastecs)
+t <- time(density) # Extraction du vecteur temps de l'objet ts
+density_lin <- lm(density ~ t) # Ajustement
+coef(density_lin) # Paramètres du modèle ajusté
+```
+
+Remarquons que nous avons appelé `lm()` ici **sans** préciser `data =`. Dans ce cas, la fonction va rechercher ses variables comme vecteurs numériques directement dans l'environnement de travail. Nous avions déjà `density` qui est un objet **ts**, mais nous savons par ailleurs que ce **ts** est aussi, et avant tout, un vecteur numérique (auquel un attribut `tsp` a été ajouté, attribut inconnu et donc ignoré de `lm()`). Nous avons créé notre second vecteur numérique `t` en extrayant la variable de temps de l'objet **ts** en utilisant `time()`. Ainsi, nous pouvons travailer avec `lm()` directement.
+
+L'objet `density_lin` est un objet **lm** tout-à-fait classique. Nous pouvons donc afficher le tableau `summary()`, effectuer l'analyse des résidus, etc. et ... **stop\ ! Gardez à l'esprit que l'application de `lm()` à une série temporelle tord le système car la non indépendance des observations entre elles peut être problématique. Nous n'utiliserons donc ici que l'ajustement du modèle sans en analyser les résidus.**
+
+```{r}
+summary(density_lin)
+```
+
+L'ANOVA, et les tests de Student sur les paramètres ne peuvent être utilisés ici, même si nous pouvons les calculer à partir de `summary()` ou `anova()`. Afin d'utiliser ce modèle linéaire pour décomposer la série, nous utilisons `predict()` pour récupérer les valeurs prédites par le modèle pour la tendance, et nous les utilisons dans `decreg()` ou `tsd(methode = "reg")`\ :
+
+```{r}
+trend_lin <- predict(density_lin)
+density_lindec <- tsd(density, method = "reg", xreg = trend_lin)
+plot(density_lindec, col = c(1, 3, 2), xlab = "Stations")
+```
+
+Ou mieux, nous représentons la série de départ et la tendance générale superposée en utilisant `stack = FALSE`\ :
+
+```{r}
+plot(density_lindec, stack = FALSE, resid = FALSE, col = c(1, 3),
+  xlab = "Stations", ylab = "Densité [g/L]", main = "Tendance linéaire")
+```
+
+Nous voyons bien que la droite n'est qu'une mauvaise approximation de la tendance générale. Nous pourrions essayer une courbe à la place. Commençons avec un polynôme d'ordre deux.
+
+```{r}
+density_poly2 <- lm(density ~ t + I(t^2))
+coef(density_poly2)
+density_poly2dec <- tsd(density, method = "reg", xreg = predict(density_poly2))
+plot(density_poly2dec, stack = FALSE, resid = FALSE, col = c(1, 2),
+  xlab = "Stations", ylab = "Densité [g/L]",
+  main = "Tendance polynomiale d'ordre 2")
+```
+
+N'oubliez pas d'utiliser `I()` dans la formule pour indiquer un calcul, sinon, `lm()` recherchera une variable qui s'appellerait `t^2` et ne la trouverait pas bien sûr (et en plus, le message d'erreur n'est pas toujours très explicite dans ce cas). Ce modèle polynomial d'ordre deux est déjà nettement mieux. Et que donne un polynôme d'ordre trois\ ?
+
+```{r}
+density_poly3 <- lm(density ~ t + I(t^2) + I(t^3))
+coef(density_poly3)
+density_poly3dec <- tsd(density, method = "reg", xreg = predict(density_poly3))
+plot(density_poly3dec, stack = FALSE, resid = FALSE, col = c(1, 4),
+  xlab = "Stations", ylab = "Densité [g/L]",
+  main = "Tendance polynomiale d'ordre 3")
+```
+
+Il ne semble pas que le gain soit flagrant ici... peut-être du côté de la Corse, et encore. Testons à présent une modèle non linéaire. Par exemple, une courbe logistique. Le principe est le même, si ce n'est que nous utilisons ici la fonction `nls()` à la place de `lm()` et le modèle `SSfpl(..., A, B, xmid, scal)` pour le modèle logistique à quatre paramètres (voyez le module 4 du cours SDD II).
+
+```{r}
+density_logis <- nls(density ~ SSfpl(t, A, B, xmid, scal))
+coef(density_logis)
+density_logisdec <- tsd(density, method = "reg", xreg = predict(density_logis))
+plot(density_logisdec, stack = FALSE, resid = FALSE, col = c(1, 5),
+  xlab = "Stations", ylab = "Densité [g/L]",
+  main = "Tendance logistique à 4 paramètres")
+```
+
+Ce dernier modèle est particulièrement intéressant parce qu'il exprime un changement de densité progressif entre la densité côtière vers Nice plus basse et celle plus élevée rencontrée en Corse. Les paramètres `A` et `B` sont les estimations de ces deux densités. Nous avons donc ici choisi un modèle qui exprime aussi un phénomène physique bien réel au travers de l'équation du modèle. C'est évidemment un gros plus. D'autant plus que ce modèle s'ajuste très bien dans les données\ !
+
+Nous pouvons à présent extraire la composante résiduelle pour observer les anomalies de densité par rapport à cette tendance générale\ :
+
+```{r}
+density_ano <- extract(density_logisdec, components = "residuals")
+plot(density_ano, xlab = "Stations", ylab = "Anomalies de densité [g/L]")
+```
+
+A partir de là, nous pouvons analyser classiquement cette nouvelle série. Notez la diminution importante de densité au niveau du front vers la station 28 qui est clairement mise en évidence maintenant.
+
+#### Tendance cyclique
+
+La tendance générale est parfois liée à l’évidence à un cycle (annuel, lunaire, etc.). La régression sinusoïdale permet de tester statistiquement, et de définir un modèle de variation rigoureusement périodique. Naturellement, ce modèle doit être utilisé avec discernement. Ainsi, même si la variabilité saisonnière existe pour des abondances d’espèces, elle ne s’ajuste pas forcément à une sinusoïde si les amplitudes maximums sont décalées d’une année à l’autre, d’un mois ou plus. Et si alors on étudie les écarts entre les valeurs observés et le modèle, ceux-ci ne correspondent plus à une variabilité indépendante de la variation saisonnière. Ils ne représentent que l’inadéquation du modèle choisi, qui lui, est strictement périodique.
+
+Grâce à une astuce, nous pouvons ajuster un modèle sinusoïdal à l'aide de la fonction `lm()` dans R. Il suffit de rendre l'équation linéaire par un changement de variables. Rappelez-vous que nous avons vus dans le précédent module qu'une sinusoïde correspond à l'équation suivante\ :
+
+$$X_t = A \cdot \cos(2 \pi \omega t + \phi)$$
+
+avec $\omega$ la fréquence du signal, $\phi$ son déphasage et $A$ son amplitude. Mais nous avons aussi vu qu'il est possible de reparamétrer cette forme en une somme de sinus et cosinus\ :
+
+$$A \cdot \cos(2 \pi \omega t + \phi) = \beta_1 \cdot \cos(2 \pi \omega t) + \beta_2 \cdot \sin(2 \pi \omega t)$$
+
+Dès lors, et à condition de cibler une fréquence particulière $\omega$ connue à l'avance pour le cycle (par exemple, pour un cycle saisonnier on sait d'avance que la fréquence est d'exactement un an), nous pouvons calculer deux variables issues de $t$\ : $T_1 = \cos(2 \pi \omega t)$ et $T_2 = \sin(2 \pi \omega t)$. Ainsi, nous obtenons l'équation suivante\ :
+
+$$\beta_1 \cdot T_1 + \beta_2 \cdot T_2$$
+
+Cette dernière forme est assimilable à une régression multiple sur deux variables indépendantes $T_1$ et $T_2$ dont l'ordonnée à l'origine vaut zéro, et que nous pouvons ajuster facilement à l'aide de la fonction `lm()`.
+
+##### Exemple {-}
+
+Nous avons déjà ajusté un tel modèle dans le jeu de données `co2` plus haut, mais sans l'expliquer complètement. A présent que nous avons vu l'astuce de la substitution de variable dans la forme sinus/cosinus de l'équation de la courbe sinusoïdale, nous comprenons mieux comment nous avons procédé. Utilisons maintenant un modèle sinusoïdal pour estimer la variation de la température au château de Nottingham pendant 20 ans au 20^ème^siècle. Comme les températures sont enregistrées en °F, nous nous empressons de les convertir en °C (°C = (°F - 32) / 1.8).
+
+```{r}
+data("nottem", package = "datasets")
+nottem <- (nottem - 32) / 1.8 # °F -> °C
+tsp(nottem) # Données mensuelles, unité: 1 an
+plot(nottem, xlab = "Temps [années]", ylab = "Température [°C]")
+```
+
+Comme l'unité de temps choisie ici est l'année, et que cela correspond à la la fréquence du signal voulu, nous avons donc $\omega = 1$.
+
+```{r}
+t <- time(nottem)
+omega <- 1 # Fréquence fixée à 1 an pour le signal sinusoïdal
+nottem_sin <- lm(nottem ~ I(cos(2*pi*omega*t)) + I(sin(2*pi*omega*t)))
+coef(nottem_sin)
+nottem_sindec <- tsd( nottem, method = "reg", xreg = predict(nottem_sin))
+plot(nottem_sindec, stack = FALSE, resid = FALSE, col = 1:2,
+  xlab = "Temps [années]", ylab = "Température [°C]",
+  main = "Variations saisonnière sinusoïdales")
+```
+
+Notre modèle sinusoïdal semble s'adapter relativement bien pour représenter les températures. Nous voyons immédiatement où se situent les années à étés plus chauds, et les hivers plus ou moins rigoureux. Nous pouvons naturellement extraire les composantes et les analyser plus avant (nous vous laissons cela comme exercice). Les résidus ici sont appelés anomalies de température par rapport au modèle choisi. Mais les météorologues préfèrent généralement utiliser dans ce cas les moyennes mensuelles des températures sur une longue période, par exemple 10 ans, ou même un siècle.
+
+## Décomposition par LOESS
+
+LOESS (prononcez "LO-ESSE") est une méthode de régression polynomiale locale. Pour chaque valeur $X_t$ d’une série $X$, on va considérer les *k* voisins à gauche et à droite, éventuellement pondérés (par exemple par la distance les séparant de $X_t$). On effectue une régression par les moindres carrés d’un polynôme d’ordre *p* (habituellement *p* vaut 1 ou 2), et on récupère la valeur prédite au temps $t$ (voir Cleveland *et al*, 1992). Il s'agit donc de l'utilisation d'une régression polynomiale dans une fenêtre mobile. Si l’ordre *p* du polynôme vaut 0, le calcul se ramène à une moyenne mobile classique.
+
+Avec un choix judicieux de *k*, et éventuellement en réitérant le processus, on va pouvoir extraire la tendance générale. Comme avec la méthode des moyennes mobiles, on va aussi pouvoir désaisonnaliser une série en prenant une fenêtre égale à un an, donc, en considérant 12 termes pour des données mensuelles (13 en fait pour une fenêtre centrée sur les observations de la série). Une combinaison de ces deux traitements va permettre de décomposer une série en tendance, cycle saisonnier et résidus selon un modèle additif. On peut aussi n’extraire que le cycle saisonnier et les résidus (surtout utile lorsque la tendance générale *est* périodique sur un an).
+
+Comme les résidus ont rarement une distribution normale et ne sont souvent pas indépendants entre eux dans les séries, les hypothèses de base indispensables pour la régression à l’aide de la méthode des moindres carrés sont violées la plupart du temps. Ainsi, pour obtenir une estimation plus exacte des composantes, il est possible d’utiliser une méthode de régression plus robuste (*i.e.*, moins sensible à la violation de ces hypothèses de base). On peut par exemple décider de pondérer les valeurs de manière inversement proportionnelle à leur influence respective sur la régression. Ainsi, une valeur qui, à elle seule, aurait tendance à tirer la courbe vers elle (valeur isolée, très éloignée du nuage formé par toutes les autres) recevra une pondération très faible afin de minimiser son effet.
+
+L'algorithme implémenté dans `decloess()` ou `tsd(method = "loess")`, lui-même implémenté dans `stl()` est en réalité un peu plus complexe, avec des passages multiples des différents filtres dans un ordre particulier, et avec un calcul supplémentaire éventuellement entre ces passages. Ceci explique que la méthode est plus efficace qu'une simple moyenne mobile. Cependant, les explications ci-dessus suffisent pour en comprendre le principe général. Si vous êtes intéressés par les détails, vous pouvez lire la page d'aide de `?stl`. 
+
+##### Exemple {-}
+
+Le jeu de données qui se prête merveilleusement bien à la décomposition LOESS est `co2`. Nous l'avons déjà réalisée. Néanmoins, nous la reprenons ici pour discuter de différentes valeurs possibles des arguments qui vont influer sur la forme des différentes composantes extraites.
+
+```{r}
+data("co2", package = "datasets")
+plot(co2)
+```
+
+```{r}
+co2_loess <- tsd(co2, method = "loess", s.window = 13)
+plot(co2_loess, col = 1:3)
+```
+
+L'argument `s.window =` n'a pas de valeur par défaut et doit donc être toujours fourni. Il s'agit de l'étendue de la fenêtre de décomposition saisonnière (attention\ : l'étendue est bien 2 *k* + 1, où *k* est l'argument `order =` pour les moyennes mobiles). Nous choisissons la valeur impaire immédiatement supérieure à la fréquence des observations pour une unité d'un an (ou d'un cycle, en tous cas). Donc, pour des données mensuelles, `s.window = 13`. Une autre valeur possible est `s.window = "periodic"`. Dans ce cas, la valeur moyenne à chaque mois sera calculée sur toute la longueur de la série. Il en résulte un signal cyclique de forme quelconque, mais *strictement identique chaque année*\ :
+
+```{r}
+co2_loess <- tsd(co2, method = "loess", s.window = "periodic")
+plot(co2_loess, col = 1:3)
+```
+
+L'argument `s.degree =` indique le degré du polynôme utilisé pour l'extraction de la composante saisonnière. Il peut valoir zéro (valeur par défaut pour utiliser les moyennes mobiles). Donc, notre première décomposition en n'indiquant que `s.window = 13` se rapproche en fait à l'application d'un lissage par moyenne mobile. Lorsque `s.degree = 1`, nous ajustons une droite par les moindres carrés à chaque fois dans le fenêtre. Le signal résultant est très légèrement différent (non perceptible ici).
+
+```{r}
+co2_loess <- tsd(co2, method = "loess", s.window = 13, s.degree = 1)
+plot(co2_loess, col = 1:3)
+```
+
+L'argument `trend =` indique si nous désaisonnalisons uniquement ou si nous retirons également une tendance générale. La valeur par défaut est `trend = FALSE`. Si nous indiquons `trend = TRUE`, la fonction utilise des valeurs par défaut pour `t.window =`, la largeur de la fenêtre pour l'extraction de la tendance (voir `?stl` pour l'explication plus détaillée et pour le calcul de la valeur pas défaut). Enfin, `t.degree = 1` par défaut, mais il peut aussi être ramené à zéro. Cette dernière valeur est moins intéressante dans le cas de la tendance bien souvent.
+
+```{r}
+co2_loess <- tsd(co2, method = "loess", s.window = 13, trend = TRUE)
+plot(co2_loess, col = 1:4)
+```
+
+Si nous diminuons la valeur de `t.window =`, la tendance générale est moins lissée. La plupart du temps, les valeurs par défaut conviennent très bien.
+
+```{r}
+co2_loess <- tsd(co2, method = "loess", s.window = 13, trend = TRUE, t.window = 7)
+plot(co2_loess, col = 1:4)
+```
+
+Enfin, en présence de valeurs extrêmes suspectes, nous pouvons utiliser une régression robuste à la place d'une régression par les moindres carrés classiques. Il suffit pour cela de préciser `robust = TRUE` (pas nécessaire ici).
+
+```{r}
+co2_loess <- tsd(co2, method = "loess", s.window = 13, trend = TRUE, robust = TRUE)
+plot(co2_loess, col = 1:4)
+```
+
+Enfin, terminons en signalant que si la méthode est prévue pour traiter uniquement des modèles additifs, `decloess()` et `tsd(method = "loess")` sont également capables de traiter des modèles multiplicatifs avec `type = "multiplicative"` grâce à l'astuce de la transformation logarithmique du signal implémentée en interne dans ces fonctions, mais `stl()`, elle ne le peut pas.
+
+##### À vous de jouer ! {-}
+
+```{r, echo=FALSE, results='asis'}
+if (exists("assignation"))
+  assignation("C05Gb_ts_adv", 
+    url = "https://github.com/BioDataScience-Course/C05Gb_ts_adv",
+    course.urls = c(
+      'S-BIOG-025' = "https://classroom.github.com/g/ZD6gTPvE"),
+    toc = "Analyse libre d'une série spatio-teporelle")
+```
+
+## Régularisation 
+
+La régularisation d'une série spatio-temporelle permet de transformer une série échantillonnée avec un pas de temps irrégulier ou présentant des trous en une série régulière. Malheureusement, en biologie, on a rarement affaire à des séries parfaitement régulières, soit parce qu’il y a des observations manquantes, soit parce qu’on ne contrôle pas l’intervalle de temps. Dans ce cas, la régularisation est une opération préliminaire indispensable à beaucoup d’analyses de séries spatio-temporelles, que ce soit avec les outils {pastecs} ou avec d'autres méthodes. Les objets **ts** doivent être *d’office* des séries spatio-temporelles régulières dans R. Cette étape est donc requise pour adapter des **data frames** avant de pouvoir les transformer en séries temporelles\ ! Plusieurs méthodes de régularisation sont disponibles dans {pastecs}\ : régularisation par valeur constante (`regconst()`), linéaire (`reglin()`), par courbes splines (`regspline()`) et par la méthode des aires (`regarea()`). Afin de simplifier le travail de régularisation, et de faciliter ensuite la création des séries temporelles, toutes ces fonctions ont été regroupées sous une fonction commune `regul()`, dans la même philosophie que `tsd()` regroupe les différentes techniques de décomposition, par ailleurs implémentées par les fonctions `decXXX()`.
+
+```{block2, type = 'warning'}
+Toutes ces méthodes sont à utiliser **avec précaution**. Il est très facile d’obtenir n’importe quoi si l’on choisit des mauvais paramètres\ ! Il n’y a pas de règle absolue dans leurs choix, étant donné qu’ils sont liés à la nature-même des données à régulariser. Par exemple, il faut être extrêmement attentif à ne pas régulariser à tort des données physico-chimiques (par exemple à l’aide de la méthode des aires avec une très grande fenêtre).
+```
+
+Quelle que soit la méthode utilisée, on doit veiller à obtenir un pas de temps de la série régulière aussi proche que possible du pas de temps (moyen) de la série échantillonnée. De même, on doit aussi essayer d’obtenir autant de valeurs non interpolées que possible dans la série régulière finale. Quant à l’extrapolation (obtenue à l’aide de l’argument `rule = 2`), elle est à proscrire. La fonction `regul()` admet beaucoup de paramètres. Vous êtes invité à essayer différents réglages sur vos propres données, et à visualiser le résultat à l’aide de `plot.regul()` et `hist.regul()` pour vous familiariser avec ses possibilités. La transformation du temps depuis un décompte des jours vers une "année numérique simplifiée" (longueur de 365,25 jours, et chaque mois correspondant à exactement 1/12 de cette valeur) n'est pas très intuitive, mais une fois que l'on a compris le principe, c'est très facile à faire avec l'argument `units = "daystoyears"` de `regul()` (voir l'exemple ci-dessous).  
+
+Dans le cas où l’on voudrait condenser des données (par exemple, transformer un échantillonnage mensuel en valeurs saisonnières ou des données quotidiennes en série par semaine ou par mois), il vaut mieux agréger les données en calculant des moyennes ou des médianes successives. On peut aussi régulariser la série avec le pas temps initial si ce dernier est un multiple du pas de temps visé, et utiliser ensuite la fonction `aggregate()` de R, que nous avons déjà utilisée.
+
+Dans le cadre de ce cours, la régularisation de série irrégulière est une matière optionnelle. La présentation très succincte ci-dessus vous permet de prendre connaissance de l'existence de ces techniques (faites toujours `?<nom_de_function` pour lire la page d'aide de chaque fonction citée comme point de départ). Revenez vers cette section, et vers les liens qu'elle renferme, si vous vous trouver confronté à une situation où un régularisation de série est nécessaire. Le [manuel de {pastecs}]((https://github.com/phgrosjean/pastecs/blob/master/manual/pastecs_manuel_utilisateur.pdf)) renferme tout un chapitre qui décrit en détails comment procéder. 
+
+### Application pratique
+
+Nous reprenons ici l'exemple de la régularisation d'une série phytoplanctonique très irrégulière de {pastecs} par interpolation linéaire\ :
+
+<details><summary>Régularisation de la série `Navi` du jeu de données `releve`</summary>
+
+Il s'agit du dénombrement de phytoplancton, et en particulier, la diatomée *Navicula sp* en une station unique entre le 21 mars 1989 et le 3 novembre 1992.
+
+```{r}
+phyto <- read("releve", package = "pastecs")
+chart(data = phyto, Navi ~ Day) +
+  geom_line()
+```
+
+Examinons un peu le pas de temps entre les différentes observations.
+
+```{r}
+releve$Day
+length(releve$Day)
+gaps <- releve$Day[2:61] - releve$Day[1:60]
+gaps
+range(gaps)
+mean(gaps)
+```
+
+Nous avons donc entre 7 et 67 jours entre deux observations avec un écart moyen de 22 jours. Ici, nous pouvons utiliser les fonction `regul.screen()` et `regul.adj()` pour trouver le meilleur pas de temps pour la régularisation. Ce travail est réalisé dans le manuel de {pastecs} qui suggère que trois semaines (21 jours) est un bon pas de temps. Mais afin d'avoir un nombre d'observations entier (fréquence entière), nous raccourcirons quelque peu cet intervalle. Si nous considérons 18 observations par an (`frequence = 18`), l'intervalle de temps entre deux observations sera alors de 365.25/18 = 20,3 jours.
+
+Nous allons donc régulariser le jeu de données avec cette valeur en convertissant le temps en unité d'année. Afin d'éviter les difficultés du calendrier (année bissextile ou non, mois de 31, 30, 29 ou 28 jours), nous allons "lisser" le temps en utilisant l'argument `units = "daystoyears"`. En partant d'une mesure du temps écoulé depuis une date de départ en jours (dans `Day`), nous considérerons donc 265,25 jours par an et 1/12 d'année exactement pour chaque mois. Le début et la fin des années et des mois ne correspondront plus *exactement* au débuts et fins de dates calendriers (à un jour ou deux près maximum), mais dans le cadre d'effets annuels et inter-annuels, cela a peu d'importance\ : les êtres vivants se soucient relativement peu, en général, de notre calendrier Grégorien\ ! Par contre, ce type de manipulation ne tiendrait plus la route, par exemple, pour des données boursières ou économique. En effet, dans ce cas, les jours de week-end et les jours fériés sont susceptibles de différer significativement du point de vue des valeurs mesurées (valeurs boursière, activité économique, déplacements liés au travail ou aux vacances, etc.).
+
+```{block2, type = 'note'}
+A noter que, d'une manière générale, l'analyse de cycles bien précis tels que l'effet saisonnier ou les cycles circadiens nécessitent dans {pastecs} d'exprimer le temps dans une unité qui correspond exactement au cycle étudié. Ainsi, les fonctions de décomposition des séries en composantes saisonnières (`decloess()` par exemple) imposent d'exprimer le temps en unité `"years"`. De même, il est fortement conseillé d'adopté l'unité `"days"` pour l'étude de cycles circadiens.
+```
+
+Un autre argument est aussi important ici, il s'agit de `tol =`. C'est la fenêtre de tolérance à gauche ou et à droite de la date requise dans la série régulière pour aller chercher une observation *sans l'interpoler*. Avec un pas de temps de 20 jours, on peut considérer que si nous avons à disposition une mesure la veille ou le lendemain, cela ne fera pas une grande différence. Peut-être même aussi l'avant-veille ou le surlendemain. Donc, nous prendrons une tolérance de 2 jours. Mais pour être certain de prendre les observations 2 jours avant ou aprsè, on rajoute 10% à la valeur, donc, une `tol = 2.2` jours. Nous avons à présent (presque) tout ce qu'il faut pour régulariser notre série.
+
+```{r}
+navi_reg <- regul(releve$Day, releve$Navi, n = length(releve$Day),
+ units = "daystoyears", frequency = 18, tol = 2.2, methods = "linear",
+ datemin = "21/03/1989", dateformat = "d/m/Y")
+```
+
+Le programme nous avertit que, puisque nous avons transformé l'échelle temporelle de `"days"` en `"years"`, la valeur de `tol = 2.2` qui était exprimée en jours devient 0.0602 en années, et est de plus ajustée à une valeur de 0.006179 afin que ce soit une fraction entière de 1/`frequency` (c'est-à-dire de `deltat`, voir `?regul`). Comme `releve$Day` contient un décompte des jours depuis une date précise, nous devons indiquer cette date dans `datemin =`, et son format dans `dateformat =`. Nous obtenons alors ceci\ :
+
+```{r}
+navi_reg
+```
+
+Il y a beaucoup d'information dans tout ceci. Nous vous renvoyons au manuel de {pastecs} pour les explications. Passons tout de suite à la représentation graphique\ :
+
+```{r}
+plot(navi_reg, main = "Régularisation de Navicula sp")
+```
+
+Le travail n'est pas trop mauvais, ... sauf que nous avons tronqué notre série à la fin. En effet, nous avons pris le même nombre d'observations que la série de départ. Comme le pas de temps de la série finale régularisée est plus court de presque deux jours que la moyenne du pas de temps dans la série irrégulière, nous perdons à droite. Il suffit de donner une valeur plus élevée pour `n =`, sans toutefois dépasser la date finale de la série de départ pour corriger ce léger problème\ :
+
+```{r}
+navi_reg <- regul(releve$Day, releve$Navi, n = 66,
+ units = "daystoyears", frequency = 18, tol = 2.2, methods = "linear",
+ datemin = "21/03/1989", dateformat = "d/m/Y")
+plot(navi_reg, main = "Régularisation de Navicula sp")
+```
+
+Les pics et les creux dans la série régularisée (en rouge) sont assez bien représentatifs de ceux dans la série de départ (en noir), même si les gros pics éphémères sont légèrement tronqués. Les crois entourées d'un cercle indiquent les points qui ne sont *pas* interpolés parce qu'une valeur existe dans la fenêtre de tolérance de ± 2,2 jours. Par contre, les croix seules sont des valeurs interpolées linéairement entre les deux observations réalisées de part et d'autre de la date cible. Les traits verticaux pointilles indiquent le début et la fin de la série de départ (en noir) et régularisée (en rouge). Nous ne perdons presque rien sur l'axe temporel, tout en n'extrapolant aucune valeur en dehors de l'intervalle de temps de la série initiale. C'est donc parfait.
+
+L'extraction de la série régularisée à partir de l"objet `regul()` se fait exactement comme pour `tsd()` avec `tseries()`, ou alors avec `extract()` dans le cas où plusieurs séries auraient été régularisées simultanéments, mais que nous ne voulons convertir qu'une partie d'entre elles en objet **ts** ou **mts**.
+
+```{r}
+navi <- tseries(navi_reg)
+class(navi)
+tsp(navi)
+plot(navi)
+```
+
+Comme nous pouvons le constater, nous avons à présent une série régulière que nous pouvons travailler avec les outils habituels\ !
+
+</details>
+
+## Récapitulatif des exercices
+
+Dans ce module 5, vous aviez à réaliser les exercices suivants\ :
+
+`r show_ex_toc()`

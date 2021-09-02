@@ -1,0 +1,57 @@
+Type: Book
+Package: placeholder
+Title: SDD III UMONS version 2021
+Version: 2021.0.0
+Depends:
+    learnitdown
+Imports:
+    aurelhy,
+    automap,
+    bookdown,
+    boot,
+    chart,
+    circular,
+    dplyr,
+    exploreit,
+    ggsn,
+    gstat,
+    ipred,
+    knitr,
+    lubridate,
+    mapedit,
+    maps,
+    mapsf,
+    mapview,
+    mlearning,
+    naniar,
+    pastecs,
+    pROC,
+    purrr,
+    randomForest,
+    raster,
+    rlang,
+    ROCR,
+    rpart,
+    SciViews,
+    sessioninfo,
+    sf,
+    skimr,
+    stars,
+    stats,
+    stringr,
+    tibble,
+    tidyr,
+    tmap,
+    TSA,
+    vembedr
+Remotes:
+    phgrosjean/aurelhy,
+    phgrosjean/pastecs,
+    rstudio/bookdown,
+    SciViews/flow,
+    SciViews/data.io,
+    SciViews/chart,
+    SciViews/exploreit,
+    SciViews/learnitdown,
+    SciViews/mlearning,
+    SciViews/SciViews

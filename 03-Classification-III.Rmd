@@ -117,7 +117,7 @@ if (exists("assignation"))
   assignation("C03Ga_cardiovascular", part = "I",
     url = "https://github.com/BioDataScience-Course/C03G_cardiovascular",
     course.urls = c(
-      'S-BIOG-025' = "https://classroom.github.com/a/sMSgQSEq"),
+      'S-BIOG-025' = "https://classroom.github.com/a/..."),
     toc = "Réflexion sur les proportions")
 ```
 
@@ -213,7 +213,7 @@ if (exists("assignation"))
   assignation("C03Ga_cardiovascular", part = "II",
     url = "https://github.com/BioDataScience-Course/C03G_cardiovascular",
     course.urls = c(
-      'S-BIOG-025' = "https://classroom.github.com/a/sMSgQSEq"),
+      'S-BIOG-025' = "https://classroom.github.com/a/..."),
     toc = "Courbes ROC")
 ```
 
@@ -379,7 +379,7 @@ if (exists("assignation"))
   assignation("C03Ga_cardiovascular", part = "III",
     url = "https://github.com/BioDataScience-Course/C03G_cardiovascular",
     course.urls = c(
-      'S-BIOG-025' = "https://classroom.github.com/a/sMSgQSEq"),
+      'S-BIOG-025' = "https://classroom.github.com/a/..."),
     toc = "SVM et réseaux de neurones")
 ```
 
@@ -394,7 +394,7 @@ if (exists("assignation"))
   assignation("C03Gb_challenge", part = NULL,
     url = "https://github.com/BioDataScience-Course/C03Gb_Challenge",
     course.urls = c(
-      'S-BIOG-025' = "https://classroom.github.com/g/zFsIcGjF"),
+      'S-BIOG-025' = "https://classroom.github.com/g/..."),
     toc = "Challenge pour trouver les meilleurs vins")
 ```
 

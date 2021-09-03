@@ -249,7 +249,7 @@ if (exists("assignation"))
   assignation("C05Ga_tsd", 
     url = "https://github.com/BioDataScience-Course/C05Ga_tsd",
     course.urls = c(
-      'S-BIOG-025' = "https://classroom.github.com/a/V8--eYkL"),
+      'S-BIOG-025' = "https://classroom.github.com/a/..."),
     toc = "Décomposition d'une série spatio-teporelle")
 ```
 
@@ -552,7 +552,7 @@ if (exists("assignation"))
   assignation("C05Gb_ts_adv", 
     url = "https://github.com/BioDataScience-Course/C05Gb_ts_adv",
     course.urls = c(
-      'S-BIOG-025' = "https://classroom.github.com/g/ZD6gTPvE"),
+      'S-BIOG-025' = "https://classroom.github.com/g/..."),
     toc = "Analyse libre d'une série spatio-teporelle")
 ```
 

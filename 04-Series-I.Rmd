@@ -804,7 +804,7 @@ if (exists("assignation"))
   assignation("C04Ga_ts", part = "I",
     url = "https://github.com/BioDataScience-Course/C04Ga_ts",
     course.urls = c(
-      'S-BIOG-025' = "https://classroom.github.com/a/BEIb7Y8B"),
+      'S-BIOG-025' = "https://classroom.github.com/a/..."),
     toc = "Analyse de séries spatio-temporelles")
 ```
 

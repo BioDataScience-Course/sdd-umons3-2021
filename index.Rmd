@@ -98,3 +98,19 @@ Le matériel pédagogique, rassemblé dans ce syllabus interactif est aussi vari
 ```{block, type='info'}
 Tout ce matériel est accessible à partir du [site Web du cours](https://wp.sciviews.org){target='top'}, du présent syllabus interactif (et de Moodle pour les étudiants de l'UMONS). Ces derniers ont aussi accès au dossier ` SDD` sur `StudentTemp` en Intranet à l'UMONS. Les aspects pratiques seront à réaliser en utilisant la **'SciViews Box'**, une machine virtuelle préconfigurée. Nous installerons ensemble la dernière version de cette SciViews Box au premier cours. Il est donc très important que vous soyez présent à ce cours, et vous pouvez venir aussi si vous le souhaitez avec votre propre ordinateur portable comme pour les cours précédents. Enfin, vous pourrez toujours poser vos questions par mail à l'adresse [sdd@sciviews.org](mailto:sdd@sciviews.org) ou sur [Discord](https://discord.com/invite/CuKdwzA).
 ```
+
+## Questions {-} 
+
+Toutes les questions relatives aux exercices sont à poser dans les issues GitHub. 
+
+```{r, echo=FALSE, results='asis'}
+if (exists("assignation2"))
+  assignation("sdd_issues", part = NULL,
+    url = "https://github.com/BioDataScience-Course/sdd_issues",
+    course.urls = c(
+      'S-BIOG-015' = "https://classroom.github.com/g/s_U7VaAO",
+      'S-BIOG-937-958-959' = "https://classroom.github.com/a/..."),
+    toc = "Poser ses questions dans une issue.")
+```
+
+*Note : vos enseignants sont également accessibles par mail sdd@sciviews.org.*

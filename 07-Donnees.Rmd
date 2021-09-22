@@ -28,14 +28,14 @@ RStudio et (R) Markdown ne doivent plus avoir de secrets pour vous.
 
 ##### À vous de jouer ! {-}
 
-`r h5p(19, height = 150, toc = NULL)`
+`r h5p(150, height = 270, toc = NULL)`
 
 
 Vous devez aussi maîtriser les bases de Git et de GitHub (avoir un compte GitHub, savoir cloner un dépôt localement, travailler avec GitHub Desktop pour faire ses "commits", "push" et "pull"). 
 
 ##### À vous de jouer ! {-}
 
-`r h5p(19, height = 149, toc = NULL)`
+`r h5p(149, height = 270, toc = NULL)`
 
 
 L'ensemble de ces outils a été abordé dans les cours précédents [SDD I](`r paste(learnitdown$baseurl, "sdd-umons", sep = "/")`), [SDD II](`r paste(learnitdown$baseurl, "sdd-umons2", sep = "/")`) et SDD III (les six premiers modules du présent cours) que vous devez avoir réalisé avant d'entamer la matière du cours SDD IV\ : pratique.
@@ -46,7 +46,7 @@ La gestion du temps et les variables de temps peuvent sembler simples d'apparenc
 
 ##### À vous de jouer ! {-}
 
-`r h5p(19, height = 149, toc = "Nombre de jours dans une année")`
+`r h5p(151, height = 270, toc = "Nombre de jours dans une année")`
 
 Si l’on tient compte du calendrier grégorien, des fuseaux horaires, du temps universel coordonné, de l'heure d'été, .... On s'aperçoit que le temps est complexe. 
 
@@ -120,7 +120,7 @@ ymd_hms("2015-Jan-25 12:25:35")
 
 ##### À vous de jouer ! {-}
 
-`r h5p(152, height = 270, toc = "Fonctions de conversion en dates")`
+`r h5p(153, height = 270, toc = "Conversion de date avec lubridate")`
 
 Par défaut, ce package utilise le temps universel coordonné. Il est cependant possible de définir le fuseau horaire avec l'argument `tz=`.
 

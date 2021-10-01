@@ -57,21 +57,21 @@ Cet ouvrage interactif est le troisième volume d'une série de trois ouvrages t
 
 - [Science des données V\ : recherche reproductible](http://applications.umons.ac.be/web/fr/pde/2021-2022/ue/US-M2-BIOEFA-015-M.htm) cours à option donné aux deuxièmes années des mêmes Masters, et dont le responsable est également Philippe Grosjean
 
-La matière est divisée en six modules de 6h chacun en présentiel pour SDD III, deux modules plus une grosse partie de travail autour d'un projet en SDD IV, et enfin quatre modules en SDD V. Chaque module nécessitera environ 8h (variable, en fonction de votre rythme et de votre technique d'apprentissage) de travail à domicile. **Cette matière fait suite au deux premiers cours dont les contenus sont considérés comme assimilés (voir [cours SDD I](https://wp.sciviews.org/sdd-umons){target='top'} et [cours SDD II](https://wp.sciviews.org/sdd-umons2){target='top'}).**
+La matière est divisée en six modules de 6h chacun en présentiel pour SDD III, deux modules plus une grosse partie de travail autour d'un projet en SDD IV, et enfin quatre modules en SDD V. Chaque module nécessitera environ 8h (variable, en fonction de votre rythme et de votre technique d'apprentissage) de travail à domicile. **Cette matière fait suite aux deux premiers cours dont les contenus sont considérés comme assimilés (voir [cours SDD I](https://wp.sciviews.org/sdd-umons){target='top'} et [cours SDD II](https://wp.sciviews.org/sdd-umons2){target='top'}).**
 
-<!-- A faire: un diagramme qui montre la relation entre ces différents modules, et avec les modules des deux cours précédents -->
+<!-- À faire: un diagramme qui montre la relation entre ces différents modules, et avec les modules des deux cours précédents -->
 
 ### SDD III : exploration et prédiction {-}
 
 Les trois premiers modules de ce cours se concentrent sur les techniques de classification supervisée, encore appelées apprentissage machine (*machine learning* en anglais) qui prennent de plus en plus d'importance de nos jours dans tous les domaines, y compris la biologie. Ces techniques utilisent des algorithmes d'apprentissage à la base de l'intelligence artificielle et du "deep learning".
 
-Ensuite, deux modules sont consacrés à des données particulières avec dépendance temporelles (les séries dites "spatio-temporelles" ou chronologiques). L'étude de phénomènes qui évoluent dans le temps est courant en biologie, et l'analyse de telles données nécessite l'utilisation de techniques statistiques adaptées que nous aborderons dans cette partie.
+Ensuite, deux modules sont consacrés à des données particulières avec des dépendances temporelles (les séries dites "spatio-temporelles" ou chronologiques). L'étude de phénomènes qui évoluent dans le temps est courant en biologie, et l'analyse de telles données nécessite l'utilisation de techniques statistiques adaptées que nous aborderons dans cette partie.
 
-Enfin, un dernier module est consacré à une initiation à l'analyse de données spatialisées et à la réalisation de cartes avec R. Ici aussi, il s'agit d'un aspect important pour beaucoup de biologistes, en particuliers ceux qui travaillent sur le terrain.
+Enfin, un dernier module est consacré à une initiation à l'analyse de données spatialisées et à la réalisation de cartes avec R. Ici aussi, il s'agit d'un aspect important pour beaucoup de biologistes, en particulier ceux qui travaillent sur le terrain.
 
 ### SDD IV : pratique {-}
 
-Ce cours à option apporte quelques compléments via deux modules supplémentaires. Nous y abordons des données particulières comme les dates, les données circulaires et le texte (y compris les expressions régulières). Le second module vise à s'organiser pour gérer au mieux un gros projet. D'ailleurs, les étudiants ont à réaliser un projet de plus grande envergure que ce qu'ils ont fait jusqu'ici, sur base des analyses qu'ils ont à réaliser par ailleurs dans le cadre de leur mémoire de fin d'étude, ou sur des données similaires.
+Ce cours à option apporte quelques compléments via deux modules supplémentaires. Nous y abordons des données particulières comme les dates, les données circulaires et le texte (y compris les expressions régulières). Le second module vise à s'organiser pour gérer au mieux un gros projet. D'ailleurs, les étudiants ont à réaliser un projet de plus grande envergure que ce qu'ils ont fait jusqu'ici, sur base des analyses qu'ils ont à réaliser par ailleurs dans le cadre de leur mémoire de fin d'études, ou sur des données similaires.
 
 ### SDD V : recherche reproductible {-}
 
@@ -96,21 +96,90 @@ Le matériel pédagogique, rassemblé dans ce syllabus interactif est aussi vari
 - des diapositives de présentations distribuées via le dépôt [sdd_lessons sur BioDataScience-Course](https://github.com/BioDataScience-Course/sdd_lessons) viennent compléter le tout.
 
 ```{block, type='info'}
-Tout ce matériel est accessible à partir du [site Web du cours](https://wp.sciviews.org){target='top'}, du présent syllabus interactif (et de Moodle pour les étudiants de l'UMONS). Ces derniers ont aussi accès au dossier ` SDD` sur `StudentTemp` en Intranet à l'UMONS. Les aspects pratiques seront à réaliser en utilisant la **'SciViews Box'**, une machine virtuelle préconfigurée. Nous installerons ensemble la dernière version de cette SciViews Box au premier cours. Il est donc très important que vous soyez présent à ce cours, et vous pouvez venir aussi si vous le souhaitez avec votre propre ordinateur portable comme pour les cours précédents. Enfin, vous pourrez toujours poser vos questions par mail à l'adresse [sdd@sciviews.org](mailto:sdd@sciviews.org) ou sur [Discord](https://discord.com/invite/CuKdwzA).
+
+::: {.nocourse}
+Tout ce matériel est accessible à partir du [site Web du cours](https://wp.sciviews.org){target='top'}, et du présent syllabus interactif.
+:::
+
+::: {.S-BIOG-025 .S-BIOG-043 .S-BIOG-077}
+Tout ce matériel est accessible à partir du [site Web du cours](https://wp.sciviews.org){target='top'}, du présent syllabus interactif et de Moodle pour les étudiants de l'UMONS.
+
+Les travaux personnels seront à réaliser en utilisant un espace de travail en ligne dédié à la science des données (renku) ou sur une machine virtuelle préconfigurée, la **'SciViews Box'**, que nous installerons ensemble à la fin du premier module avec les étudiants possédant un ordinateur adapté.
+
+Vous pourrez poser vos questions par mail à l'adresse [sdd@sciviews.org](mailto:sdd@sciviews.org) ou dans les issues du dépôt GitHub de ce cours. L'accès à ce dépôt vous sera donné lors du premier module du cours.
+
+Un **outil d'annotation** et de surlignage est intégré dans le cours en ligne. Il vous permet\ :
+
+- de personnaliser votre cours en écrivant dedans comme vous le feriez avec un syllabus papier (annotations privées... tout ce qui vous passe par la tête).
+
+- d'échanger des informations complémentaires entre vous (par exemple, trucs et astuces supplémentaires, liens utiles, etc.) ou avec vos enseignants (passages moins clairs ou lacunes éventuelles). Soyez constructif dans vos commentaires publics. Nous tiendrons compte de vos remarques pour améliorer le cours pour les années suivantes.
+
+Pour annoter ou surligner, vous sélectionnez du texte et vous cliquez sur l'un des deux boutons `Annotate` ou `Highlight` qui apparaissent. Vous devez vous créer un compte (gratuit) sur [hypothes.is](https://hypothes.is) auparavant. Vos annotations publiques sont à poster dans le groupe **BioDataScience-Course**. Vous devez [vous y abonner en cliquant sur ce lien](https://hypothes.is/groups/miAKPpWy/biodatascience-course) et ensuite sélectionner ce groupe dans la barre d'outils en haut du panneau d'annotation **avant d'ajouter vos commentaires, qu'ils soient personnels ou de groupe**. 
+:::
+
 ```
 
-## Questions {-} 
+## Approche pédagogique {-}
 
-Toutes les questions relatives aux exercices sont à poser dans les issues GitHub. 
+Ce livre en ligne ainsi que tout le matériel pédagogique cité plus haut a été développé pour être employé en pédagogie active en classe inversée. On peut résumer cette approche en deux phases. Vous apprenez d’abord à la maison, nous appliquons *ensuite* en présentiel. 
+
+### Classe inversée & pédagogie active {-}
+
+Dans la plus grande partie de vos cours vous avez suivi **passivement** un cours *ex cathedra* suivi par une séance d'exercice ou de travaux pratiques. 
+
+On peut schématiser ce mode d'apprentissage comme cela
+
+![](images/00-preambule/organisation1.png)
+
+À la fin, un examen est indispensable pour valider l'acquisition des concepts.
+
+Les cours de science des données utilisent une autre approche et se donnent en classe inversée. Le schéma ci-dessous vous propose l'organisation d'un module du cours. Vous devrez donc préparer en distanciel chaque session de cours en présentiel. Lors de chaque heure de travail lié à ce cours, vous serez donc **actif**. 
+
+![](images/00-preambule/organisation2.png)
+
+### Quatre niveaux d'exercices {-}
+
+Quatre niveaux d'exercices de difficultés croissantes vous seront proposé.
+
+- niveau I : découverte des notions dans des exercices rapides et ciblés intégrés au sein du cours en ligne.
+- niveau II : appliquer les notions vues dans des exercices sous la forme de tutoriel très cadré
+- niveau III : transférer les notions dans des projets individuels guidés sur des données biologiques
+- niveau IV : Créer/réaliser des analyses sur des projets de groupe libre sur des données biologiques nouvelles grâce aux notions vues
+
+Chaque type d'exercice est associé à un outil présenté dans la matériel pédagogique. 
+
+![](images/00-preambule/apprendre2.png)
+
+L'ensemble de vos réponses sont collectées et utilisées afin de construire la note finale. Il n'est donc plus nécessaire de passer un examen classique en session d'examen. Tous ces exercices prouvent que vous avez acquis ou non les acquis d'apprentissage de ce cours.
+
+Votre progression au sein des exercices de chaque module est mise à votre disposition à la fin de chaque module ou bien depuis moodle.
+
+### Plan du cours {-}
+
+Le plan du cours est une forme de contrat entre l'étudiant et les encadrants. Ce document structure les attentes de vos encadrants. Veuillez consulter ce document attentivement. 
+
+- [Plan du cours de Science des données biologiques 3 : années 2021-2022](https://github.com/BioDataScience-Course/BioDataScience-Common/blob/main/docs/plan_de_cours/sdd3_plan_cours_2021-2022.md)
+
+## Issues {.unnumbered #issues} 
+
+Toutes les questions relatives aux exercices sont à poser dans les issues GitHub dédiées à ce cours.
 
 ```{r, echo=FALSE, results='asis'}
 if (exists("assignation2"))
-  assignation("sdd_issues", part = NULL,
+  assignation2("sdd_issues", part = NULL,
     url = "https://github.com/BioDataScience-Course/sdd_issues",
     course.urls = c(
-      'S-BIOG-015' = "https://classroom.github.com/g/s_U7VaAO",
-      'S-BIOG-937-958-959' = "https://classroom.github.com/a/..."),
-    toc = "Poser ses questions dans une issue.")
+      'S-BIOG-025' = "https://classroom.github.com/g/s_U7VaAO",
+      'S-BIOG-043' = "https://classroom.github.com/a/eXwwXH1F"),
+    toc = "Poser ses questions dans une issue.",
+    texts = learnitdown::assignation2_fr(
+      title = "Rejoignez l'assignation",
+      course = "Assignation GitHub Classroom d\u00e9di\u00e9e aux issues pour les \u00e9tudiants inscrits au cours de", 
+      alt = "Les issues ne sont pas accessibles aux \u00e9tudiants externes."))
 ```
 
 *Note : vos enseignants sont également accessibles par mail sdd@sciviews.org.*
+
+Vous pouvez retrouver directement ce dépôt via la bannière du site.
+
+![](images/00-preambule/issues.png)

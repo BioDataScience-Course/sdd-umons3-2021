@@ -72,6 +72,10 @@ La classification supervisée va se décomposer en réalité en trois phases.
 
 Il y a de très nombreux domaines d'applications de ces techniques de classification supervisée de type *"machine learning"*. Par exemple en médecine, ces techniques s'utilisent pour analyser les mesures effectuées par un scanner, un système de radiographie aux rayons X, un électrocardiogramme ou électroencéphalogramme, ... pour y détecter des anomalies. Votre moteur de recherche favori sur Internet utilise ces techniques pour classer les pages en "pertinentes" et "non pertinentes". La reconnaissance vocale ou de l'écriture manuscrite entrent dans cette catégorie également, de même que l'analyse de sentiment sur base de texte (quelle est l'état d'esprit de l'auteur du texte sur base des mots et expressions qu'il utilise). Il faut s'attendre à ce que dans quelques années, des algorithmes plus efficaces, et des ordinateurs plus puissants pourront effectuer des tâches aujourd'hui dévolues à des spécialistes, comme le médecin spécialisé en radiographie pour l'exemple cité plus haut. Nous sommes même à l'aube des véhicules capables de conduire tous seuls, sur base de l'analyse des images fournies par leurs caméras\ !
 
+##### À vous de jouer ! {-}
+
+`r h5p(163, height = 270, toc = "Set d'apprentissage et de test.")`
+
 ### Conditions d'application 
 
 Ces outils ont très certainement éveillé votre curiosité. Imaginez qu'à l'avenir il ne sera peut plus utile d'apprendre la classification des bourdons. Un ordinateur pourra le faire à votre place. 
@@ -91,6 +95,10 @@ Il y a néanmoins certaines conditions d'application à satisfaire préalablemen
 - **Toutes les classes ont des représentants dans les sets**. Il parait assez évident que si le set d'apprentissage ne contient aucun item pour une classe, l'algorithme de classification nevpeut pas être entrainé à reconnaitre celle classe-là. Par contre, il est également indispensable que le set de test soit pourvu d'un minimum d'items par classe, afin d'établir correctement une estimation des performances du classifieur pour **chaque** classe. attention avec une répartition aléatoire entre apprentissage et test pour des très petits peus de données à ce que cette situation n'apparaissent pas par le biais du hasard.
 
 En pratique, ces conditions d'application ne sont *pas* remplies strictement dans les faits, mais le but est de s'en rapprocher le plus possible. Par exemple, il est impossible en pratique de garantir qu'il n'y ait absolument *aucune* erreur dans les sets d'apprentissage et de test. Si le taux d'erreur reste faible (quelques pourcents voire encore moins), l'impact de ces erreurs sera suffisamment négligeable. Par contre, avec 20 ou 30% d'erreurs, par exemple, nous ne pourrons plus travailler valablement.
+
+##### À vous de jouer ! {-}
+
+`r h5p(164, height = 270, toc = "Condition d'application.")`
 
 ## Mesure de performances
 
@@ -141,7 +149,7 @@ Les paramètres principaux sont\ :
 
 ##### À vous de jouer ! {-}
 
-`r h5p(21, height = 270, toc = "Vrais et faux positifs ou négatifs")`
+`r h5p(165, height = 270, toc = "Vrais et faux positifs ou négatifs")`
 
 ### Métriques de performance
 

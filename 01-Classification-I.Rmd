@@ -550,9 +550,9 @@ Notre jeu de données ne reprenait que les données du set d'apprentissage et du
 ```{r, echo=FALSE, results='asis'}
 if (exists("assignation"))
   assignation("C01Ga_ml1", part = "I",
-    url = "https://github.com/BioDataScience-Course/C01Ga_ml1",
+    url = "https://github.com/BioDataScience-Course/C01Ia_21_ml1",
     course.urls = c(
-      'S-BIOG-025' = "https://classroom.github.com/a/..."),
+      'S-BIOG-025' = "https://classroom.github.com/a/1zEXuZQN"),
     toc = "Utilisation de l'analyse discriminante linéaire")
 ```
 

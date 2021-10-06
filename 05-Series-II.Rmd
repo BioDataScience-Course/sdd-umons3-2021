@@ -652,3 +652,7 @@ Comme nous pouvons le constater, nous avons à présent une série régulière q
 Dans ce module 5, vous aviez à réaliser les exercices suivants\ :
 
 `r show_ex_toc()`
+
+##### Progression {-}
+
+`r launch_report("05", height = 800)`

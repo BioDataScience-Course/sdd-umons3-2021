@@ -571,6 +571,10 @@ if (exists("assignation"))
 
 ## Récapitulatif des exercices
 
-Dans ce module 1, vous aviez à réaliser les exercices suivants\ :
+Dans ce module 1 vous aviez à réaliser les exercices suivants\ :
 
 `r show_ex_toc()`
+
+##### Progression {-}
+
+`r launch_report("01", height = 800)`

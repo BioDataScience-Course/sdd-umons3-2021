@@ -16,7 +16,8 @@ learnitdown <- list(
   ),
   courses_names = c(
     "Science des Données Biologiques III à l'UMONS",
-    #"Science des Données Biologiques III à Charleroi",
+    #"Science des Données Biologiques III à Charleroi" # Finally, they are
+    # registered as UMONS students,
     "Science des Données Biologiques IV à l'UMONS",
     "Science des Données Biologiques V à l'UMONS"
   )
@@ -75,6 +76,21 @@ launch_shiny <- function(url, toc = "", fun = paste(learnitdown$package, "run_ap
     app.img = "images/list-app.png",
     app.link = paste(learnitdown$baseurl, "shiny_app", sep = "/"), ...)
 
+launch_report <- function(module, course = "S-BIOG-025", toc = NULL, fun = NULL,
+  #ENalt1 = "*Click to see the progress report.*",
+  alt1 = "*Cliquez pour visualiser le rapport de progression.*",
+  #ENalt2 = "*Click to calculate your progress report for this module.*",
+  alt2 = "*Cliquez pour calculer votre rapport de progression pour ce module.*",
+  height = 800, ...)
+  learnitdown::launch_shiny(url =
+      paste0("https://sdd.umons.ac.be/sdd-progress-report?course=", course,
+        "&module=", module),
+    toc = toc, imgdir = learnitdown$shiny_imgdir,
+    fun = fun, alt1 = alt1, alt2 = alt2, toc.def = "Progress report {app}",
+    run.url = paste(learnitdown$baseurl, "/", learnitdown$rstudio,  "?runrcode=", sep = ""),
+    app.img = "images/list-app.png",
+    app.link = paste(learnitdown$baseurl, "shiny_app", sep = "/"), height = height, ...)
+
 # Note: not used yet!
 launch_learnr <- function(url, toc = "", fun = paste(learnitdown$package, "run", sep = "::"), ...)
   launch_shiny(url = url, toc = toc, fun = fun, ...)
@@ -95,6 +111,30 @@ assignation <- function(name, url, course.urls = NULL, part = NULL, toc = "",
       learnitdown$courses),
     toc = toc, texts = texts, assign.img = "images/list-assign.png",
     assign.link = paste(learnitdown$baseurl, "github_assignation", sep = "/"))
+
+assignation2 <- function(name, url, course.urls = NULL, part = NULL, toc = "",
+  texts = learnitdown::assignation2_fr(course = "Assignation GitHub Classroom en groupe pour les \u00e9tudiants inscrits au cours de"))
+  learnitdown::assignation2(name = name, url = url, course.urls = course.urls,
+    part = part, course.names = stats::setNames(learnitdown$courses_names,
+      learnitdown$courses),
+    toc = toc, texts = texts, assign.img = "images/list-assign2.png",
+    assign.link = paste(learnitdown$baseurl, "github_assignation", sep = "/"))
+
+challenge <- function(name, url, course.urls = NULL, part = NULL, toc = "",
+  texts = learnitdown::challenge_fr(course = "Assignation GitHub Classroom (challenge) pour les \u00e9tudiants inscrits au cours de"))
+  learnitdown::challenge(name = name, url = url, course.urls = course.urls,
+    part = part, course.names = stats::setNames(learnitdown$courses_names,
+      learnitdown$courses),
+    toc = toc, texts = texts, assign.img = "images/list-challenge.png",
+    assign.link = paste(learnitdown$baseurl, "github_challenge", sep = "/"))
+
+challenge2 <- function(name, url, course.urls = NULL, part = NULL, toc = "",
+  texts = learnitdown::challenge2_fr(course = "Assignation GitHub Classroom (challenge en groupe) pour les \u00e9tudiants inscrits au cours de"))
+  learnitdown::challenge2(name = name, url = url, course.urls = course.urls,
+    part = part, course.names = stats::setNames(learnitdown$courses_names,
+      learnitdown$courses),
+    toc = toc, texts = texts, assign.img = "images/list-challenge2.png",
+    assign.link = paste(learnitdown$baseurl, "github_challenge", sep = "/"))
 
 show_ex_toc <- function(header = "", clear.it = TRUE)
   learnitdown::show_ex_toc(header = header, clear.it = clear.it)

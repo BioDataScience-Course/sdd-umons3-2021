@@ -1007,3 +1007,7 @@ if (exists("assignation"))
 Dans ce module 6, vous aviez à réaliser les exercices suivants\ :
 
 `r show_ex_toc()`
+
+##### Progression {-}
+
+`r launch_report("06", height = 800)`

@@ -813,3 +813,7 @@ if (exists("assignation"))
 Dans ce module 4, vous aviez à réaliser les exercices suivants\ :
 
 `r show_ex_toc()`
+
+##### Progression {-}
+
+`r launch_report("04", height = 800)`

@@ -431,3 +431,7 @@ knitr::include_app('https://sdd.umons.ac.be/C03Sb_ml_result', height = '700px')
 Dans ce module 3, vous aviez à réaliser les exercices suivants\ :
 
 `r show_ex_toc()`
+
+##### Progression {-}
+
+`r launch_report("03", height = 800)`

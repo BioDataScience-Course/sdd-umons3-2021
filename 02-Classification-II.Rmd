@@ -543,3 +543,7 @@ Pour l'instant {mlearning} utilise les fonctions du package {randomForest} qui r
 Dans ce second module, vous aviez à réaliser les exercices suivants\ :
 
 `r show_ex_toc()`
+
+##### Progression {-}
+
+`r launch_report("02", height = 800)`

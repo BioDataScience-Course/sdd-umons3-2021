@@ -22,37 +22,39 @@ Le cours SDD IV, comme son nom l'indique, est essentiellement axé sur la pratiq
 
 ##### Prérequis {-}
 
-Si ce n'est déjà fait, vous devez installer et vous familiariser avec la 'SciViews Box' nouvelle mouture. RStudio et (R) Markdown ne doivent plus avoir de secrets pour vous. Vous devez aussi maîtriser les bases de Git et de GitHub (avoir un compte GitHub, savoir cloner un dépôt localement, travailler avec GitHub Desktop pour faire ses "commits", "push" et "pull"). L'ensemble de ces outils a été abordé dans les cours précédents [SDD I](`r paste(learnitdown$baseurl, "sdd-umons", sep = "/")`), [SDD II](`r paste(learnitdown$baseurl, "sdd-umons2", sep = "/")`) et SDD III (les six premiers modules du présent cours) que vous devez avoir réalisé avant d'entamer la matière du cours SDD IV\ : pratique.
+Avant de vous lancer dans ce cours, vous devez installer et vous familiariser avec la SciViews Box `r learnitdown$svbox`. Si ce n'est pas encore fait, retournez à la [page d'accueil pour bien débuter]( `r learnitdown$baseurl` ).
+
+RStudio et (R) Markdown ne doivent plus avoir de secrets pour vous. 
+
+##### À vous de jouer ! {-}
+
+`r h5p(150, height = 270, toc = NULL)`
+
+
+Vous devez aussi maîtriser les bases de Git et de GitHub (avoir un compte GitHub, savoir cloner un dépôt localement, travailler avec GitHub Desktop pour faire ses "commits", "push" et "pull"). 
+
+##### À vous de jouer ! {-}
+
+`r h5p(149, height = 270, toc = NULL)`
+
+
+L'ensemble de ces outils a été abordé dans les cours précédents [SDD I](`r paste(learnitdown$baseurl, "sdd-umons", sep = "/")`), [SDD II](`r paste(learnitdown$baseurl, "sdd-umons2", sep = "/")`) et SDD III (les six premiers modules du présent cours) que vous devez avoir réalisé avant d'entamer la matière du cours SDD IV\ : pratique.
 
 ## Dates
 
-<!-- G.E.
-Tout ce dont on veut parler dans ce module
+La gestion du temps et les variables de temps peuvent sembler simples d'apparence. Nous pouvons facilement déterminer la date et l'heure qu'il est en regardant une montre et un calendrier.
 
-- date, POSIXlt (POSIXct), lubridate, difftime
+##### À vous de jouer ! {-}
 
-- conversion des caractères en date
+`r h5p(151, height = 270, toc = "Nombre de jours dans une année")`
 
-- anytime
-
-- nanotime
-
-- benchmark
--->
-
-La gestion du temps et les variables de temps peuvent sembler simples d'apparence. Nous pouvons facilement déterminer la date et l'heure qu'il est en regardant une montre et un calendrier. Répondez à la question suivante \:
-
-Est-ce qu'une année dure exactement 365 jours\ ? 
-
-Vous savez que c'est une approximation et que c'est un système complexe que nous allons tenter de simplifier ci-dessous. 
-
-Si on tient compte du calendrier grégorien, des fuseaux horaires, du temps universel coordonné, de l'heure d'été, .... On s'aperçoit que le temps est complexe. 
+Si l’on tient compte du calendrier grégorien, des fuseaux horaires, du temps universel coordonné, de l'heure d'été, .... On s'aperçoit que le temps est complexe. 
 
 Le calendrier grégorien est le calendrier le plus utilisé actuellement dans le monde. Ce calendrier définit qu'une année comprend 4 trimestres et 12 mois. Les mois varient en longueur entre 28 et 31 jours. Une semaine comprend 7 jours. Une année comprend 365 jours à l'exception des années bissextiles. Si vous n'avez pas mal de tête, on continue. 
 
 Les fuseaux horaires ont eu pour objectif de définir une heure commune pour un espace géographique déterminé. C'est l'utilisation de chemin de fer qui a rendu la mise en place d'une heure commune indispensable.
 
-En pratique, une échelle de temps est utilisée comme référence par la majorité des pays du globe. Il s'agit du temps universel coordonné (UTC, *coordinated universal time*). Le terme GMT était utilisé précédemment. Il signifiait *Greenwich Mean time*.  A ce temps de référence, on va ajouter ou soustraire un nombre entier (avec des exceptions comme dans tout système avec l'ajout ou la soustraction d'un nombre entier plus 30 ou 45 minutes.)
+En pratique, une échelle de temps est utilisée comme référence par la majorité des pays du globe. Il s'agit du temps universel coordonné (UTC, *coordinated universal time*). Le terme GMT était utilisé précédemment. Il signifiait *Greenwich Mean time*.  À ce temps de référence, on va ajouter ou soustraire un nombre entier (avec des exceptions comme dans tout système avec l'ajout ou la soustraction d'un nombre entier plus 30 ou 45 minutes).
 
 UTC est un compromis entre le temps atomique international et temps universel. Il faut savoir que le temps universel coordonné est synchronisé avec la rotation de la Terre qui n'est pas fixe. Le service international de la rotation terrestre et des systèmes de référence décide de l'ajout de seconde, une seconde intercalaire (*leap second*) à UTC comme le premier janvier 2009. 
 
@@ -60,7 +62,7 @@ UTC est un compromis entre le temps atomique international et temps universel. I
 
 Après avoir lu ces quelques notions, pensez-vous toujours que le temps est simple\ ? 
 
-Comment le temps est-il géré dans R\ ? On retrouve les principaux objets suivant dans R pour gérer les temps\ : `Date`, `POSIXct`, `POSIXlt`, `difftime`. Le package {lubridate} propose en plus `Period`.
+Comment le temps est-il géré dans R\ ? On retrouve les principaux objets suivants dans R pour gérer les temps\ : `Date`, `POSIXct`, `POSIXlt`, `difftime`. Le package {lubridate} propose en plus `Period`.
 
 L'objet `Date` va s'intéresser au temps exprimé en jours, mois et années. Le jour 0 d'un objet `Date` est par convention le 1970-01-01. Il s'agit de l'heure Unix (mais nous ne détaillerons pas cette notion).
 
@@ -70,7 +72,7 @@ library(lubridate)
 class(date)
 ```
 
-L'objet `POSIXt` est un objet plus précis qui tient compte de la date **et de l'heure**. On retrouve deux variantes des objet POSIXT qui sont `POSIXct` et `POSIXlt`. Le POSIXCT enregistre le temps depuis l'origine qui est l'heure Unix alors que le POSIXlt utilise des paramètres attributs spécifiques.
+L'objet `POSIXt` est un objet plus précis qui tient compte de la date **et de l'heure**. On retrouve deux variantes des objets POSIXT qui sont `POSIXct` et `POSIXlt`. Le POSIXCT enregistre le temps depuis l'origine qui est l'heure Unix alors que le POSIXlt utilise des paramètres attributs spécifiques.
 
 ```{r}
 (datetime <- now())
@@ -86,9 +88,9 @@ diff == diff1 # diff et diff1 sont identiques
 class(diff)
 ```
 
-### Conversion d'une chaine de caractères en date
+### Conversion d'une chaîne de caractères en date
 
-En pratique vous serez souvent amené à convertir des chaînes de caractères en variable de temps. Pour ce faire, le package {lubridate} comprend des fonctions très utile pour convertir des chaînes de caractères en dates. Regardez par vous même pour en déduire la logique simple ci-dessous\ :
+En pratique vous serez souvent amené à convertir des chaînes de caractères en variable de temps. Pour ce faire, le package {lubridate} comprend des fonctions très utiles pour convertir des chaînes de caractères en dates. Regardez par vous-même pour en déduire la logique simple ci-dessous\ :
 
 - Les dates\ :
 
@@ -99,7 +101,7 @@ mdy("01/25/15")
 
 ##### À vous de jouer ! {-}
 
-`r h5p(19, height = 270, toc = "Fonctions de conversion en dates")`
+`r h5p(152, height = 270, toc = "Fonctions de conversion en dates")`
 
 - Les heures\ :
 
@@ -118,7 +120,7 @@ ymd_hms("2015-Jan-25 12:25:35")
 
 ##### À vous de jouer ! {-}
 
-`r h5p(20, height = 270, toc = "Conversion en dates (2)")`
+`r h5p(153, height = 270, toc = "Conversion de date avec lubridate")`
 
 Par défaut, ce package utilise le temps universel coordonné. Il est cependant possible de définir le fuseau horaire avec l'argument `tz=`.
 
@@ -135,7 +137,7 @@ ymd_hms(c("2015-Jan-25 12:25:35", "2015-01-15T122535", "2015/01/25 12:25:35"),
 
 <details>
 <summary>Plus de détails...</summary>
-Pour avoir plus de flexibilité, il est possible d'utiliser la fonction `parse_date_time()` qui va permettre de spécifier des formats spécifique. 
+Pour avoir plus de flexibilité, il est possible d'utiliser la fonction `parse_date_time()` qui va permettre de spécifier des formats spécifiques. 
 
 - Année
     + %Y : 4 chiffres
@@ -155,7 +157,7 @@ Pour avoir plus de flexibilité, il est possible d'utiliser la fonction `parse_d
     + %Z : fuseau horaire
     + %z : décalage par rapport à UTC : +0100 (plus 1h)
 - Valeurs à ignorer
-    + %. : ignore des caractère non numérique
+    + %. : ignore des caractères non numériques
     + %* : ignore une suite de caractères non numériques
 </details>
 
@@ -176,24 +178,14 @@ df %>.%
   mutate(., date = make_date(annee, mois, jour))
 ```
 
-##### À vous de jouer ! {-}
-
-```{r, echo=FALSE, results='asis'}
-if (exists("assignation"))
-  assignation("D07Ga_data", part = "I",
-    url = "https://github.com/BioDataScience-Course/D07Ga_data",
-    course.urls = c(
-      'S-BIOG-043' = "https://classroom.github.com/a/4eN9dBmf"),
-    toc = "Données, partie I : dates")
-```
 
 ### Temps biologique
 
 Lorsque vous étudiez un phénomène biologique, il faut vous poser la question de la temporalité de votre expérience. 
 
-> Est ce que votre expérience dure quelques heures\ ? quelques jours\ ? quelques mois\ ? plusieurs années\ ?
+> Est-ce que votre expérience dure quelques heures\ ? quelques jours\ ? quelques mois\ ? plusieurs années\ ?
 
-Cette question est cruciale pour traiter vos données. Prenons trois petits cas pratiques théorique. 
+Cette question est cruciale pour traiter vos données. Prenons trois petits cas pratiques théoriques. 
 
 - La croissance de coraux sur 30 jours.
 
@@ -224,7 +216,7 @@ b <- chart(corals, weight ~ nb) +
 combine_charts(list(a,b), nrow = 2)
 ```
 
-On comprend rapidement que le second graphique est plus intéressant. Il n'est pas nécessaire de connaître les dates précises lorsque l'on étudie al croissance d'un organisme dans un aquarium sur 30 jours.
+On comprend rapidement que le second graphique est plus intéressant. Il n'est pas nécessaire de connaitre les dates précises lorsque l'on étudie la croissance d'un organisme dans un aquarium sur 30 jours.
 
 - Le temps perdu dans les embouteillages.
 
@@ -232,7 +224,7 @@ Lorsque l'on étudie le temps perdu dans les bouchons à Bruxelles. Il sera trè
 
 - L'évolution de la température sur 20 ans.
 
-Lorsque l'on étudie des séries temporelles en écologie, on ne s'intéresse pas aux années bissextiles ou qu'un mois dure 29 ou 31 jours. 
+Lorsque l'on étudie des séries temporelles en écologie, on ne s'intéresse pas aux années bissextiles, ou au mois  de 29 ou 31 jours. 
 
 Le package {pastecs} propose de diviser une année en multiple de 4, 12, 48 périodes de temps, ... Une fréquence de 48 correspond environ à la semaine. Le tableau ci-dessous représente le temps en biologie.
 
@@ -251,21 +243,32 @@ En biologie, on va s'intéresser principalement à des cycles particuliers comme
 
 - [Chapter 16 Dates and times in R For Data Science](https://r4ds.had.co.nz/dates-and-times.html)\ : le chapitre 16 traite des variables temporelles.
 
+##### À vous de jouer ! {-}
+
+```{r, echo=FALSE, results='asis'}
+if (exists("assignation"))
+  assignation("D07Ia_21M_data", part = "I",
+    url = "https://github.com/BioDataScience-Course/D07Ia_21M_data",
+    course.urls = c(
+      'S-BIOG-043' = "https://classroom.github.com/a/mmcdbtb6"),
+    toc = "Données, partie I : dates")
+```
+
 ## Données textuelles
 
 ### Encodages
 
 Nous avons tous déjà été confrontés à ce genre de caractères `Ã©` ou `�`. Il s'agit d'un problème d'encodage. Vous avez peut-être déjà entendu les termes suivants ASCII, UTF-8, LATIN1,... 
 
-La problématique est de convertir une chaîne de caractères en bits qui sera interprété par l'ordinateur. Il faut donc attribuer à chaque caractère un code unique. Cette série de codes va permettre la traduction des caractères. Les fameux termes cité précédemment sont les encodages qui permette cette traduction. 
+La problématique est de convertir une chaîne de caractères en bits qui sera interprétée par l'ordinateur. Il faut donc attribuer à chaque caractère un code unique. Cette série de codes va permettre la traduction des caractères. Les fameux termes cités précédemment sont les encodages qui permettent cette traduction. 
 
-Historiquement, le code américain normalisé pour l’échange d'informations (*ASCII*, "American Standard Code for Information Interchange") a été l'un des premiers système d'encodage proposé. Cet encodage se fait sur 8 bits par caractère, permettant ainsi 256 caractères maximum. Cette proposition était simple et adaptée uniquement à l'anglais. Il ne prenait par exemple pas en compte les accents de la langue française. Il s'en suit du développement de plusieurs systèmes d'encodages avec des adaptions spécifique au très nombreuses langues mondiales comme **ISO 8859** pour les langues latines (*ISO 8859-1*, *latin1*) ou encore ISO-2020 pour les langues asiatiques.
+Historiquement, le code américain normalisé pour l’échange d'informations (*ASCII*, "American Standard Code for Information Interchange") a été l'un des premiers systèmes d'encodage proposés. Cet encodage se fait sur 8 bits par caractère, permettant ainsi 256 caractères maximum. Cette proposition était simple et adaptée uniquement à l'anglais. Il ne prenait par exemple pas en compte les accents de la langue française. Il s'en suit du développement de plusieurs systèmes d'encodages avec des adaptations spécifiques aux très nombreuses langues mondiales comme **ISO 8859** pour les langues latines (*ISO 8859-1*, *latin1*) ou encore ISO-2020 pour les langues asiatiques.
 
 Afin de réduire les problèmes d'encodage, un jeu universel de caractères a ensuite été développé\ : *ISO 10646*. Le consortium Unicode propose une surcouche à cette norme appelé *unicode*. Vous vous en doutez\ : plus il va y avoir des caractères plus le système d'encodage sera lourd et va utiliser un nombre de bits important pour chaque caractère. Le 8-bit limité à 256 caractères est ici largement insuffisant. 
 
-Ainsi, l'*UTF-16* encode chaque caractère sur 16-bit, l'*UTF-32* sur 32-bit parce qu'il faut encore plus de caractères différents et enfin... l'*UTF-8* est apparu et a rapidement mis tout le monde d'accord (du moins dans le monde Unix/Linux et MacOS puisque Windows reste accroché à l'*UTF-16*). Vous allez dire mais là, on revient en arrière si on encode sur 8-bit\ ! Pas tout-à-fait. En fait, avec *UTF-8*, l'encodage est **Variable**. La plupart des caractères courants (a-z, A-Z, 0-9, ponctuations usuelles, etc.) équivalents à l'ASCII sont encodés sur 8-bit. Mais un caractère particulier est vréserver pour indiquer que, pour un caractère particulier, nous passons à 16-bit, ou à 32-bit, ou plus, il n'y a théoriquement pas de limites. Donc, *UTF-8* est compatible avec l'ASCII, compact pour un texte écrit avec des lettres latines, mais parfaitement extensible et théoriquement capable d'encoder une infinité de caractères différents. Le soucis, par contre, c'est qu'il n'est plus possible de déterminer la taille d'un texte en comptant simplement le nombre d'octets qui le compose. Toutes les fonctions de manipulation de textes doivent être adaptées\ !
+Ainsi, l'*UTF-16* encode chaque caractère sur 16-bit, l'*UTF-32* sur 32-bit parce qu'il faut encore plus de caractères différents et enfin... l'*UTF-8* est apparu et a rapidement mis tout le monde d'accord (du moins dans le monde Unix/Linux et MacOS puisque Windows reste accroché à l'*UTF-16*). Vous allez dire, mais là, on revient en arrière si on encode sur 8-bit\ ! Pas tout-à-fait. En fait, avec *UTF-8*, l'encodage est **Variable**. La plupart des caractères courants (a-z, A-Z, 0-9, ponctuations usuelles, etc.) équivalents à l'ASCII sont encodés sur 8-bit. Mais un caractère particulier est préservé pour indiquer que, pour un caractère particulier, nous passons à 16-bit, ou à 32-bit, ou plus, il n'y a théoriquement pas de limites. Donc, *UTF-8* est compatible avec l'ASCII, compact pour un texte écrit avec des lettres latines, mais parfaitement extensibles et théoriquement capables d'encoder une infinité de caractères différents. Le souci, par contre, c'est qu'il n'est plus possible de déterminer la taille d'un texte en comptant simplement le nombre d'octets qui le compose. Toutes les fonctions de manipulation de textes doivent être adaptées\ !
 
-Nous vous conseillons donc de toujours employer le format **UTF-8** qui est le format le plus universel qui soit. Si votre document ne contient que du texte, des chiffres et des ponctuations usuelles, vous pouvez à la limite vous limiter à ASCII qui est l'encodage qui a la plus large compatibilité. Dans la SciViews Box, l'encodage de textes par défaut est fixé à *UTF-8*, y compris sous Windows pour un maximum de comptabilités et d'inter-opérabilité.
+Nous vous conseillons donc de toujours employer le format **UTF-8** qui est le format le plus universel qui soit. Si votre document ne contient que du texte, des chiffres et des ponctuations usuelles, vous pouvez à la limite vous limiter à ASCII qui est l'encodage qui a la plus large compatibilité. Dans la SciViews Box, l'encodage de textes par défaut est fixé à *UTF-8*, y compris sous Windows pour un maximum de comptabilités et d'interopérabilité.
 
 ##### Pour en savoir plus {-} 
 
@@ -306,20 +309,22 @@ str_length(string) # ou bien la version en R de base nchar(string)
 
 Vous attendiez-vous à ces deux résultats\ ? La fonction `length()` renvoie la longueur de l'objet sous forme de vecteur, c'est-à-dire, le nombre d'éléments différents qu'il contient. Ici, il n'y en a donc qu'un seul. La fonction `str_length()` (ou bien `nchar()`) renvoie le nombre de caractères au sein d'une ou plusieurs chaînes de caractères. La phrase stockée dans `string` est formée de `r str_length(string)` caractères. 
 
-Reposons nous la même question cette fois-ci avec un vecteur contenant plusieurs chaînes de caractères.
+Reposons-nous la même question cette fois-ci avec un vecteur contenant plusieurs chaînes de caractères.
 
 ```{r}
-strings <- c("Je suis étudiant en science des données biologiques",
+strings <- c(
+  "Je suis étudiant en science des données biologiques",
   "Je suis le cours de sdd4",
-  "J'aime appliquer les concepts de la science des données lors d'expériences en biologie")
+  "J'aime appliquer les concepts de la science des données lors d'expériences en biologie"
+  )
 
 length(strings)
 str_length(strings) # ou bien la version en R de base nchar(strings)
 ```
 
-Cet exemple montre une fois de plus l'importance de lire l'aide d'une fonction et de tenter de faire des tests très simple pour s'assurer de bien comprendre la fonction et ses arguments.
+Cet exemple montre une fois de plus l'importance de lire l'aide d'une fonction et de tenter de faire des tests très simples pour s'assurer de bien comprendre la fonction et ses arguments.
 
-Plaçons-nous maintenant dans un contexte pratique. Au sein d'un laboratoire, vous êtes engagé pour développer une nouvelle méthode de dosage des nitrates. Imaginons que vous avez attribué un identifiant à six expériences que vous avez réalisées en routine lors de dosages des nitrates. Nous pouvons observer que le nom de fichier suit la logique suivante
+Plaçons-nous maintenant dans un contexte pratique. Au sein d'un laboratoire, vous êtes engagé pour développer une nouvelle méthode de dosage des nitrates. Imaginons que vous avez attribué un identifiant à six expériences que vous avez réalisées en routine lors de dosages des nitrates. Nous pouvons observer que le nom de fichier suit la logique suivante.
 
 > nom de l'expérience + numéro de l'expérience + méthode employée + date
 
@@ -336,7 +341,7 @@ Votre chef vous demande de lui présenter les documents en lien avec les dosages
 ```{r}
 str_subset(id, "Version2")
 ```
-A la suite de votre réunion, votre chef vous demande de modifier le nom de vos dossiers car il ne respecte pas les conventions de notation en vigueur dans le laboratoire. Votre supérieur vous demande donc de remplacer toutes les majuscules par des minuscules. Avec la bonne fonction dans R, cela est réalisable en une seule instruction simple.
+À la suite de votre réunion, votre chef vous demande de modifier le nom de vos dossiers, car il ne respecte pas les conventions de notation en vigueur dans le laboratoire. Votre supérieur vous demande donc de remplacer toutes les majuscules par des minuscules. Avec la bonne fonction dans R, cela est réalisable en une seule instruction simple.
 
 ```{r}
 str_to_lower(id)
@@ -367,7 +372,7 @@ En effet, le `.` a une signification particulière lors de l'utilisation de l'ex
 
 ### Expression régulière
 
-Les expressions régulières servent à manipuler du texte. Elle permettent de rechercher et/ou remplacer des parties de texte dans les chaînes de caractères. Il s'agit pratiquement d'un petit langage en temps que tel pour spécifier ces recherches et remplacements. La syntaxe de base des expressions régulières est très riche, mais en voici quelques cas fréquents pour vous faire une première idée. Pour trouver une chaîne de caractères...
+Les expressions régulières servent à manipuler du texte. Elles permettent de rechercher et/ou remplacer des parties de texte dans les chaînes de caractères. Il s'agit pratiquement d'un petit langage en tant que tel pour spécifier ces recherches et remplacements. La syntaxe de base des expressions régulières est très riche, mais en voici quelques cas fréquents pour vous faire une première idée. Pour trouver une chaîne de caractères...
 
 - qui débute par nitrate\ : **"^nitrate"**
 - qui termine par nitrate\ : **"nitrate$"**
@@ -376,7 +381,7 @@ Les expressions régulières servent à manipuler du texte. Elle permettent de r
       + **?** de 0 à 1 fois
       + **+** 1 ou plusieurs
       + __*__ 0 ou plusieurs
-      + **{2,6}** répétitions comprise entre 2 et 6 fois
+      + **{2,6}** répétitions comprises entre 2 et 6 fois
 - **.**, n'importe quels caractères
 - __.*__ n'importe quels caractères après de longueur quelconque
 - **[0-9]** un chiffre de 0 à 9, on peut également utiliser **\\d**
@@ -390,25 +395,14 @@ Si je veux rechercher un point je dois écrire `\\.`, car sinon, j'indique que j
 ##### Exercez-vous {-}
 
 ```{block2, type='bdd'}
-Il n'est possible de véritablement comprendre les expressions régulières qu'en réalisant des exercices. Nous vous proposons donc de réaliser les exercices proposés sur le site [RegexOne](https://regexone.com/). Les exercices interactifs offrent un niveau de difficulté croissant et balayent les nomtions principales à connaitre pour manipuler les expressions régulières. 
+Il n'est possible de véritablement comprendre les expressions régulières qu'en réalisant des exercices. Nous vous proposons donc de réaliser les exercices proposés sur le site [RegexOne](https://regexone.com/). Les exercices interactifs offrent un niveau de difficulté croissant et balayent les notions principales à connaitre pour manipuler les expressions régulières. 
 ````
 
 Dans R, le package {regexplain} propose des **addins** pour vous aider à utiliser les expressions régulières dans R. Ces expressions régulières sont souvent utilisables dans toutes les fonctions {stringr} que nous avons vu précédemment.
 
-##### À vous de jouer ! {-}
-
-```{r, echo=FALSE, results='asis'}
-if (exists("assignation"))
-  assignation("D07Ga_data", part = "II",
-    url = "https://github.com/BioDataScience-Course/D07Ga_data",
-    course.urls = c(
-      'S-BIOG-043' = "https://classroom.github.com/a/4eN9dBmf"),
-    toc = "Données, partie II : textes")
-```
-
 ##### Pour en savoir plus {-}
 
-- [Regexone](https://regexone.com/). Tutoriel interactif en anglais pour apprendre a utiliser les expressions régulières.
+- [Regexone](https://regexone.com/). Tutoriel interactif en anglais pour apprendre à utiliser les expressions régulières.
 
 - [Tutoriel pour maîtriser les expressions régulières](https://www.lucaswillems.com/fr/articles/25/tutoriel-pour-maitriser-les-expressions-regulieres). Article de blog en français pour apprendre les bases des expressions régulières.
 
@@ -447,7 +441,7 @@ object.size(species_length)
 object.size(as.factor(species_length))
 ```
 
-Dans notre exemple, l'espace nécessaire est moitié moins important. Rappelez-vous que la première version de R date de 1993. La préoccupation de la mémoire était très importante à l'époque. De nombreuses fonctions plus anciennes vont utilisées de préférence des variables facteurs. Par exemple, la fonction `read.csv()` va par défaut tenter de transformer une variable caractère en une variable facteur alors que la fonction `read_csv()` du package {readr} va laisser la variable en caractère. Nous vous conseillons d'importer vos données en caractère et de les transformer en variable facteur si cela est nécessaire. 
+Dans notre exemple, l'espace nécessaire est moitié moins important. Rappelez-vous que la première version de R date de 1993. La préoccupation de la mémoire était très importante à l'époque. De nombreuses fonctions plus anciennes vont utiliser de préférence des variables facteurs. Par exemple, la fonction `read.csv()` va par défaut tenter de transformer une variable caractère en une variable facteur alors que la fonction `read_csv()` du package {readr} va laisser la variable en caractère. Nous vous conseillons d'importer vos données en caractère et de les transformer en variable facteur si cela est nécessaire. 
 
 Afin de permettre de travailler plus facilement avec une variable facteur, de nombreuses fonctions sont à votre disposition comme la fonction `recode()` du package {dplyr} ou encore des fonctions disponibles dans le package {forcats}.
 
@@ -460,7 +454,7 @@ species_f2
 ```
 
 ```{block2, type='warning'}
-Les variables facteurs sont utiles mais il faut toujours prendre le temps de bien comprendre chaque niveau de la variable. Soyons encore plus vigilant si les données sont amenées à évoluer au cours du temps. 
+Les variables facteurs sont utiles, mais il faut toujours prendre le temps de bien comprendre chaque niveau de la variable. Soyons encore plus vigilant si les données sont amenées à évoluer au cours du temps. 
 ```
 
 ##### Pour en savoir plus {-}
@@ -489,7 +483,7 @@ mean(meteo$wind_dir)
 sd(meteo$wind_dir)
 ```
 
-Nous en concluons donc qu'en moyenne, le vente est orienté au sud (presque 180°) et est extrêmement variable car l'écart type est de presque 180° également... Vous voyez peut-être déjà le hic ici, sinon, représentons graphiquement ces données. Un graphique naïf donne ceci, par exemple\ :
+Nous en concluons donc qu'en moyenne, le vent est orienté au sud (presque 180°) et est extrêmement variable, car l'écart type est de presque 180° également... Vous voyez peut-être déjà le hic ici, sinon, représentons graphiquement ces données. Un graphique naïf donne ceci, par exemple\ :
 
 ```{r}
 chart(data = meteo, wind_dir ~ day) +
@@ -497,7 +491,7 @@ chart(data = meteo, wind_dir ~ day) +
   geom_line()
 ```
 
-Nous avons effectivement l'impression d'un forte et brutale variation de la direction du vent sur ce graphique. Mais si nous nous rappelons qu'en fait 360° = 0°, alors, nous avons un sérieux problème. En effet, si nous avons les observations successives 0° et 360° (donc deux fois la même direction en fait), la moyenne sera\ : (0 + 360) / 2 = 180°, donc pile la direction opposée aux deux observations\ ! Clairement, avec les données circulaires, nous ne pouvons pas ignorer l'arithmétique particulière qui leurs est associée. Des précautions sont également nécessaires pour représenter de telles données graphiquement.
+Nous avons effectivement l'impression d'une forte et brutale variation de la direction du vent sur ce graphique. Mais si nous nous rappelons qu'en fait 360° = 0°, alors, nous avons un sérieux problème. En effet, si nous avons les observations successives 0° et 360° (donc deux fois la même direction en fait), la moyenne sera\ : (0 + 360) / 2 = 180°, donc pile la direction opposée aux deux observations\ ! Clairement, avec les données circulaires, nous ne pouvons pas ignorer l'arithmétique particulière qui leur est associée. Des précautions sont également nécessaires pour représenter de telles données graphiquement.
 
 Pour le graphique, nous utiliserons typiquement des coordonnées polaires pour enrouler les données sur elles-mêmes et faire coïncider, ici, 360° avec 0°. Le package {circular} propose des objets et des graphiques adaptés.
 
@@ -505,7 +499,7 @@ Pour le graphique, nous utiliserons typiquement des coordonnées polaires pour e
 library(circular)
 ```
 
-Nous devons d'abord transformer notre variable en objet **circular** à l'aide le fonction `circular()` (voir `?circular` pour les détails concernant ses arguments) en `wind_c`.
+Nous devons d'abord transformer notre variable en objet **circular** à l'aide de la fonction `circular()` (voir `?circular` pour les détails concernant ses arguments) en `wind_c`.
 
 ```{r}
 meteo %>.%
@@ -520,7 +514,7 @@ En apparence, les données n'ont pas été modifiées, mais voyez en haut de col
 plot(meteo$wind_c)
 ```
 
-Nous voyons clairement ici que le vent que nous avons enregistré est toujours dirigé vers le nord, et jamais au sud comme notre moyenne naïve nous indiquait. A partir du moment où nous avons encodé notre variable de direction de vent correctement comme un objet **circular**, tout devient plus simple car des calculs adaptés sont automatiquement proposés\ :
+Nous voyons clairement ici que le vent que nous avons enregistré est toujours dirigé vers le nord, et jamais au sud comme notre moyenne naïve nous indiquait. À partir du moment où nous avons encodé notre variable de direction de vent correctement comme un objet **circular**, tout devient plus simple, car des calculs adaptés sont automatiquement proposés\ :
 
 ```{r}
 mean(meteo$wind_c)
@@ -532,7 +526,7 @@ Nous avons donc une moyenne de 3°, soit un vent effectivement orienté nord. De
 sd(meteo$wind_c)
 ```
 
-C'est la "magie" des objets S3 qui opère ici\ : les fonction `mean()`, `sd()`, `plot()` sont dites fonctions génériques dont les **méthodes** varient en fonction de la nature (la classe) de l'objet passé comme premier argument. Le package {circular} implémente des versions particulières de ces fonctions qui tiennent compte des particularités des fonctions circulaires.
+C'est la "magie" des objets S3 qui opère ici\ : les fonctions `mean()`, `sd()`, `plot()` sont dites fonctions génériques dont les **méthodes** varient en fonction de la nature (la classe) de l'objet passé comme premier argument. Le package {circular} implémente des versions particulières de ces fonctions qui tiennent compte des particularités des fonctions circulaires.
 
 ### Hirondelles
 
@@ -581,13 +575,13 @@ plot(swallows_s$heading, stack = TRUE, shrink = 1, col = "darkred",
 arrows.circular(mean(swallows_s$heading), col = "darkred")
 ```
 
-Sur les graphiques, il semble bien que les hirondelles désorientées prennent un cap différent. A ce stade, nous avons besoin d'un test d'hypothèse. Mais ici aussi, les calculs doivent tenir compte des particularités des variables circulaires. Pour une ANOVA à un facteur, {circular} nous gratifie encore une fois d'une fonction adaptée via la méthode `aov()`\ :
+Sur les graphiques, il semble bien que les hirondelles désorientées prennent un cap différent. À ce stade, nous avons besoin d'un test d'hypothèse. Mais ici aussi, les calculs doivent tenir compte des particularités des variables circulaires. Pour une ANOVA à un facteur, {circular} nous gratifie encore une fois d'une fonction adaptée via la méthode `aov()`\ :
 
 ```{r}
 aov.circular(swallows$heading, group = swallows$treatment)
 ```
 
-Le tableau de l'ANOVA diffère légèrement, néanmoins nous reconnaissons sa structure classique. La valeur *p* dans la dernière colonne est très faible, et certainement inférieur à un seuil $\alpha$ classique de 5%. Les directions moyennes prises par les hirondelles sont donc significativement différentes entre les deux traitements au seuil $\alpha$ de 5%. Ceci démontre que ces hirondelles utilisent le champ magnétique terrestre pour s'orienter.
+Le tableau de l'ANOVA diffère légèrement, néanmoins nous reconnaissons sa structure classique. La valeur *p* dans la dernière colonne est très faible, et certainement inférieure à un seuil $\alpha$ classique de 5%. Les directions moyennes prises par les hirondelles sont donc significativement différentes entre les deux traitements au seuil $\alpha$ de 5%. Ceci démontre que ces hirondelles utilisent le champ magnétique terrestre pour s'orienter.
 
 Vous avez maintenant compris le principe\ : avec des variables circulaires, nous devons prendre des précautions particulières. Mais à condition d'utiliser les versions graphiques et numériques adaptées, nous pouvons analyser alors correctement nos données.
 
@@ -615,7 +609,7 @@ rose.diag(hospital$admission, bin = 24, col = "lightblue",
   main = "Admissions [h]", prop = 3)
 ```
 
-Nous pouvons obtenir un graphique très similaire avec `chart()` (notez que les limites des classes diffère légèrement).
+Nous pouvons obtenir un graphique très similaire avec `chart()` (notez que les limites des classes diffèrent légèrement).
 
 ```{r}
 chart(data = hospital, ~admission) +
@@ -627,7 +621,7 @@ chart(data = hospital, ~admission) +
   ylab("Dénombrement")
 ```
 
-Le graphique `chart()` utilises une échelle linéaire, alors que `rose.diag()` utilises par défaut une transformation racine carrée. Pour obtenir un graphique similaire, nous ferons donc (toujours pas parfaitement identique car les limites des classes sont toujours différentes)\ :
+Le graphique `chart()` utilise une échelle linéaire, alors que `rose.diag()` utilise par défaut une transformation racine carrée. Pour obtenir un graphique similaire, nous ferons donc (toujours pas parfaitement identique, car les limites des classes sont toujours différentes)\ :
 
 ```{r}
 rose.diag(hospital$admission, bin = 24, col = "lightblue",
@@ -675,11 +669,11 @@ rose.diag(oysters$maturity_c, bins = 5, col = "cornsilk", prop = 3, radii.scale 
 
 ```{r, echo=FALSE, results='asis'}
 if (exists("assignation"))
-  assignation("D07Ga_data", part = "III",
-    url = "https://github.com/BioDataScience-Course/D07Gb_circular",
+  assignation("D07Ia_21M_data", part = "II",
+    url = "https://github.com/BioDataScience-Course/D07Ia_21M_data",
     course.urls = c(
-      'S-BIOG-043' = "https://classroom.github.com/a/4eN9dBmf"),
-    toc = "Données, partie III : variables circulaires")
+      'S-BIOG-043' = "https://classroom.github.com/a/mmcdbtb6"),
+    toc = "Données, partie II : variables circulaires")
 ```
 
 ##### Pour en savoir plus {-}

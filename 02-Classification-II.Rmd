@@ -14,7 +14,21 @@ SciViews::R
 
 ##### Prérequis {-}
 
-Ce module continue la matière vue dans le module précédent et s'appuie dessus. Assurez-vous d'avoir bien compris la logique de la classification supervisée et les trois étapes\ : apprentissage, test et déploiement. Vous devez être également capable de créer un classifieur avec R (en utilisant l'ADL). Enfin, la matrice de confusion et les métriques qui en sont dérivées ne doivent plus avoir de secrets pour vous pour évaluer les performances d'un classifieur dans la phase de test. S'il subsiste des doutes ou des incompréhensions pour ces aspects clés de la classification supervisée, vous feriez mieux d'approfondir le module 1 *avant* d'aborder celui-ci.
+Ce module continue la matière vue dans le module précédent et s'appuie dessus. Assurez-vous d'avoir bien compris la logique de la classification supervisée et les trois étapes\ : apprentissage, test et déploiement. 
+
+La matrice de confusion et les métriques qui en sont dérivées ne doivent plus avoir de secrets pour vous pour évaluer les performances d'un classifieur dans la phase de test.
+
+##### À vous de jouer ! {-}
+
+`r h5p(181, height = 270, toc = NULL)`
+
+Enfin, vous devez être également capable de créer un classifieur avec R (en utilisant l'ADL). 
+
+##### À vous de jouer ! {-}
+
+`r h5p(182, height = 270, toc = NULL)`
+
+S'il subsiste des doutes ou des incompréhensions pour ces aspects clés de la classification supervisée, vous feriez mieux d'approfondir le module module \@ref(classif1) *avant* d'aborder celui-ci.
 
 ## Validation croisée
 
@@ -104,7 +118,7 @@ if (exists("assignation"))
   assignation("C02Ga_ml2", part = "I",
     url = "https://github.com/BioDataScience-Course/C02Ga_ml2",
     course.urls = c(
-      'S-BIOG-025' = "https://classroom.github.com/a/CIKh1k6S"),
+      'S-BIOG-025' = "https://classroom.github.com/a/..."),
     toc = "Utilisation de la validation croisée")
 ```
 
@@ -348,7 +362,7 @@ if (exists("assignation"))
   assignation("C02Ga_ml2", part = "II",
     url = "https://github.com/BioDataScience-Course/C02Ga_ml2",
     course.urls = c(
-      'S-BIOG-025' = "https://classroom.github.com/a/CIKh1k6S"),
+      'S-BIOG-025' = "https://classroom.github.com/a/..."),
     toc = "Utilisation de la quantification vectorielle")
 ```
 
@@ -516,7 +530,7 @@ if (exists("assignation"))
   assignation("C02Ga_ml2", part = "III",
     url = "https://github.com/BioDataScience-Course/C02Ga_ml2",
     course.urls = c(
-      'S-BIOG-025' = "https://classroom.github.com/a/CIKh1k6S"),
+      'S-BIOG-025' = "https://classroom.github.com/a/..."),
     toc = "Utilisation de la forêt aléatoire")
 ```
 

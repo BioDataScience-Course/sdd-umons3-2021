@@ -316,6 +316,19 @@ $$ball\ acc = \frac{(specificity + recall)}{2}$$
 
 Vous pouvez retrouver des indices supplémentaires via le lien suivant\ : [Statistics calculated on confusion matrix](https://github.com/BioDataScience-Course/sdd_lessons/blob/2019-2020/sdd3_01/more/confusion_matrix.pdf)
 
+##### À vous de jouer ! {-}
+
+Ce projet est un projet par groupe. **Les groupes doivent correspondre au rangée de la salle de cours.**
+
+```{r, echo=FALSE, results='asis'}
+if (exists("assignation"))
+  assignation("C01Ga_21_metrique", part = NULL,
+    url = "https://github.com/BioDataScience-Course/C01Ga_21_metrique",
+    course.urls = c(
+      'S-BIOG-025' = "https://classroom.github.com/a/cJQ-Ve_U"),
+    toc = "Création d'un aide-mémoire sur les métriques")
+```
+
 ## Analyse discriminante linéaire
 
 Il existe de très nombreux algorithmes de classification supervisée. Nous allons commencer la découverte des principaux algorithmes avec l'**analyse discriminante linéaire**. Cette analyse recherche la meilleure discrimination possible des groupes par rotation des axes, en diagonalisant la **matrice variance-covariance inter-groupes**, ce qui revient à calculer les combinaisons linéaires des variables initiales qui séparent le mieux ces groupes.
@@ -549,7 +562,7 @@ Notre jeu de données ne reprenait que les données du set d'apprentissage et du
 
 ```{r, echo=FALSE, results='asis'}
 if (exists("assignation"))
-  assignation("C01Ga_ml1", part = "I",
+  assignation("C01Ia_21M_ml1", part = NULL,
     url = "https://github.com/BioDataScience-Course/C01Ia_21_ml1",
     course.urls = c(
       'S-BIOG-025' = "https://classroom.github.com/a/1zEXuZQN"),

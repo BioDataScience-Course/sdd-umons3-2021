@@ -32,6 +32,7 @@ install.packages(c("knitr", "bookdown", # The bases!
   "rlang",
   "ROCR",
   "rpart",
+  "rpart.plot",
   "sessioninfo",
   "skimr",
   "stars",

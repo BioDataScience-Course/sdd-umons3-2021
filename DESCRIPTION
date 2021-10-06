@@ -32,6 +32,7 @@ Imports:
     rlang,
     ROCR,
     rpart,
+    rpart.plot,
     SciViews,
     sessioninfo,
     sf,

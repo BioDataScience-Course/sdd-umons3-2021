@@ -50,7 +50,7 @@ Nous allons aborder maintenant la **classification supervisée**. La classificat
 Les techniques de classification supervisée font l'objet d'une effervescence toute particulière ces derniers temps, en particulier dans leurs versions "deep learning". Ces méthodes sont, en général (mais pas obligatoirement pour les approches plus traditionnelles) appliquées sur de très gros jeux de données contenant des dizaines de milliers, des centaines de milliers, voire des millions, ou d'avantage d'observations. C'est précisément ce très grand nombre d'observations qui mérite que nous essayions d'automatiser leur classement.
 ```
 
-Un jeu de données est composé d'observations (les lignes du tableau) et de variables (les colonnes du tableau) sur ces observations. En classification supervisée, les observations se nomment les **items** (nos différents spéciments de plantes, insectes, ...) et les variables se nomment les **attributs** (les variables quantitatives ou qualitatives mesurées sur chaque spécimen). 
+Un jeu de données est composé d'observations (les lignes du tableau) et de variables (les colonnes du tableau) sur ces observations. En classification supervisée, les observations se nomment les **items** (nos différents spécimens de plantes, insectes, ...) et les variables se nomment les **attributs** (les variables quantitatives ou qualitatives mesurées sur chaque spécimen). 
 
 ##### À vous de jouer ! {-}
 
@@ -69,6 +69,12 @@ La classification supervisée va se décomposer en réalité en trois phases.
 2. **Test**\ : les **performances** de l’outil de classification (on dit aussi, le **classifieur**) sont évaluées à l’aide du **set de test**.
 
 3. **Déploiement**\ : si le classifieur obtient des performances satisfaisantes, il est utilisé pour classer **automatiquement** tous les autres items du jeu de données.
+
+```{block2, type='warning'}
+Les trois phases sont appliquées sur des individus *différents*, donc souvent sur des tableaux de données *différents* eux aussi. Vous devez veiller à ce que ces trois tableaux soient **compatibles entre eux**, c'est-à-dire, qu'ils contiennent les mêmes variables dans les mêmes formats. En particulier, vous devez veiller à ce que la variable à prédire porte le même nom et soit sous forme **`factor`** à la fois dans le set d'apprentissage et dans le set de test.
+
+Vous devez également veiller à ce qu'il n'y ait pas de données manquantes, si la méthode de classification utilisée ne les supporte pas (cas le plus fréquent). Les modifications éventuelles des données sont donc à réaliser *avant* de séparer le tableau de données initial en set d'apprentissage et set de test. De cette façon, le pré-traitement n'est effectué qu'une seule fois, et nous sommes certains que les deux tableaux d'apprentissage et de test sont conformes après séparation. Pour le déploiement, n'oubliez pas d'effectuer les mêmes préparatifs des variables avant de prédire les classes à partir de ce troisième tableau.
+```
 
 Il y a de très nombreux domaines d'applications de ces techniques de classification supervisée de type *"machine learning"*. Par exemple en médecine, ces techniques s'utilisent pour analyser les mesures effectuées par un scanner, un système de radiographie aux rayons X, un électrocardiogramme ou électroencéphalogramme, ... pour y détecter des anomalies. Votre moteur de recherche favori sur Internet utilise ces techniques pour classer les pages en "pertinentes" et "non pertinentes". La reconnaissance vocale ou de l'écriture manuscrite entrent dans cette catégorie également, de même que l'analyse de sentiment sur base de texte (quelle est l'état d'esprit de l'auteur du texte sur base des mots et expressions qu'il utilise). Il faut s'attendre à ce que dans quelques années, des algorithmes plus efficaces, et des ordinateurs plus puissants pourront effectuer des tâches aujourd'hui dévolues à des spécialistes, comme le médecin spécialisé en radiographie pour l'exemple cité plus haut. Nous sommes même à l'aube des véhicules capables de conduire tous seuls, sur base de l'analyse des images fournies par leurs caméras\ !
 
@@ -420,13 +426,19 @@ chart(penguins, bill_length ~ flipper_length %color=% species) +
 
 Le jeu de données est découpé en un **set d'apprentissage** et un **set de test**. On décide de garder 2/3 des observations pour le set d'apprentissage.
 
+```{block2, type='warning'}
+**Très important\ :** pensez bien toujours à préparer et remainer vos données *avant* la séparation en set d'apprentissage et set de test. Ainsi, vous vous assurez d'avoir deux tableaux compatibles. Les points à prendre en condération ici sont\ : (1) je vérifie que ma variable à prédire est bien sous forme `factor` (utilisez `class(df$var)` pour le déterminer si le tableau s'appelle `df` et la variable s'appelle `var`, ensuite j'utilise `df$var <- as.factor(df$var)` si c'est nécessaire), (2) j'élimine les variables inutilisées avec `select()`, (3) je transforme les variables qui doivent l'être avec `mutate()` (transformation log, puissance, standardisation, etc.), (4) j'élimine éventuellement les données manquantes avec `drop-na()` tout à la fin et je vérifie ensuite qu'il me reste suffisamment de données pour construire et tester mon modèle. *Notez bien que nous avons fait tout cela plus haut avec notre jeu de données exemple `penguins`.*
+
+Rappelez-vous bien également plus tard de rendre votre troisième tableau compatible lors de la phase de déploiement. En particulier, si des variables ont été transformées en apprentissage et test, il faut bien évidemment appliquer la même transformation pour ces variables avant prédiction à l'aide du modèle.
+```
+
 ```{r}
 n <- nrow(penguins)
 n_learning <- round(n * 2/3)
 n_learning
 ```
 
-Nous séparons nos observations en deux sets indépendants. Nouys utilisons cependant la fonction `set.seed()` afin de fixer le début du générateur de nombres pseudo-aléatoires, ce qui donne une série de nombres qui ont les mêmes propriétés que des nombres tirés au sort, mais ce tirage au sort est *reproductible* d'une fois à l'autre. 
+Nous séparons nos observations en deux sets indépendants. Nous utilisons cependant la fonction `set.seed()` afin de fixer le début du générateur de nombres pseudo-aléatoires, ce qui donne une série de nombres qui ont les mêmes propriétés que des nombres tirés au sort, mais ce tirage au sort est *reproductible* d'une fois à l'autre. 
 
 ```{r}
 set.seed(324)
@@ -451,7 +463,7 @@ penguins_lda <- mlLda(data = penguins_learn,
   species ~ bill_length + bill_depth + flipper_length + body_mass)
 ```
 
-Cependant dans le cas particulier où **toutes** les variables du tableau sont utilisées pour l'analyse, comme c'est le cas ici, la formule peut être abrégée en `class ~ .`, ce qui signifie que la variable dépendante qualitative `class` est étudiée en fonction de **toutes** les autres variables du tableau, considérées toutes comme des attributs. En fait, ce n'est pas tout-à-fait synonyme car dans ce dernier cas, les fonction du package {mlearning} utilisent des astuces de programmation pour optimiser les calculs (autant en vitesse qu'en utilisation de la mémoire vive). Il est donc très fortement conseillé d'utiliser cette forme.
+Cependant dans le cas particulier où **toutes** les variables du tableau sont utilisées pour l'analyse, comme c'est le cas ici, la formule peut être abrégée en `class ~ .`, ce qui signifie que la variable dépendante qualitative `class` est étudiée en fonction de **toutes** les autres variables du tableau, considérées toutes comme des attributs. En fait, ce n'est pas tout-à-fait synonyme car dans ce dernier cas, les fonction du package {mlearning} utilisent des astuces de programmation pour optimiser les calculs (autant en vitesse qu'en utilisation de la mémoire vive). Il est donc très fortement conseillé d'utiliser cette dernière forme, ce qui necessite d'avoir correctement nettoyé son jeu de données au préalable.
 
 ```{r}
 # Utilisation de la forme condensée de notre formule

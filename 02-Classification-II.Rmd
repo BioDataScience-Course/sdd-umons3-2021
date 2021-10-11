@@ -42,7 +42,15 @@ La **validation croisée** permet de résoudre ce dilemme en utilisant en fin de
 
 `r img("02-classification2/cv.gif", caption = "Principe de fonctionnement de la validation croisée avec k = 7.")`
 
+##### À vous de jouer ! {-}
+
+`r h5p(183, height = 270, toc = "Principe de la validation croisée.")`
+
 Au final, nous aurons utilisé tous les individus à la fois en apprentissage et en test, mais jamais simultanément. Le rassemblement des prédictions obtenues à chaque étape nous permet d'obtenir une grosse matrice de confusion qui contient le même nombre d'individus que l'ensemble de notre jeu de données initial. Naturellement, nous n'avons pas le même classifieur à chaque étape, et celui-ci n'est pas aussi bien construit que s'il utilisait véritablement *toutes* les observations. Mais plus le découpage est fin et plus nous nous en approchons. À la limite, pour *n* observations, nous pourrions réaliser *k* = *n* sous-ensembles, c'est-à-dire que chaque sous-ensemble contient un et un seul individu. Nous avons alors à chaque fois le classifieur le plus proche possible de celui que l'on obtiendrait avec véritablement toutes les observations puisqu'à chaque étape nous ne perdons qu'un seul individu en phase d'apprentissage. La contrepartie est un temps de calcul potentiellement très, très long puisqu'il y a énormément d'étapes. **Cette technique porte le nom de validation par exclusion d'une donnée ou _leave-one-out cross-validation_ en anglais, LOOCV en abrégé**. À l'autre extrême, nous pourrions utiliser *k* = 2. Mais dans ce cas, nous n'utilisons que le moitié des observation en phase d'apprentissage à chaque étape. C'est le plus rapide, mais le moins exact.
+
+##### À vous de jouer ! {-}
+
+`r h5p(184, height = 270, toc = "Principe de la validation par exclusion d'une donnée.")`
 
 En pratique, un compromis entre exactitude et temps de calcul nous mène à choisir souvent la **validation croisée dix fois** (*ten-fold cross-validation* en anglais). Nous divisons aléatoirement en dix sous-ensembles d'à peu près le même nombre d'individus et nous répétons donc l'opération apprentissage -> test seulement dix fois. Chacun des dix classifieurs a donc été élaboré avec 90% des données totales, ce qui représente souvent un compromis encore acceptable pour estimer les propriétés qu'aurait le classifieur réalisé avec 100% des données. Toutefois, si nous constatons que le temps de calcul est raisonnable, rien ne nous empêche d'augmenter le nombre de sous-ensemble, voire d'utiliser la version par exclusion d'une donnée, mais en pratique nous observons tout de même que cela n'est pas raisonnable sur des très gros jeux de données et avec les algorithmes les plus puissants, mais aussi les plus gourmands en temps de calcul comme la forêt aléatoire ou les réseaux de neurones que nous aborderons dans le prochain module.
 
@@ -100,6 +108,10 @@ summary(penguins_conf_loo)
 ```
 
 Le résultat est le même. Donc, nous venons de montrer que, dans le cas de ce jeu de données et de l'ADL, une validation croisée dix fois permet d'estimer les performances du classifieur aussi bien que l'approche bien plus coûteuse en calculs (342 classifieurs sont calculés et testés) du "leave-one-out".
+
+##### À vous de jouer ! {-}
+
+`r h5p(185, height = 270, toc = "Utilisation de la fonction cvpredict().")`
 
 ##### À vous de jouer ! {-}
 
@@ -262,6 +274,10 @@ En d’autres termes, il s’agit tout simplement de calculer la distance géom�
 
 Un seul paramètre doit donc être définit\ : *k*, représentant le nombre d'individus proches considérés. Un vote à la majorité permet de déterminer à quel groupe appartient l’objet testé. En cas d’ex-æquos, la classe de l'individu du set d'apprentissage le plus proche est utilisée. Pour minimiser le risque d’ex-æquos, *k* est généralement choisi impair. Dans notre schéma, nous utilisons *k* = 3, valeur qui s’est avérée optimale dans beaucoup de situations. La recherche de la valeur optimale de *k* dans le cadre de l’application finale sera évidemment possible ultérieurement.
 
+##### À vous de jouer ! {-}
+
+`r h5p(186, height = 270, toc = "Principe des K plus proches voisins")`
+
 ### Pima avec k-NN
 
 Le package {mlearning} ne propose pas encore cette méthode, mais nous pouvons utiliser des fonctions des packages {MASS} ou {ipred}.
@@ -328,6 +344,10 @@ Une étape supplémentaire dans le calcul du classifieur est introduite. Le set 
 En plus du paramètre *k*, il faut donc également définir *size*, le nombre de centroïdes qui seront calculés dans le dictionnaire. Il est possible de calculer librement les différents centroïdes en fonction de la dispersion des données, ou bien d’imposer que le même nombre de centroïdes soit calculé pour chaque classe.
 
 ![Un exemple fictif et visuel de classification par quantification vectorielle à deux classes (rouge et bleue) résumée via un dictionnaire ("codebook") de taille *size* = 6. Ce dictionnaire est ensuite utilisé comme référence pour déterminer la classe de l'individu inconnu en gris par k plus proches voisins avec *k* = 3. On en déduit qu'il s'agit probablement d'un individu de la classe rouge ici puisque deux centroïdes rouges sont plus proches contre un seul bleu.](images/02-classification2/lvq.png)
+
+##### À vous de jouer ! {-}
+
+`r h5p(187, height = 270, toc = "Principe de la quantification vectorielle")`
 
 ### Pima avec LVQ
 
@@ -525,6 +545,10 @@ Effectivement, avec un petit peu plus de 21%, c'est notre meilleur score jusqu'i
 
 ##### À vous de jouer ! {-}
 
+`r h5p(188, height = 270, toc = "La fonction mlRforest()")`
+
+##### À vous de jouer ! {-}
+
 ```{r, echo=FALSE, results='asis'}
 if (exists("assignation"))
   assignation("C02Ga_ml2", part = "III",
@@ -537,6 +561,10 @@ if (exists("assignation"))
 ##### Trucs et astuces {-}
 
 Pour l'instant {mlearning} utilise les fonctions du package {randomForest} qui reprend le code original de Breiman. Cependant, d'autres implémentations plus performantes ont été développées depuis. En particulier, le package R {ranger} implémente une version parallélisée (utilisation de plusieurs cœurs du processeur pour effectuer le calcul en parallèle) bien plus rapide sur les ordinateur actuels. Si la vitesse est un frein à l'utilisation de la forêt aléatoire dans votre application, allez voir du côté de cette implémentation.
+
+##### À vous de jouer ! {-}
+
+`r h5p(189, height = 270, toc = "Les types d'algorithmes")`
 
 ## Récapitulatif des exercices
 

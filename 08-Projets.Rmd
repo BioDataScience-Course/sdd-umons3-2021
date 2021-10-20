@@ -174,7 +174,7 @@ if (exists("assignation"))
   assignation("D08Ga_project", part = NULL,
     url = "https://github.com/BioDataScience-Course/D08Ga_project",
     course.urls = c(
-      'S-BIOG-043' = "https://classroom.github.com/a/..."),
+      'S-BIOG-043' = "https://classroom.github.com/a/YtK0rA42"),
     toc = "Découverte d'un projet de recherche")
 ```
 
@@ -237,6 +237,26 @@ Mendeley propose une fonction de veille automatique. Sur base des articles que v
 ``` 
 
 Il est possible d'utiliser les informations présentes dans votre bibliographie dans les documents R Markdown. Dans Mendeley Desktop, vous pouvez extraire vos citations en cliquant sur `File > Export...`. Vous choisirez alors le format `.bib`. Vous placez ce fichier dans votre projet. Enfin, dans l'entête YAML de votre document R Markdown, vous vous référez à ce même fichier `.bib` dans l'entrée `bibliography:`. Vous pourrez alors ajouter des citations issues de ce fichier dans votre texte. Le plus simple étant d'utiliser l'addin "Insert citation" du package {citr}.
+
+## Votre projet
+
+Maintenant que vous maîtrisez les principaux types de variables rencontrées en Science des Données Biologiques (module 7) et les gros projets (module 8), vous êtes prêt pour analyser vos données liées à votre mémoire de fin d'étude dans les règles de l'art. Nous vous proposons un **template** pour initier votre projet. Nous n'utiliserons pas, ici, GitHub Classroom pour initier votre projet. **Vous allez devoir le créer par vous-même** en partant de [ce template](https://github.com/BioDataScience-Course/D08Gb_project).
+
+- Cliquez sur **Use this template**
+
+- Créez un nouveau projet dans *votre* compte, et donnez-lui le nom qui vous semblera le plus opportun par rapport au travail qu'il va contenir
+
+- Pensez à ajouter une courte description
+
+- Décidez si vous voulez que votre dépôt soit **public** ou **privé**. Si vos recherches sont confidentielles, choisissez **privé** (si vous ne pouvez répondre à cette question, choisissez aussi **privé** par défaut).
+
+```{block2, type = 'info'}
+Rendre votre dépôt public permet de montrer ce que vous savez faire en matière d'analyse de données. Vous pouve"z alors indiquer un lien vers ce dépôt dans votre curriculum vitae... un gros plus si naturellement, cela démontre des capacités intéressantes\ ! Par contre, gardez à l'esprit que vos données de mémoire **ne vous appartiennent pas**. Rendre votre dépôt **public** ne peut se faire qu'avec l'accord de votre promoteur, du chef de labo, du ou des resposables de projet et collaborateurs, et éventuellement aussi, des financeurs. Si, par exemple, un brevet est prévu sur ces données, alors elles **ne peuvent pas** être divulguées prématurément\ ! Discutez-en avec toutes les personnes concernées au préalable.
+```
+
+Une fois le formulaire rempli, vous pouvez cliquer sur **Create repository from template**. La dernière étape consiste à informer vos enseignants de la création dez votre projet et à les ajouter comme éditeurs du dépôt pour qu'ils puissent le commenter, et finalement le noter. Pour cela, vous vous rendez dans *Settings** -> **Manage access** et vous invitez vos enseignants en cliquant sur **Add people**. Les logins sont: **phgrosjean** et **GuyliannEngels**. Vous pouvez également inviter d'autres personnes qui sobnt impliquées dans votre mémoire, *mais dans le cadre de cet exercice, ces personnes ne peuvent pas contribuer directement au projet*.
+
+Enfin, prenez connaissance des différentes instructions, et explorez les dossiers t fichiers qui s'y trouvent. *Bon travail\ !*
 
 ## Récapitulatif des exercices
 

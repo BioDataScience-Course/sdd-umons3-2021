@@ -28,7 +28,7 @@ Enfin, vous devez être également capable de créer un classifieur avec R (en u
 
 `r h5p(182, height = 270, toc = NULL)`
 
-S'il subsiste des doutes ou des incompréhensions pour ces aspects clés de la classification supervisée, vous feriez mieux d'approfondir le module module \@ref(classif1) *avant* d'aborder celui-ci.
+S'il subsiste des doutes ou des incompréhensions pour ces aspects clés de la classification supervisée, vous feriez mieux d'approfondir le module \@ref(classif1) *avant* d'aborder celui-ci.
 
 ## Validation croisée
 

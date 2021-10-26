@@ -327,8 +327,8 @@ Vous pouvez retrouver des indices supplémentaires via le lien suivant\ : [Stati
 Ce projet est un projet par groupe. **Les groupes doivent correspondre au rangée de la salle de cours.**
 
 ```{r, echo=FALSE, results='asis'}
-if (exists("assignation"))
-  assignation("C01Ga_21_metrique", part = NULL,
+if (exists("assignation2"))
+  assignation2("C01Ga_21_metrique", part = NULL,
     url = "https://github.com/BioDataScience-Course/C01Ga_21_metrique",
     course.urls = c(
       'S-BIOG-025' = "https://classroom.github.com/a/cJQ-Ve_U"),

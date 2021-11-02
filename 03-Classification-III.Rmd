@@ -389,24 +389,28 @@ Vous avez dû apprendre beaucoup de techniques complémentaires pour arriver à 
 
 ##### À vous de jouer ! {-}
 
+<!-- ttps://classroom.github.com/a/cHZ5HYlR -->
+
 ```{r, echo=FALSE, results='asis'}
 if (exists("challenge2"))
-  assignation("C03Ca_ml_wine", part = NULL,
+  challenge2("C03Ca_ml_wine", part = NULL,
     url = "https://github.com/BioDataScience-Course/C03Ca_ml_wine",
     course.urls = c(
-      'S-BIOG-025' = "https://classroom.github.com/a/cHZ5HYlR"),
+      'S-BIOG-025' = "https://classroom.github.com/a/..."),
     toc = "Challenge pour trouver les meilleurs vins")
 ```
 
-Vous pourrez soumettre vos résultats via l'application ci-dessous\ :
+::: {.nocourse}
+Vous n'êtes pas correctement enregistré pour ce cours. Vous ne pouvez pas participer à ce challenge. Si vous êtes étudiant•e de l'UMONS, vérifiez que vous vous êtes bien enregistré via Moodle...
+:::
 
-<!-- launch_shiny("https://sdd.umons.ac.be/B01Sa_reglin/", height = 600, delay = 20, toc = "Ajuster la meilleure droite")`-->
+::: {.S-BIOG-025 .S-BIOG-043 .S-BIOG-077}
+Vous pouvez soumettre vos résultats pendant une période de temps précise via l'application ci-dessous\ :
 
-<iframe width="780" height="500" frameborder="0" scrolling="auto" class="shiny-app" id=\"C03Ca_ml_wine\" src="https://sdd.umons.ac.be/C03Ca_ml_wine"></iframe>
+`r launch_shiny("https://sdd.umons.ac.be/C03Ca_ml_wine/", height = 600, delay = 20, toc = NULL)`
 
-```{r, echo=FALSE, eval=FALSE}
-knitr::include_app('https://sdd.umons.ac.be/C03Ca_ml_wine/', height = '600px')
-```
+<!-- <iframe width="780" height="500" frameborder="0" scrolling="auto" class="shiny-app" id=\"C03Ca_ml_wine\" src="https://sdd.umons.ac.be/C03Ca_ml_wine"></iframe> -->
+:::
 
 ##### Pour en savoir plus {-}
 

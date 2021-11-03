@@ -379,7 +379,7 @@ if (exists("assignation"))
   assignation("C03Ia_cardiovascular", part = "III",
     url = "https://github.com/BioDataScience-Course/C03Ia_cardiovascular",
     course.urls = c(
-      'S-BIOG-025' = "hhttps://classroom.github.com/a/XEjOaVvQ"),
+      'S-BIOG-025' = "https://classroom.github.com/a/XEjOaVvQ"),
     toc = "Réseau de neurones et SVM")
 ```
 
@@ -389,14 +389,12 @@ Vous avez dû apprendre beaucoup de techniques complémentaires pour arriver à 
 
 ##### À vous de jouer ! {-}
 
-<!-- ttps://classroom.github.com/a/cHZ5HYlR -->
-
 ```{r, echo=FALSE, results='asis'}
 if (exists("challenge2"))
   challenge2("C03Ca_ml_wine", part = NULL,
     url = "https://github.com/BioDataScience-Course/C03Ca_ml_wine",
     course.urls = c(
-      'S-BIOG-025' = "https://classroom.github.com/a/..."),
+      'S-BIOG-025' = "https://classroom.github.com/a/cHZ5HYlR"),
     toc = "Challenge pour trouver les meilleurs vins")
 ```
 
@@ -407,9 +405,9 @@ Vous n'êtes pas correctement enregistré pour ce cours. Vous ne pouvez pas part
 ::: {.S-BIOG-025 .S-BIOG-043 .S-BIOG-077}
 Vous pouvez soumettre vos résultats pendant une période de temps précise via l'application ci-dessous\ :
 
-`r launch_shiny("https://sdd.umons.ac.be/C03Ca_ml_wine/", height = 600, delay = 20, toc = NULL)`
+`r launch_shiny("https://sdd.umons.ac.be/C03Ca_ml_wine/", height = 800, delay = 20, toc = NULL, alt1 = "*Cliquez pour visualiser le classement.*", alt2 = "*Cliquez pour visualiser le classement.*")`
 
-<!-- <iframe width="780" height="500" frameborder="0" scrolling="auto" class="shiny-app" id=\"C03Ca_ml_wine\" src="https://sdd.umons.ac.be/C03Ca_ml_wine"></iframe> -->
+<!-- <iframe width="780" height="800" frameborder="0" scrolling="auto" class="shiny-app" id=\"C03Ca_ml_wine\" src="https://sdd.umons.ac.be/C03Ca_ml_wine"></iframe> -->
 :::
 
 ##### Pour en savoir plus {-}

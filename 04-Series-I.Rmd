@@ -192,7 +192,7 @@ fake_ser <- ts(rnorm(5 * 12), start = 2010, frequency = 12)
 fake_ser
 ```
 
-Notez comme R formate notre sortie (il assume qu'une série à fréquence de 12 correspond à des données mensuelles). Nous ne devons indiquer que deux des trois paramètres de **tsp**, car le nombre d'observations dans le vecteur forunit l'information manquante à `ts()`. Quelles sont les dates de ces observations\ ?
+Notez comme R formate notre sortie (il assume qu'une série à fréquence de 12 correspond à des données mensuelles). Nous ne devons indiquer que deux des trois paramètres de **tsp**, car le nombre d'observations dans le vecteur fournit l'information manquante à `ts()`. Quelles sont les dates de ces observations\ ?
 
 ```{r}
 time(fake_ser)
@@ -275,7 +275,7 @@ De manière générale, nous avons toujours intérêt à réaliser une séries r
 
 ## Manipulation et description
 
-Tout comme pour les statistiques plus classiques, nous commençons toujours notre exploration de séries chronologiques par une partie purement descriptive, soit numérique, soit graphique. De plus, nous savons que nous ne devons pas espérer obtenir d'emblée des données qui se présentent de manière parfaite. Un petit peu de **manipulation de données** est parfois nécessaire... et nous allons découvrir quelques fonctions utilies dans ce contexte pour les séries chronologiques.
+Tout comme pour les statistiques plus classiques, nous commençons toujours notre exploration de séries chronologiques par une partie purement descriptive, soit numérique, soit graphique. De plus, nous savons que nous ne devons pas espérer obtenir d'emblée des données qui se présentent de manière parfaite. Un petit peu de **manipulation de données** est parfois nécessaire... et nous allons découvrir quelques fonctions utiles dans ce contexte pour les séries chronologiques.
 
 Comme nous l'avons déjà vu, le graphe de base (obtenu par `plot()`) est une ligne brisée qui relie les différents points de la séries, avec le temps sur l’axe des abscisses, et l’axe des ordonnées représentant les observation de la variable quantitative mesurée au fil du temps. Le choix d’utiliser une ligne brisée qui relie les points au lieu d’une nuage de points dans le cas présent est délibéré\ : **les segments de droites qui relient les points matérialisent la relation entre eux, c’est-à-dire, l'existence d’une interdépendance entre ces observations**.
 
@@ -339,7 +339,7 @@ statsl2$xcut
 
 ### Manipulations de **ts**
 
-Les jeux de données bricolés artificiellement sont parfois bien utiles pour explorer de nouvelles techniques. En effet, puisque nous les construisons nous-même nous savons dès le départ de quoi ils sont faits. Et donc, nous pouvons vérifier que le résultat obtenu est bien conforme. Par exemple, nous pouvons construre une série de données mensuelles commençant en avril 1998 (`start = c(1998, 4)`), contenant 100 valeurs et comportant une composante sinusoïdale d’une période annuelle ainsi qu’une composante aléatoire ayant une distribution normale de moyenne nulle et d’écart type 0.5\ :
+Les jeux de données bricolés artificiellement sont parfois bien utiles pour explorer de nouvelles techniques. En effet, puisque nous les construisons nous-même nous savons dès le départ de quoi ils sont faits. Et donc, nous pouvons vérifier que le résultat obtenu est bien conforme. Par exemple, nous pouvons construire une série de données mensuelles commençant en avril 1998 (`start = c(1998, 4)`), contenant 100 valeurs et comportant une composante sinusoïdale d’une période annuelle ainsi qu’une composante aléatoire ayant une distribution normale de moyenne nulle et d’écart type 0.5\ :
 
 ```{r}
 tser <- ts(sin((1:100) / 6 * pi) + rnorm(100, sd = 0.5), start = c(1998, 4), 
@@ -415,7 +415,7 @@ tser <- ts(sin((1:100) / 6 * pi) + rnorm(100, sd = 0.5), start = c(1998, 4),
 acf(tser)
 ```
 
-Pour un décalage nul, la première barre verticale monte jusqu'à un toujours. Les barrés suivantes montrent jusqu'où l'**effet mémoire** de la série se marque. Les traits bleus horizontaux représentent une enveloppe de confiance à 95%. Donc, les barres qui dépassent (largement) de l'intervalle entre ces deux traits bleus sont significatives. Nous voyons ici que l'effet mémoire se marque sur les deux mois qui suivent (2 barres au dessus du trait bleu). Ensuite, le graphique est caractéristique d'une série périodique. En effet, l'autocorrélation passe par un minimum lorsque la série est décalée d'une demi-période. Ici, le cycle a une période d'un an. Nous voyons que nous passons par une autocorrélation négative et minimale après un décalage de 6, puis de 18 mois. L'axe des abscisses *Lag* est exprimé dans l'unité de la série qui est l'année ici. Cela correspond donc à respectivement 0.5 et 1.5 unités. Par contre, l'autocorrélation redevient positive et maximale pour un décalage d'une période exactement ou d'un multiple de cette période. ainsi, nous avons un mode pour un décalage de 1 année. Nous étudierons juste en dessous une technique plus puissante pour détecter les cycles dans une séries (analyse spectrale), mais lorsqu'ils sont flagrants comme ici, ils sont également clairement visisbles sur le graphique de l'autocorrélation.
+Pour un décalage nul, la première barre verticale monte jusqu'à un toujours. Les barrés suivantes montrent jusqu'où l'**effet mémoire** de la série se marque. Les traits bleus horizontaux représentent une enveloppe de confiance à 95%. Donc, les barres qui dépassent (largement) de l'intervalle entre ces deux traits bleus sont significatives. Nous voyons ici que l'effet mémoire se marque sur les deux mois qui suivent (2 barres au dessus du trait bleu). Ensuite, le graphique est caractéristique d'une série périodique. En effet, l'autocorrélation passe par un minimum lorsque la série est décalée d'une demi-période. Ici, le cycle a une période d'un an. Nous voyons que nous passons par une autocorrélation négative et minimale après un décalage de 6, puis de 18 mois. L'axe des abscisses *Lag* est exprimé dans l'unité de la série qui est l'année ici. Cela correspond donc à respectivement 0.5 et 1.5 unités. Par contre, l'autocorrélation redevient positive et maximale pour un décalage d'une période exactement ou d'un multiple de cette période. ainsi, nous avons un mode pour un décalage de 1 année. Nous étudierons juste en dessous une technique plus puissante pour détecter les cycles dans une séries (analyse spectrale), mais lorsqu'ils sont flagrants comme ici, ils sont également clairement visibles sur le graphique de l'autocorrélation.
 
 Pour un bruit blanc (une série constituée d'observations indépendantes les unes des autres), l'autocorrélation doit être nulle. Générons artificiellement une telle série afin de visualiser le graphique de l'autocorrélation correspondant\ :
 
@@ -445,7 +445,7 @@ mtser <- ts.intersect(tser, stats::lag(tser, 5))
 ccf(mtser[, 1], mtser[, 2])
 ```
 
-On retrouve bien une cross-corrélation maximale pour un décalage de cinq entre la série de départ (`mtser[, 1]`) et la série décalée (`mtser[, 2]`)\ : à partir du zéro, c'est la cinquième barre vers la droite qui est la plus élévée. Nous retrouvons également l'alternance entre corrélation positive et négative caractéristique de signaux cycliques sur ce graphique.
+On retrouve bien une cross-corrélation maximale pour un décalage de cinq entre la série de départ (`mtser[, 1]`) et la série décalée (`mtser[, 2]`)\ : à partir du zéro, c'est la cinquième barre vers la droite qui est la plus élevée. Nous retrouvons également l'alternance entre corrélation positive et négative caractéristique de signaux cycliques sur ce graphique.
 
 ##### Exercez-vous {-}
 
@@ -485,7 +485,7 @@ Sur le graphique nous avons représenté trois cosinusoïdes pour vous illustrer
 
 - La courbe grise ayant une amplitude *A* de un, est comprise entre +1 et -1 sur l'axe des ordonnées (étalement vertical). Les deux autres ont une amplitude *A* doublée de deux. Par conséquent, le signal monte et descend deux fois plus entre +2 et -2.
 
-- Enfin, la phase $\phi$ des courbes grise et noire étant nulle, nous passons par un maximum en zéro sur l'axe des abscisses, car cos(0) = 1 = valeur maximale. Par contre, la courbe rouge est la même que la noire, mais déphasée de 1.6, ce qui la translate sur l'axe *t*. Avec une phase de 1.6 qui est environ égale à $\pi/2$, notre corbe rouge passe pratiquement par zéro pour $x_t$ lorsque $t = 0$.
+- Enfin, la phase $\phi$ des courbes grise et noire étant nulle, nous passons par un maximum en zéro sur l'axe des abscisses, car cos(0) = 1 = valeur maximale. Par contre, la courbe rouge est la même que la noire, mais déphasée de 1.6, ce qui la translate sur l'axe *t*. Avec une phase de 1.6 qui est environ égale à $\pi/2$, notre courbe rouge passe pratiquement par zéro pour $x_t$ lorsque $t = 0$.
 
 Les mathématiciens nous apprennent que l'on peut s'affranchir de $\phi$ à condition de considérer une somme de sinus et cosinus. Quel que soient $A$, $\omega$ et $\phi$, il existe toujours une paire $\beta_1$, $\beta_2$ telle que\ :
 
@@ -639,11 +639,7 @@ Ici, la valeur *p* est légèrement supérieure à $\alpha$, mais le nombre d'ex
 
 Les plus futés d'entre vous l'auront remarqué\ : le test de corrélation exige, en principe, que les observations soient indépendantes les unes des autres. Or, nous nous trouvons ici en présence d'une série chronologique où, par définition ce n'est pas le cas\ ! Des corrections sont appliquées en réalité (voir la formule de calcul du test dans le [manuel de {pastecs}](https://github.com/phgrosjean/pastecs/blob/master/manual/pastecs_manuel_utilisateur.pdf)), mais ce n'est pas suffisant.
 
-Une meilleure version de ce test est réalisée par *bootstrap*. Cette technique consiste à rééchantillonner aléatoirement l'échantillon pour simuler un grand nombre de fois des mesures différentes de la série. Ce rééchantillonnage introduit une fluctuation dans le calcul de $\rho$, et il est possible de démontrer que, lorsque *n* est suffisamment grand et le bootstrap est réalisé correctement, toutes les valeurs obtenues pour le $\rho$ bootstrapé permettent d'**estimer sa distribution réelle**. Cette dernière est bien plus proche de la réalité si le bootstrap est réalisé en tenant compte de l'autocorrélation éventuelle de la série. R permet de faire ce type de calcul qui est intégré dans la fonction `trend.test()` de {pastecs}, en précisant l'argument `R=`qui indique le nombre de fois que le bootstrap doit être réalisé. Des exemples pratiques sont plus parlants.
-
-```{block2, type = 'warning'}
-La fonction `trend.test()` de {pastecs} version < 1.4 est incompatible avec le tidyverse et avec l'instruction `SciViews::R`. La SciViews Box jusqu'à sa version 2020 contient la version 1.3 de {pastecs} par défaut. Il faut donc forcer la mise-à-jour avant de pouvoir réaliser l'analyse de test de tendance via bootstrap. Cela se fait facilement avec l'instruction suivante à la console R\ : `remotes::install_github("phgrosjean/pastecs@v1.4.0", upgrade = FALSE)`. Cette opération ne doit être réalisée qu"une seule fois, mais si le package est déjà chargé en mémoire avant la mise-à-jour, il faut redémarrer R pour être certain d'utiliser la dernière version (menu RStudio `Session -> Restart R`). Pour vérifier la version utilisée, on peut faire\ : `packageVersion("pastecs")`.
-```
+Une meilleure version de ce test est réalisée par *bootstrap*. Cette technique consiste à rééchantillonner aléatoirement l'échantillon pour simuler un grand nombre de fois des mesures différentes de la série. Ce rééchantillonnage introduit une fluctuation dans le calcul de $\rho$, et il est possible de démontrer que, lorsque *n* est suffisamment grand et le bootstrap est réalisé correctement, toutes les valeurs obtenues pour le $\rho$ bootstrapé permettent d'**estimer sa distribution réelle**. Cette dernière est bien plus proche de la réalité si le bootstrap est réalisé en tenant compte de l'autocorrélation éventuelle de la série. R permet de faire ce type de calcul qui est intégré dans la fonction `trend.test()` de {pastecs}, en précisant l'argument `R =`qui indique le nombre de fois que le bootstrap doit être réalisé. Des exemples pratiques sont plus parlants.
 
 ##### Exemples {-}
 
@@ -772,7 +768,7 @@ Le vecteur `$pos` renvoie les index des points cliqués dans la série. Les tend
 ```{r}
 # Créer un vecteur ici avec les positions cliquées sur le graphique
 pos <- c(1, 51, 96)
-# Function pour le calcul
+# Fonction pour le calcul
 lt_calc <- function(x, pos) {
   n <- length(pos)
   k <- attr(x, "k")
@@ -801,11 +797,11 @@ Appliquez la technique des sommes cumulées sur les diverses séries d'exemple p
 
 ```{r, echo=FALSE, results='asis'}
 if (exists("assignation"))
-  assignation("C04Ga_ts", part = "I",
-    url = "https://github.com/BioDataScience-Course/C04Ga_ts",
+  assignation("C04Ia_ts",
+    url = "https://github.com/BioDataScience-Course/C04Ia_ts",
     course.urls = c(
-      'S-BIOG-025' = "https://classroom.github.com/a/..."),
-    toc = "Analyse de séries spatio-temporelles")
+      'S-BIOG-025' = "https://classroom.github.com/a/BoiVskIA"),
+    toc = "Description et analyse de séries spatio-temporelles")
 ```
 
 ## Récapitulatif des exercices

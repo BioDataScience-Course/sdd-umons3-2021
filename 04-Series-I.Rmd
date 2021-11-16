@@ -335,7 +335,7 @@ statsl2$xcut
 
 ##### À vous de jouer ! {-}
 
-`r learnr("C04La_stat_slide", title = "Statistiques glissantes", toc = "Statistiques glissantes")`
+`r learnr("C04La_ts_stats", title = "Statistiques glissantes", toc = "Statistiques glissantes")`
 
 ### Manipulations de **ts**
 

@@ -159,7 +159,7 @@ co2_resid2 <- extract(co2_loess, components = "residuals")
 spectrum(co2_resid2, spans = c(5, 3))
 ```
 
-Ici, tout se passe comme si nous avions éliminé totalement tout signal de fréquence entière (1, 2, 3, ...) et qu'ensuite d'autres signaux apparaissent. Ce sont probablement des cycles fantômes issus du traitement... tout comme le cycle à fréquence deux observé plus haut reste questionnable. **Gardez toujours votre esprit critique aiguisé en pareil situation\ !** Par exemple, quelle est l'étendue des signaux correspondants à nos trois composantes\ ? Pour la tendance, nous allons de 320 à 370 ppm, soit environ 50 ppm. Pour la composante saisonnière, l'amplitude du signal est de presque 3 ppm (le signal oscille entre 3 ppm et -3 ppm), soit une étendue de 6 ppm. Enfin, pour les résidus, l'échelle de l'axe s'étale de -0.6 à 0.4, soit 1 ppm, donc, une amplitude maximum de 0.5 ppm pour un éventuel cycle. Que peut-on encore extraire d'intéressant comme signal avec une si petite amplitude relative de presque un ordre de grandeur inférieur à l'amplitude du signal saisonnier qui lui, est bien concret dans notre série\ ? Voilà le type de raisonnement logique que vous devez utiliser, au delà de ce que les calculs vous montrent.
+Ici, tout se passe comme si nous avions éliminé totalement tout signal de fréquence entière (1, 2, 3, ...) et qu'ensuite d'autres signaux apparaissent. Ce sont probablement des cycles fantômes issus du traitement... tout comme le cycle à fréquence deux observé plus haut reste discutable. **Gardez toujours votre esprit critique aiguisé en pareil situation\ !** Par exemple, quelle est l'étendue des signaux correspondants à nos trois composantes\ ? Pour la tendance, nous allons de 320 à 370 ppm, soit environ 50 ppm. Pour la composante saisonnière, l'amplitude du signal est de presque 3 ppm (le signal oscille entre 3 ppm et -3 ppm), soit une étendue de 6 ppm. Enfin, pour les résidus, l'échelle de l'axe s'étale de -0.6 à 0.4, soit 1 ppm, donc, une amplitude maximum de 0.5 ppm pour un éventuel cycle. Que peut-on encore extraire d'intéressant comme signal avec une si petite amplitude relative de presque un ordre de grandeur inférieur à l'amplitude du signal saisonnier qui lui, est bien concret dans notre série\ ? Voilà le type de raisonnement logique que vous devez utiliser, au delà de ce que les calculs vous montrent.
 
 ```{block2, type = 'note'}
 Avec `tsd()` vous avez plusieurs méthodes de décomposition disponibles, même si nous n'en avons abordé jusqu'ici que deux. Avec `method=`\ :
@@ -203,7 +203,7 @@ Le filtrage effectue un *lissage* de la série, et la **bande de lissage** est �
 
 Pour un effet accru, il est possible d'effectuer successivement plusieurs lissages par moyenne mobile. C'est l'argument `times=` qui contrôle cela dans `decaverage()` et `tsd(method = "average")`. A noter enfin, que les cycles de fréquence égale à la bande de lissage ne sont pas les seuls à être éliminés. D'autres fréquences sont également affectées à des degrés divers. Par exemple pour une désaisonnalisation, les fréquences 6, 4, 3, 12/5 et 2 mois sont également impactées à des degrés divers. Comprenez ici que le filtre n'a pas un comportement parfait et que des artéfacts apparaissent, du moins si on se limite à considérer que la moyenne mobile n'élimine *que* le cycle de fréquence égale à la bande de lissage\ !
 
-Un autre phénomène qu'il faut connaître est l'**effet Slusky-Yule**. L'application d'un filtrage par moyenne mobile engendre une oscillation artificielle dont la période dépend à la fois de l'ordre de la fenêtre du lissage et le l'autocorrélation présente dans la série. Cette période peut se calculer (nous vous renvoyons au manuel de {pastecs} pour les détails de ce calcul).
+Un autre phénomène qu'il faut connaître est l'**effet Slusky-Yule**. L'application d'un filtrage par moyenne mobile engendre une oscillation artificielle dont la période dépend à la fois de l'ordre de la fenêtre du lissage et de l'autocorrélation présente dans la série. Cette période peut se calculer (nous vous renvoyons au manuel de {pastecs} pour les détails de ce calcul).
 
 ##### À vous de jouer ! {-}
 
@@ -246,11 +246,11 @@ Mais ce faisant, nous avons *aussi* éliminé le cycle à 10 ans dans les résid
 
 ```{r, echo=FALSE, results='asis'}
 if (exists("assignation"))
-  assignation("C05Ga_tsd", 
-    url = "https://github.com/BioDataScience-Course/C05Ga_tsd",
+  assignation("C05Ia_tsd", 
+    url = "https://github.com/BioDataScience-Course/C05Ia_tsd",
     course.urls = c(
-      'S-BIOG-025' = "https://classroom.github.com/a/..."),
-    toc = "Décomposition d'une série spatio-teporelle")
+      'S-BIOG-025' = "https://classroom.github.com/a/sy6D7OS1"),
+    toc = "Décomposition d'une série spatio-temporelle")
 ```
 
 ### Médianes mobiles
@@ -373,7 +373,7 @@ density_lin <- lm(density ~ t) # Ajustement
 coef(density_lin) # Paramètres du modèle ajusté
 ```
 
-Remarquons que nous avons appelé `lm()` ici **sans** préciser `data =`. Dans ce cas, la fonction va rechercher ses variables comme vecteurs numériques directement dans l'environnement de travail. Nous avions déjà `density` qui est un objet **ts**, mais nous savons par ailleurs que ce **ts** est aussi, et avant tout, un vecteur numérique (auquel un attribut `tsp` a été ajouté, attribut inconnu et donc ignoré de `lm()`). Nous avons créé notre second vecteur numérique `t` en extrayant la variable de temps de l'objet **ts** en utilisant `time()`. Ainsi, nous pouvons travailer avec `lm()` directement.
+Remarquons que nous avons appelé `lm()` ici **sans** préciser `data =`. Dans ce cas, la fonction va rechercher ses variables comme vecteurs numériques directement dans l'environnement de travail. Nous avions déjà `density` qui est un objet **ts**, mais nous savons par ailleurs que ce **ts** est aussi, et avant tout, un vecteur numérique (auquel un attribut `tsp` a été ajouté, attribut inconnu et donc ignoré de `lm()`). Nous avons créé notre second vecteur numérique `t` en extrayant la variable de temps de l'objet **ts** en utilisant `time()`. Ainsi, nous pouvons travailler avec `lm()` directement.
 
 L'objet `density_lin` est un objet **lm** tout-à-fait classique. Nous pouvons donc afficher le tableau `summary()`, effectuer l'analyse des résidus, etc. et ... **stop\ ! Gardez à l'esprit que l'application de `lm()` à une série temporelle tord le système car la non indépendance des observations entre elles peut être problématique. Nous n'utiliserons donc ici que l'ajustement du modèle sans en analyser les résidus.**
 
@@ -548,12 +548,12 @@ Enfin, terminons en signalant que si la méthode est prévue pour traiter unique
 ##### À vous de jouer ! {-}
 
 ```{r, echo=FALSE, results='asis'}
-if (exists("assignation"))
-  assignation("C05Gb_ts_adv", 
+if (exists("assignation2"))
+  assignation2("C05Gb_ts_adv", 
     url = "https://github.com/BioDataScience-Course/C05Gb_ts_adv",
     course.urls = c(
-      'S-BIOG-025' = "https://classroom.github.com/g/..."),
-    toc = "Analyse libre d'une série spatio-teporelle")
+      'S-BIOG-025' = "https://classroom.github.com/a/vMFDbUBt"),
+    toc = "Analyse libre d'une série spatio-temporelle")
 ```
 
 ## Régularisation 
@@ -603,7 +603,7 @@ Nous allons donc régulariser le jeu de données avec cette valeur en convertiss
 A noter que, d'une manière générale, l'analyse de cycles bien précis tels que l'effet saisonnier ou les cycles circadiens nécessitent dans {pastecs} d'exprimer le temps dans une unité qui correspond exactement au cycle étudié. Ainsi, les fonctions de décomposition des séries en composantes saisonnières (`decloess()` par exemple) imposent d'exprimer le temps en unité `"years"`. De même, il est fortement conseillé d'adopté l'unité `"days"` pour l'étude de cycles circadiens.
 ```
 
-Un autre argument est aussi important ici, il s'agit de `tol =`. C'est la fenêtre de tolérance à gauche ou et à droite de la date requise dans la série régulière pour aller chercher une observation *sans l'interpoler*. Avec un pas de temps de 20 jours, on peut considérer que si nous avons à disposition une mesure la veille ou le lendemain, cela ne fera pas une grande différence. Peut-être même aussi l'avant-veille ou le surlendemain. Donc, nous prendrons une tolérance de 2 jours. Mais pour être certain de prendre les observations 2 jours avant ou aprsè, on rajoute 10% à la valeur, donc, une `tol = 2.2` jours. Nous avons à présent (presque) tout ce qu'il faut pour régulariser notre série.
+Un autre argument est aussi important ici, il s'agit de `tol =`. C'est la fenêtre de tolérance à gauche ou et à droite de la date requise dans la série régulière pour aller chercher une observation *sans l'interpoler*. Avec un pas de temps de 20 jours, on peut considérer que si nous avons à disposition une mesure la veille ou le lendemain, cela ne fera pas une grande différence. Peut-être même aussi l'avant-veille ou le surlendemain. Donc, nous prendrons une tolérance de 2 jours. Mais pour être certain de prendre les observations 2 jours avant ou après, on rajoute 10% à la valeur, donc, une `tol = 2.2` jours. Nous avons à présent (presque) tout ce qu'il faut pour régulariser notre série.
 
 ```{r}
 navi_reg <- regul(releve$Day, releve$Navi, n = length(releve$Day),
@@ -634,7 +634,7 @@ plot(navi_reg, main = "Régularisation de Navicula sp")
 
 Les pics et les creux dans la série régularisée (en rouge) sont assez bien représentatifs de ceux dans la série de départ (en noir), même si les gros pics éphémères sont légèrement tronqués. Les crois entourées d'un cercle indiquent les points qui ne sont *pas* interpolés parce qu'une valeur existe dans la fenêtre de tolérance de ± 2,2 jours. Par contre, les croix seules sont des valeurs interpolées linéairement entre les deux observations réalisées de part et d'autre de la date cible. Les traits verticaux pointilles indiquent le début et la fin de la série de départ (en noir) et régularisée (en rouge). Nous ne perdons presque rien sur l'axe temporel, tout en n'extrapolant aucune valeur en dehors de l'intervalle de temps de la série initiale. C'est donc parfait.
 
-L'extraction de la série régularisée à partir de l"objet `regul()` se fait exactement comme pour `tsd()` avec `tseries()`, ou alors avec `extract()` dans le cas où plusieurs séries auraient été régularisées simultanéments, mais que nous ne voulons convertir qu'une partie d'entre elles en objet **ts** ou **mts**.
+L'extraction de la série régularisée à partir de l"objet `regul()` se fait exactement comme pour `tsd()` avec `tseries()`, ou alors avec `extract()` dans le cas où plusieurs séries auraient été régularisées simultanément, mais que nous ne voulons convertir qu'une partie d'entre elles en objet **ts** ou **mts**.
 
 ```{r}
 navi <- tseries(navi_reg)

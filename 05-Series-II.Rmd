@@ -331,13 +331,52 @@ co2_stat <- tsd(co2, method = "diff", lag = 12, times = 1)
 plot(co2_stat)
 ```
 
-Comme nous pouvons le voir, la tendance a bien été éliminée, mais malheureusement, le cycle saisonnier est également passé à la trappe, et ce malgré notre précaution de faire coïncider le décalage (`lag=`) avec les fréquence du cycle.
+Comme nous pouvons le voir, la tendance a bien été éliminée, mais malheureusement, le cycle saisonnier est également passé à la trappe, et ce malgré notre précaution de faire coïncider le décalage (`lag=`) avec les fréquence du cycle. Les méthodes de décomposition de type LOESS ou l'ajustement d'un modèle sur la tendance par régression donnent souvent de meilleurs résultats pour estimer et éliminer une tendance à long terme. Cependant, le filtrage par les différences rend des services utiles lorsque la série est croissante ou décroissante avec du bruit blanc.
 
 ### Filtrage par les valeurs propres
 
-Le filtrage par les valeurs propres (*eigenvector filtering* en anglais, ou EVF en abrégé) consiste à décomposer le signal original de la série via une analyse en composantes principales.
+Le filtrage par les valeurs propres (*eigenvector filtering* en anglais, ou EVF en abrégé) consiste à décomposer le signal original de la série via une analyse en composantes principales. Nous parlons aussi d'Analyse en Composantes Principales de Processus ou ACPP. 
+Le principe du calcul consiste à créer une matrice contenant la série initiale en dernière colonne et des colonnes supplémentaires avec des décalages successifs de cette série initiale d'un pas de temps toujours identique $\tau$ *m* fois pour former *m* + 1 colonnes au total. Naturellement, pour obtenir une matrice carrée, nous éliminons les premières et les dernières valeurs des différentes colonnes de la matrice jusqu'à réduire à un tableau rectangulaire sans valeurs manquantes. Cela nous donne une matrice *X* comme ceci/ :
 
-**TODO: doit encore être rédigé (pour l'an prochain)\ !**
+$$X = \begin{pmatrix}
+X_{1 + m \tau} & \cdots & X_{1 + 2 \tau} & X_{1 + \tau} & X_1 \\
+X_{2 + m \tau} &        & X_{2 + 2 \tau} & X_{2 + \tau} & X_2 \\
+X_{3 + m \tau} &        & X_{3 + 2 \tau} & X_{3 + \tau} & X_3 \\
+\vdots         & \ddots &                &              & \vdots \\
+X_n            & \cdots & X_{n - (m - 2) \tau} & X_{n - (m - 1) \tau} & X_{n - m \tau}
+\end{pmatrix}
+$$
+
+Notez que cette matrice fait penser au calcul réalisé pour déduire la fonction d'autocorrélation, comprenez qu'elle contient des informations relatives à l'autocorrélation de la série à des pas de temps croissants le long de ses lignes. Ensuite, nous traitons cette matrice comme si c'était un jeu de données multivarié via une ACP classique sans réduction (calcul sur base de la variance-covariance).
+
+La première composante principale capture le signal de plus forte variance et les composantes principales suivantes la compléteront avec des signaux de variance décroissante. Notez que ces signaux peuvent être de formes diverses\ : aussi bien des tendances plus ou moins monotones que des cycles ou d'autres structures. Le signal qui ressortira en première composante sera une tendance générale si la série est dominée par un tel signal. Elle sera un cycle si celui-ci est prépondérant.
+
+Enfin, nous pouvons filtrer la série en choisissant de ne conserver que les *i* premières composantes avec *i* < (*m* + 1), voire même, en sélectionnant des composantes principales spécifiques (par exemple, la première et la troisième en indiquant `axes = c(1, 3)`). Plus le nombre de composantes conservées est faible, plus le filtrage sera important. Si nous conservons *toutes* les composantes, nous recréons la série à l'identique. Pour plus de facilité, $/tau$ est systématiquement choisi équivalent au pas de temps de la série régulière. Par contre, nous devons indiquer le décalage maximum $m \times \tau$ souhaité (argument `lag =`). Si ce décalage est très faible, nous ne filtrerons pas beaucoup la série car nous seront obligés de prendre quasiment toutes les composantes principales calculées. Si le décalage est trop grand, nous tronquerons trop au début et à la fin notre série et ses variantes décalées successivement pour faire rentrer le tout dans une matrice carrée. De plus, nous risquons de filtrer beaucoup trop fort notre série jusqu'à la réduire, à la limite à pratiquement une droite de tendance générale. Le choix de ce décalage maximum peut être guidé efficacement via l'observation de la fonction d'autocorrélation, et notamment en regardant après combien de décalages cette ACF passe par zéro (ce que l'on appelle l'**échelle caractéristique du processus**). Nous prendrons un décalage maximum d'environ 4 fois cette valeur comme point de départ de nos essais.
+
+##### Exemple {-}
+
+Le cas du signal EEG est compliqué car le signal (*a priori* de forme quelconque) est très bruité. Testons un filtrage par les vecteurs propres en ne conservant que la première composante principale.
+
+```{r}
+data("eeg", package = "TSA")
+plot(eeg)
+```
+
+L'échelle caractéristique du processus s'obtient via le graphique de l'autocorrélation\ :
+
+```{r}
+acf(eeg)
+```
+
+Nous voyons qu'il s'agit ici d'un décalage de 20 fois le pas de temps. Nous choisissons donc `lag = 80` pour notre filtrage par les vecteurs propres et ne conservons que le premier axe de l'ACP.
+
+```{r}
+eeg_evf <- tsd(eeg, method = "evf", lag = 80, axes = 1)
+plot (eeg_evf, col = 1:3)
+```
+
+La série originale bruitée en noir est transformée en un signal beaucoup plus propre dans la courbe en rouge. Les résidus sont dans la série en vert.
+
 
 ## Régressions et séries
 

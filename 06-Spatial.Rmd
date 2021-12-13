@@ -976,10 +976,10 @@ tmap_arrange(m_map3, m_map_rain + tm_compass() + tm_scale_bar())
 
 ```{r, echo=FALSE, results='asis'}
 if (exists("assignation"))
-  assignation("C06Ga_map", 
-    url = "https://github.com/BioDataScience-Course/C06Ga_bees_belgium",
+  assignation("C06Ia_map", 
+    url = "https://github.com/BioDataScience-Course/C06Ia_map",
     course.urls = c(
-      'S-BIOG-025' = "https://classroom.github.com/a/..."),
+      'S-BIOG-025' = "https://classroom.github.com/a/u5ATugNT"),
     toc = "Distribution des abeilles sauvages de Belgique")
 ```
 

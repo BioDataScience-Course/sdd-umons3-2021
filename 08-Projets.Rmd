@@ -67,7 +67,7 @@ Si vous avez suivi l'ensemble des cours de sciences de données, vous êtes déj
 Ce module ne s'attarde pas sur le contenu en dehors de sa cohérence. La pertinence de la question de recherche n'est pas abordée ici, par exemple. Néanmoins, nous vous proposons quand même quelques astuces pour gérer au mieux le contenu, et en particulier votre bibliographie en fin de module.
 ``` 
 
-La suite reprend et détaille les trois éléments principaux de votre projet\ : ses données, ses carnets de notes et ses documents de synthèse. Enfin, ce module se clôturera sur quelques astuces et vous aurez une assignation qui vous permettra de mettre en pratique toute cette théorie et d'initier votre gros projet personnel.
+La suite reprend et détaille les trois éléments principaux de votre projet\ : ses données, ses carnets de notes et ses documents de synthèse. Enfin, ce module se clôturera sur quelques astuces et vous aurez un projet GitHub Classroom qui vous permettra de mettre en pratique toute cette théorie et d'initier votre gros projet personnel.
 
 ## Données
 
@@ -134,7 +134,7 @@ Ne négligez jamais le temps nécessaire pour explorer et analyser vos données.
 
 Vous avez à nouveau déjà toutes les clés en main pour mener à bien cette tâche avec tout ce que vous avez appris dans les trois cours précédent de science des données. L'outil le plus efficace est le document R Notebook dans RStudio. Vous avez utilisé ce document notebook dans l'ensemble des cours de sciences de données. L'utilisation du R Markdown et de Git permet d'associer le code (R, Python, SQL, ou autre) et le texte narratif avec un gestionnaire de version. Tout est en place pour analyser vos données confortablement et de manière reproductible. 
 
-Votre objectif sera donc de permettre à une personne externe de comprendre vos analyses grâces à l'intégration de la documentation et du code dans vos carnets de notes. Dans un gros projet, il est tout-à-fait habituel d'avoir plusieurs carnets de notes différents. Ceux-ci constituent des étapes successives de l'analyse des données et/ou explorent des facettes différentes de ces données. Rassemblez vos carnets de notes dans un sous-dossier (dans la structure proposée pour l'assignation, ce sera dans le sous-dossier `results`).
+Votre objectif sera donc de permettre à une personne externe de comprendre vos analyses grâces à l'intégration de la documentation et du code dans vos carnets de notes. Dans un gros projet, il est tout-à-fait habituel d'avoir plusieurs carnets de notes différents. Ceux-ci constituent des étapes successives de l'analyse des données et/ou explorent des facettes différentes de ces données. Rassemblez vos carnets de notes dans un sous-dossier (dans la structure proposée dans le projet GitHub Classroom, ce sera dans le sous-dossier `results`).
 
 Nommez vos différents fichiers de manière concise mais explicite quant au contenu. Cela facilite grandement la clarté de l'ensemble. Enfin, si une succession logique existe entre ces différents fichiers (étapes successives de l'analyse), pensez à les nommer de manière à ce qu'ils apparaissent correctement rangés lorsque les fichiers sont présentés par ordre alphabétique. Le plus simple étant d'utiliser un préfixe numérique correspondant à l'étape de l'analyse, par exemple, `01_description.Rmd`, `02_first_exploration.Rmd`, `03_model1.Rmd`, `04_model2.Rmd`. Si l'analyse est vraiment très complexe, n'hésitez pas à structurer à l'aide de sous-dossiers dans `results`.
 
@@ -169,13 +169,20 @@ Pour des projets conséquent, le format {bookdown} est particulièrement intére
 
 ##### À vous de jouer ! {-}
 
-```{r, echo=FALSE, results='asis'}
-if (exists("assignation"))
-  assignation("D08Ga_project", part = NULL,
+```{r assign_D08Ga_project, echo=FALSE, results='asis'}
+if (exists("assignment"))
+  assignment("D08Ga_project", part = NULL,
     url = "https://github.com/BioDataScience-Course/D08Ga_project",
+    course.ids = c(
+      'S-BIOG-043'         = !"D08Ia_{YY}M_project"),
     course.urls = c(
-      'S-BIOG-043' = "https://classroom.github.com/a/YtK0rA42"),
-    toc = "Découverte d'un projet de recherche")
+      'S-BIOG-043'         = "https://classroom.github.com/a/YtK0rA42"),
+    course.starts = c(
+      'S-BIOG-043'         = !"{W[6]+1} 08:00:00"),
+    course.ends = c(
+      'S-BIOG-043'         = !"{W[8]+5} 23:59:59"),
+    term = "Q1", level = 3,
+    toc = "Organisation d'un projet dans RStudio")
 ```
 
 ## Astuces

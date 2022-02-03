@@ -112,12 +112,19 @@ Si vous êtes amené à modifier les proportions des différentes classes dans v
 
 ##### À vous de jouer ! {-}
 
-```{r, echo=FALSE, results='asis'}
-if (exists("assignation"))
-  assignation("C03Ia_cardiovascular", part = "I",
+```{r assign_C03Ia_cardiovascular_I, echo=FALSE, results='asis'}
+if (exists("assignment"))
+  assignment("C03Ia_cardiovascular", part = "I",
     url = "https://github.com/BioDataScience-Course/C03Ia_cardiovascular",
+    course.ids = c(
+      'S-BIOG-025'         = !"C03Ia_{YY}M_cardiovascular"),
     course.urls = c(
-      'S-BIOG-025' = "https://classroom.github.com/a/XEjOaVvQ"),
+      'S-BIOG-025'         = "https://classroom.github.com/a/XEjOaVvQ"),
+    course.starts = c(
+      'S-BIOG-025'         = !"{W[8]+2} 13:00:00"),
+    course.ends = c(
+      'S-BIOG-025'         = !"{W[15]+5} 23:59:59"),
+    term = "Q1", level = 3,
     toc = "Métriques en fonction des proportions")
 ```
 
@@ -208,12 +215,19 @@ Nous pouvons observer que notre second classifeur `pima1b` est effectivement glo
 
 ##### À vous de jouer ! {-}
 
-```{r, echo=FALSE, results='asis'}
-if (exists("assignation"))
-  assignation("C03Ia_cardiovascular", part = "II",
+```{r assign_C03Ia_cardiovascular_II, echo=FALSE, results='asis'}
+if (exists("assignment"))
+  assignment("C03Ia_cardiovascular", part = "II",
     url = "https://github.com/BioDataScience-Course/C03Ia_cardiovascular",
+    course.ids = c(
+      'S-BIOG-025'         = !"C03Ia_{YY}M_cardiovascular"),
     course.urls = c(
-      'S-BIOG-025' = "https://classroom.github.com/a/XEjOaVvQ"),
+      'S-BIOG-025'         = "https://classroom.github.com/a/XEjOaVvQ"),
+    course.starts = c(
+      'S-BIOG-025'         = !"{W[8]+2} 13:00:00"),
+    course.ends = c(
+      'S-BIOG-025'         = !"{W[15]+5} 23:59:59"),
+    term = "Q1", level = 3,
     toc = "Courbe ROC")
 ```
 
@@ -374,12 +388,19 @@ Cette [vidéo](https://www.youtube.com/watch?v=UOvPeC8WOt8&feature=youtu.be) exp
 
 ##### À vous de jouer ! {-}
 
-```{r, echo=FALSE, results='asis'}
-if (exists("assignation"))
-  assignation("C03Ia_cardiovascular", part = "III",
+```{r assign_C03Ia_cardiovascular_III, echo=FALSE, results='asis'}
+if (exists("assignment"))
+  assignment("C03Ia_cardiovascular", part = "III",
     url = "https://github.com/BioDataScience-Course/C03Ia_cardiovascular",
+    course.ids = c(
+      'S-BIOG-025'         = !"C03Ia_{YY}M_cardiovascular"),
     course.urls = c(
-      'S-BIOG-025' = "https://classroom.github.com/a/XEjOaVvQ"),
+      'S-BIOG-025'         = "https://classroom.github.com/a/XEjOaVvQ"),
+    course.starts = c(
+      'S-BIOG-025'         = !"{W[8]+2} 13:00:00"),
+    course.ends = c(
+      'S-BIOG-025'         = !"{W[15]+5} 23:59:59"),
+    term = "Q1", level = 3,
     toc = "Réseau de neurones et SVM")
 ```
 
@@ -389,17 +410,28 @@ Vous avez dû apprendre beaucoup de techniques complémentaires pour arriver à 
 
 ##### À vous de jouer ! {-}
 
-```{r, echo=FALSE, results='asis'}
+```{r assign_C03Ca_ml_wine, echo=FALSE, results='asis'}
 if (exists("challenge2"))
   challenge2("C03Ca_ml_wine", part = NULL,
     url = "https://github.com/BioDataScience-Course/C03Ca_ml_wine",
+    course.ids = c(
+      'S-BIOG-025' = !"C03Ca_{21}M_ml_wine",
+      'sdd3late'   = !"C03Ca_{21}M_ml_wine"),
     course.urls = c(
-      'S-BIOG-025' = "https://classroom.github.com/a/cHZ5HYlR"),
-    toc = "Challenge pour trouver les meilleurs vins")
+      'S-BIOG-025' = "https://classroom.github.com/a/cHZ5HYlR",
+      'sdd3late'   = "https://classroom.github.com/a/cHZ5HYlR"),
+    course.starts = c(
+      'S-BIOG-025' = !"{W[8]+4} 10:00:00",
+      'sdd3late'   = !"{W[12]+2} 15:30:00"),
+    course.ends = c(
+      'S-BIOG-025' = !"{W[8]+4} 13:00:00",
+      'sdd3late'   = !"{W[12]+2} 18:00:00"),
+    level = 4, n = 2,
+    toc = "Challenge machine learning (vins)")
 ```
 
 ::: {.nocourse}
-Vous n'êtes pas correctement enregistré pour ce cours. Vous ne pouvez pas participer à ce challenge. Si vous êtes étudiant•e de l'UMONS, vérifiez que vous vous êtes bien enregistré via Moodle...
+Vous n'êtes pas correctement enregistré pour ce cours. Vous ne pouvez pas participer à ce challenge. Si vous êtes étudiant•e de l'UMONS, vérifiez que vous vous êtes bien enregistré•e via Moodle...
 :::
 
 ::: {.S-BIOG-025 .S-BIOG-043 .S-BIOG-077}
@@ -407,7 +439,6 @@ Vous pouvez soumettre vos résultats pendant une période de temps précise via 
 
 `r launch_shiny("https://sdd.umons.ac.be/C03Ca_ml_wine/", height = 800, delay = 20, toc = NULL, alt1 = "*Cliquez pour visualiser le classement.*", alt2 = "*Cliquez pour visualiser le classement.*")`
 
-<!-- <iframe width="780" height="800" frameborder="0" scrolling="auto" class="shiny-app" id=\"C03Ca_ml_wine\" src="https://sdd.umons.ac.be/C03Ca_ml_wine"></iframe> -->
 :::
 
 ##### Pour en savoir plus {-}

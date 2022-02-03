@@ -245,12 +245,19 @@ En biologie, on va s'intéresser principalement à des cycles particuliers comme
 
 ##### À vous de jouer ! {-}
 
-```{r, echo=FALSE, results='asis'}
-if (exists("assignation"))
-  assignation("D07Ia_21M_data", part = "I",
+```{r assign_D07Ia_21M_data, echo=FALSE, results='asis'}
+if (exists("assignment"))
+  assignment("D07Ia_21M_data", part = "I",
     url = "https://github.com/BioDataScience-Course/D07Ia_21M_data",
+    course.ids = c(
+      'S-BIOG-043'         = !"D07Ia_{YY}M_data"),
     course.urls = c(
-      'S-BIOG-043' = "https://classroom.github.com/a/mmcdbtb6"),
+      'S-BIOG-043'         = "https://classroom.github.com/a/mmcdbtb6"),
+    course.starts = c(
+      'S-BIOG-043'         = !"{W[4]+1} 08:00:00"),
+    course.ends = c(
+      'S-BIOG-043'         = !"{W[6]+5} 23:59:59"),
+    term = "Q1", level = 3,
     toc = "Données, partie I : dates")
 ```
 
@@ -667,12 +674,19 @@ rose.diag(oysters$maturity_c, bins = 5, col = "cornsilk", prop = 3, radii.scale 
 
 ##### À vous de jouer ! {-}
 
-```{r, echo=FALSE, results='asis'}
-if (exists("assignation"))
-  assignation("D07Ia_21M_data", part = "II",
+```{r assign_D07Ia_21M_data_II, echo=FALSE, results='asis'}
+if (exists("assignment"))
+  assignment("D07Ia_21M_data", part = "II",
     url = "https://github.com/BioDataScience-Course/D07Ia_21M_data",
+    course.ids = c(
+      'S-BIOG-043'         = !"D07Ia_{YY}M_data"),
     course.urls = c(
-      'S-BIOG-043' = "https://classroom.github.com/a/mmcdbtb6"),
+      'S-BIOG-043'         = "https://classroom.github.com/a/mmcdbtb6"),
+    course.starts = c(
+      'S-BIOG-043'         = !"{W[5]+1} 08:00:00"),
+    course.ends = c(
+      'S-BIOG-043'         = !"{W[6]+5} 23:59:59"),
+    term = "Q1", level = 3,
     toc = "Données, partie II : variables circulaires")
 ```
 

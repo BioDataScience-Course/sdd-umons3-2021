@@ -125,13 +125,20 @@ Le résultat est le même. Donc, nous venons de montrer que, dans le cas de ce j
 
 ##### À vous de jouer {-}
 
-```{r, echo=FALSE, results='asis'}
-if (exists("assignation"))
-  assignation("C02Ia_ml2", part = "I",
+```{r assign_C02Ia_ml2_I, echo=FALSE, results='asis'}
+if (exists("assignment"))
+  assignment("C02Ia_ml2", part = "I",
     url = "https://github.com/BioDataScience-Course/C02Ia_ml2",
+    course.ids = c(
+      'S-BIOG-025'         = !"C02Ia_{YY}M_ml2"),
     course.urls = c(
-      'S-BIOG-025' = "https://classroom.github.com/a/akIwt7xd"),
-    toc = "Utilisation de la validation croisée")
+      'S-BIOG-025'         = "https://classroom.github.com/a/akIwt7xd"),
+    course.starts = c(
+      'S-BIOG-025'         = !"{W[6]+5} 08:00:00"),
+    course.ends = c(
+      'S-BIOG-025'         = !"{W[15]+5} 23:59:59"),
+    term = "Q1", level = 3,
+    toc = "Validation croisée en pratique")
 ```
 
 ## Différents algorithmes
@@ -377,13 +384,20 @@ summary(pima2_lvq_conf)
 
 ##### À vous de jouer ! {-}
 
-```{r, echo=FALSE, results='asis'}
-if (exists("assignation"))
-  assignation("C02Ia_ml2", part = "II",
+```{r assign_C02Ia_ml2_II, echo=FALSE, results='asis'}
+if (exists("assignment"))
+  assignment("C02Ia_ml2", part = "II",
     url = "https://github.com/BioDataScience-Course/C02Ia_ml2",
+    course.ids = c(
+      'S-BIOG-025'         = !"C02Ia_{YY}M_ml2"),
     course.urls = c(
-      'S-BIOG-025' = "https://classroom.github.com/a/akIwt7xd"),
-    toc = "Utilisation de la quantification vectorielle")
+      'S-BIOG-025'         = "https://classroom.github.com/a/akIwt7xd"),
+    course.starts = c(
+      'S-BIOG-025'         = !"{W[6]+5} 08:00:00"),
+    course.ends = c(
+      'S-BIOG-025'         = !"{W[15]+5} 23:59:59"),
+    term = "Q1", level = 3,
+    toc = "Classification par quantification vectorielle")
 ```
 
 ##  Partitionnement récursif
@@ -549,13 +563,20 @@ Effectivement, avec un petit peu plus de 21%, c'est notre meilleur score jusqu'i
 
 ##### À vous de jouer ! {-}
 
-```{r, echo=FALSE, results='asis'}
-if (exists("assignation"))
-  assignation("C02Ia_ml2", part = "III",
+```{r assign_C02Ia_ml2_III, echo=FALSE, results='asis'}
+if (exists("assignment"))
+  assignment("C02Ia_ml2", part = "III",
     url = "https://github.com/BioDataScience-Course/C02Ia_ml2",
+    course.ids = c(
+      'S-BIOG-025'         = !"C02Ia_{YY}M_ml2"),
     course.urls = c(
-      'S-BIOG-025' = "https://classroom.github.com/a/akIwt7xd"),
-    toc = "Utilisation de la forêt aléatoire")
+      'S-BIOG-025'         = "https://classroom.github.com/a/akIwt7xd"),
+    course.starts = c(
+      'S-BIOG-025'         = !"{W[6]+5} 08:00:00"),
+    course.ends = c(
+      'S-BIOG-025'         = !"{W[15]+5} 23:59:59"),
+    term = "Q1", level = 3,
+    toc = "Classification par forêt aléatoire")
 ```
 
 ##### Trucs et astuces {-}
@@ -573,20 +594,28 @@ Maintenant que vous avez découvert différents algorithmes de classification su
 **Éléments de réflexion\ :**
 
 - Il n'y a pas que le taux d'erreur qui soit utile. quelquefois, l'intérêt se porte sur une ou plusieurs classes cibles. Dans ce cas, des métriques plus ciblées comme le rappel ou la précision sont utiles.
-- Le rappel et la précision s'intéressent à deux **points de vue** complémentaires par rapport à une classe cible\ : combien parmi tous les objets de la classe sont détectés comme tel par le classifieur d'un côté, *versus* combien parmi tout ce qui est classé par l'ordinateur dans la classe cible en fait effectivement partie. Si vous regardez la matrice de confusion, vous constatez qu'il s'agit de traiter l'erreur soit selon les *colonnes*, soit selon les *lignes* de cette matrice. Selon le contexte, on est amener à optimiser l'un ou l'autre, sachant qu'un compromis est tojuuors nécessaire. Le **score F**, par contre, tente de synthétiser ce compromis dans un cas plus général en une seule valeur.
+- Le rappel et la précision s'intéressent à deux **points de vue** complémentaires par rapport à une classe cible\ : combien parmi tous les objets de la classe sont détectés comme tel par le classifieur d'un côté, *versus* combien parmi tout ce qui est classé par l'ordinateur dans la classe cible en fait effectivement partie. Si vous regardez la matrice de confusion, vous constatez qu'il s'agit de traiter l'erreur soit selon les *colonnes*, soit selon les *lignes* de cette matrice. Selon le contexte, on est amener à optimiser l'un ou l'autre, sachant qu'un compromis est toujours nécessaire. Le **score F**, par contre, tente de synthétiser ce compromis dans un cas plus général en une seule valeur.
 - La répartition des individus entre les classes va influer les performances du classifieur. Il est souvent souhaitable d'avoir à peu près le même nombre de cas dans chaque classe. Mais dans une classification où le résultat global compte, une distribution proche de celle qui sera rencontrée dans les échantillons en test et en déploiement donne de meilleurs résultats pour, par exemple, l'erreur globale. **Attention\ !** Le point de référence dépend largement de la répartition des individus. Pour un classifieur binaire, si nous avons 50% des cas dans chaque classe, un classifieur naïf qui classerait tout le monde dans la classe la plus abondante ferait 50% d'erreur. C'est donc notre point de référence et le classifieur que nous construisons doit faire mieux que cela. S'il ne produit que 20% d'erreur, c'est donc une amélioration très nette des performances. Par contre, si nous avons une répartition 90% / 10% des individus entre les deux classes, notre classifieur naïf qui classe tout le monde dans la classe la plus abondante ne ferait déjà plus que 10% d'erreur. Dans ce dernier cas, notre classifieur doit donc faire mieux que cela. Ainsi, un classifieur qui montre les mêmes 20% d'erreur sera ici considéré comme très mauvais\ ! 
 
 ##### À vous de jouer ! {-}
 
-Vous allez maintenant discuter par équipe ces différents aspects. **Pour chaque équipe, un porte-parole sera désigné et acceptera l'assignation suivante en se plaçant dans le groupe unique proposé.** Il y entrera le rapport de synthèse de son équipe. Les autres étudiants peuvent également accepter l'assignation et rentrer dans le même groupe afin de pouvoir visualiser son contenu, mais n'y effectueront aucune modification.
+Vous allez maintenant discuter par équipe ces différents aspects. **Pour chaque équipe, un porte-parole sera désigné et acceptera le projet GitHub Classroom suivant en se plaçant dans le groupe unique proposé.** Il y entrera le rapport de synthèse de son équipe. Les autres étudiants peuvent également accepter le projet GoitHub Classroom et rentrer dans le même groupe afin de pouvoir visualiser son contenu, mais n'y effectueront aucune modification.
 
-```{r, echo=FALSE, results='asis'}
-if (exists("assignation2"))
-  assignation2("C02Ga_optimisation",,
+```{r assign_C02Ga_optimisation, echo=FALSE, results='asis'}
+if (exists("assignment2"))
+  assignment2("C02Ga_optimisation", part = NULL,
     url = "https://github.com/BioDataScience-Course/C02Ga_optimisation",
+    course.ids = c(
+      'S-BIOG-025'         = !"C02Ga_{YY}M_optimisation"),
     course.urls = c(
-      'S-BIOG-025' = "https://classroom.github.com/a/ATmhqQZo"),
-    toc = "Optimisation du classifieur")
+      'S-BIOG-025'         = "https://classroom.github.com/a/ATmhqQZo"),
+    course.starts = c(
+      'S-BIOG-025'         = !"{W[6]+5} 08:00:00"),
+    course.ends = c(
+      'S-BIOG-025'         = !"{W[4]+5} 23:59:59"),
+    term = "Q1", level = 4, n = 4,
+    toc = "Optimisation de classifieur",
+    clone = FALSE)
 ```
 
 ## Récapitulatif des exercices

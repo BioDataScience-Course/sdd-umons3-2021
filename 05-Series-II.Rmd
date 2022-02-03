@@ -244,12 +244,19 @@ Mais ce faisant, nous avons *aussi* éliminé le cycle à 10 ans dans les résid
 
 ##### À vous de jouer ! {-}
 
-```{r, echo=FALSE, results='asis'}
-if (exists("assignation"))
-  assignation("C05Ia_tsd", 
+```{r assign_C05Ia_tsd, echo=FALSE, results='asis'}
+if (exists("assignment"))
+  assignment("C05Ia_tsd", part = NULL,
     url = "https://github.com/BioDataScience-Course/C05Ia_tsd",
+    course.ids = c(
+      'S-BIOG-025'         = !"C05Ia_{YY}M_tsd"),
     course.urls = c(
-      'S-BIOG-025' = "https://classroom.github.com/a/sy6D7OS1"),
+      'S-BIOG-025'         = "https://classroom.github.com/a/sy6D7OS1"),
+    course.starts = c(
+      'S-BIOG-025'         = !"{W[10]+2} 08:00:00"),
+    course.ends = c(
+      'S-BIOG-025'         = !"{W[15]+5} 23:59:59"),
+    term = "Q1", level = 3,
     toc = "Décomposition d'une série spatio-temporelle")
 ```
 
@@ -586,12 +593,19 @@ Enfin, terminons en signalant que si la méthode est prévue pour traiter unique
 
 ##### À vous de jouer ! {-}
 
-```{r, echo=FALSE, results='asis'}
-if (exists("assignation2"))
-  assignation2("C05Gb_ts_adv", 
+```{r assign_C05Gb_ts_adv, echo=FALSE, results='asis'}
+if (exists("assignment2"))
+  assignment2("C05Gb_ts_adv", part = NULL,
     url = "https://github.com/BioDataScience-Course/C05Gb_ts_adv",
+    course.ids = c(
+      'S-BIOG-025'         = !"C05Gb_{YY}M_ts_adv"),
     course.urls = c(
-      'S-BIOG-025' = "https://classroom.github.com/a/vMFDbUBt"),
+      'S-BIOG-025'         = "https://classroom.github.com/a/vMFDbUBt"),
+    course.starts = c(
+      'S-BIOG-025'         = !"{W[6]+5} 08:00:00"),
+    course.ends = c(
+      'S-BIOG-025'         = !"{W[4]+5} 23:59:59"),
+    term = "Q1", level = 4, n = 2,
     toc = "Analyse libre d'une série spatio-temporelle")
 ```
 

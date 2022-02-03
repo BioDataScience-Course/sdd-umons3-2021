@@ -326,13 +326,21 @@ Vous pouvez retrouver des indices supplémentaires via le lien suivant\ : [Stati
 
 Ce projet est un projet par groupe. **Les groupes doivent correspondre au rangée de la salle de cours.**
 
-```{r, echo=FALSE, results='asis'}
-if (exists("assignation2"))
-  assignation2("C01Ga_21_metrique", part = NULL,
+```{r assign_C01Ga_21_metrique, echo=FALSE, results='asis'}
+if (exists("assignment2"))
+  assignment2("C01Ga_21_metrique", part = NULL,
     url = "https://github.com/BioDataScience-Course/C01Ga_21_metrique",
+    course.ids = c(
+      'S-BIOG-025'         = !"C01Ga_{YY}M_metrique"),
     course.urls = c(
-      'S-BIOG-025' = "https://classroom.github.com/a/cJQ-Ve_U"),
-    toc = "Création d'un aide-mémoire sur les métriques")
+      'S-BIOG-025'         = "https://classroom.github.com/a/cJQ-Ve_U"),
+    course.starts = c(
+      'S-BIOG-025'         = !"{W[4]+3} 13:00:00"),
+    course.ends = c(
+      'S-BIOG-025'         = !"{W[4]+5} 23:59:59"),
+    term = "Q1", level = 4, n = 4,
+    toc = "Aide-mémoire sur les métriques",
+    clone = FALSE)
 ```
 
 ## Analyse discriminante linéaire
@@ -572,13 +580,20 @@ Notre jeu de données ne reprenait que les données du set d'apprentissage et du
 
 ##### À vous de jouer ! {-}
 
-```{r, echo=FALSE, results='asis'}
-if (exists("assignation"))
-  assignation("C01Ia_21M_ml1", part = NULL,
+```{r assign_C01Ia_21_ml1, echo=FALSE, results='asis'}
+if (exists("assignment"))
+  assignment("C01Ia_21M_ml1", part = NULL,
     url = "https://github.com/BioDataScience-Course/C01Ia_21_ml1",
+    course.ids = c(
+      'S-BIOG-025'         = !"C01Ia_{YY}M_ml1"),
     course.urls = c(
-      'S-BIOG-025' = "https://classroom.github.com/a/1zEXuZQN"),
-    toc = "Utilisation de l'analyse discriminante linéaire")
+      'S-BIOG-025'         = "https://classroom.github.com/a/1zEXuZQN"),
+    course.starts = c(
+      'S-BIOG-025'         = !"{W[4]+3} 13:00:00"),
+    course.ends = c(
+      'S-BIOG-025'         = !"{W[15]+5} 23:59:59"),
+    term = "Q1", level = 3,
+    toc = "Analyse discriminante linéaire")
 ```
 
 ## Récapitulatif des exercices

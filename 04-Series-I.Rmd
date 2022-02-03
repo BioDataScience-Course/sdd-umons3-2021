@@ -795,13 +795,20 @@ Appliquez la technique des sommes cumulées sur les diverses séries d'exemple p
 
 ##### À vous de jouer ! {-}
 
-```{r, echo=FALSE, results='asis'}
-if (exists("assignation"))
-  assignation("C04Ia_ts",
+```{r assign_C04Ia_ts, echo=FALSE, results='asis'}
+if (exists("assignment"))
+  assignment("C04Ia_ts", part = NULL,
     url = "https://github.com/BioDataScience-Course/C04Ia_ts",
+    course.ids = c(
+      'S-BIOG-025'         = !"C04Ia_{YY}M_ts"),
     course.urls = c(
-      'S-BIOG-025' = "https://classroom.github.com/a/BoiVskIA"),
-    toc = "Description et analyse de séries spatio-temporelles")
+      'S-BIOG-025'         = "https://classroom.github.com/a/BoiVskIA"),
+    course.starts = c(
+      'S-BIOG-025'         = !"{W[10]+2} 08:00:00"),
+    course.ends = c(
+      'S-BIOG-025'         = !"{W[15]+5} 23:59:59"),
+    term = "Q1", level = 3,
+    toc = "Description et analyse de séries")
 ```
 
 ## Récapitulatif des exercices

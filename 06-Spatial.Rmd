@@ -974,13 +974,20 @@ tmap_arrange(m_map3, m_map_rain + tm_compass() + tm_scale_bar())
 
 ##### À vous de jouer ! {-}
 
-```{r, echo=FALSE, results='asis'}
-if (exists("assignation"))
-  assignation("C06Ia_map", 
+```{r assign_C06Ia_map, echo=FALSE, results='asis'}
+if (exists("assignment"))
+  assignment("C06Ia_map", part = NULL,
     url = "https://github.com/BioDataScience-Course/C06Ia_map",
+    course.ids = c(
+      'S-BIOG-025'         = !"C06Ia_{YY}M_map"),
     course.urls = c(
-      'S-BIOG-025' = "https://classroom.github.com/a/u5ATugNT"),
-    toc = "Distribution des abeilles sauvages de Belgique")
+      'S-BIOG-025'         = "https://classroom.github.com/a/u5ATugNT"),
+    course.starts = c(
+      'S-BIOG-025'         = !"{W[12]+2} 13:00:00"),
+    course.ends = c(
+      'S-BIOG-025'         = !"{W[15]+5} 23:59:59"),
+    term = "Q1", level = 3,
+    toc = "Cartographie des abeilles sauvages de Belgique")
 ```
 
 ##### Pour en savoir plus {-}

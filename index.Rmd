@@ -25,6 +25,7 @@ cover-image: "images/front-cover.png"
 knitr::write_bib(c(.packages(), 'bookdown', 'knitr', 'rmarkdown'), 'packages.bib')
 ```
 
+`r learnitdown::clean_ex_toc()`
 `r learnitdown::diagnose_login(lang = "fr")`
 
 Cet ouvrage est conçu pour être utilisé de manière interactive en ligne. En effet, vous y trouverez des vidéos, des démonstrations interactives ainsi que des exercices sous forme de questionnaires interactifs. **Ces différents éléments ne sont, bien évidemment, utilisables qu'en ligne.**
@@ -59,7 +60,6 @@ Cet ouvrage interactif est le troisième volume d'une série de trois ouvrages t
 
 La matière est divisée en six modules de 6h chacun en présentiel pour SDD III, deux modules plus une grosse partie de travail autour d'un projet en SDD IV, et enfin quatre modules en SDD V. Chaque module nécessitera environ 8h (variable, en fonction de votre rythme et de votre technique d'apprentissage) de travail à domicile. **Cette matière fait suite aux deux premiers cours dont les contenus sont considérés comme assimilés (voir [cours SDD I](https://wp.sciviews.org/sdd-umons){target='top'} et [cours SDD II](https://wp.sciviews.org/sdd-umons2){target='top'}).**
 
-<!-- À faire: un diagramme qui montre la relation entre ces différents modules, et avec les modules des deux cours précédents -->
 
 ### SDD III : exploration et prédiction {-}
 
@@ -104,7 +104,7 @@ Tout ce matériel est accessible à partir du [site Web du cours](https://wp.sci
 ::: {.S-BIOG-025 .S-BIOG-043 .S-BIOG-077}
 Tout ce matériel est accessible à partir du [site Web du cours](https://wp.sciviews.org){target='top'}, du présent syllabus interactif et de Moodle pour les étudiants de l'UMONS.
 
-Les travaux personnels seront à réaliser en utilisant un espace de travail en ligne dédié à la science des données (renku) ou sur une machine virtuelle préconfigurée, la **'SciViews Box'**, que nous installerons ensemble à la fin du premier module avec les étudiants possédant un ordinateur adapté.
+Les travaux personnels seront à réaliser une machine virtuelle préconfigurée, la **'SciViews Box'**, que nous installerons ensemble à la fin du premier module avec les étudiants possédant un ordinateur adapté.
 
 Vous pourrez poser vos questions par mail à l'adresse [sdd@sciviews.org](mailto:sdd@sciviews.org) ou dans les issues du dépôt GitHub de ce cours. L'accès à ce dépôt vous sera donné lors du premier module du cours.
 
@@ -152,32 +152,41 @@ Chaque type d'exercice est associé à un outil présenté dans la matériel pé
 
 L'ensemble de vos réponses sont collectées et utilisées afin de construire la note finale. Il n'est donc plus nécessaire de passer un examen classique en session d'examen. Tous ces exercices prouvent que vous avez acquis ou non les acquis d'apprentissage de ce cours.
 
-Votre progression au sein des exercices de chaque module est mise à votre disposition à la fin de chaque module ou bien depuis moodle.
+Votre progression au sein des exercices de chaque module est mise à votre disposition à la fin de chaque module ou bien depuis Moodle.
 
 ### Plan du cours {-}
 
 Le plan du cours est une forme de contrat entre l'étudiant et les encadrants. Ce document structure les attentes de vos encadrants. Veuillez consulter ce document attentivement. 
 
-- [Plan du cours de Science des données biologiques 3 : années 2021-2022](https://github.com/BioDataScience-Course/BioDataScience-Common/blob/main/docs/plan_de_cours/sdd3_plan_cours_2021-2022.md)
+- [Plan du cours de Science des données biologiques III : années 2021-2022](https://github.com/BioDataScience-Course/BioDataScience-Common/blob/main/docs/plan_de_cours/sdd3_plan_cours_2021-2022.md)
 
-## Issues {.unnumbered #issues} 
+## Issues {.unnumbered #issues}
 
 Toutes les questions relatives aux exercices sont à poser dans les issues GitHub dédiées à ce cours.
 
-```{r, echo=FALSE, results='asis'}
-if (exists("assignation2"))
-  assignation2("sdd_issues", part = NULL,
+```{r  assign_C00Ga_issues, echo=FALSE, results='asis'}
+if (exists("assignment2"))
+  assignment2("C00Ga_issues", part = NULL, clone = FALSE,
     url = "https://github.com/BioDataScience-Course/sdd_issues",
-    course.urls = c('S-BIOG-025' = "https://classroom.github.com/g/s_U7VaAO"),
-    toc = "Poser ses questions dans une issue.",
-    texts = learnitdown::assignation2_fr(
-      title = "Rejoignez l'assignation",
-      course = "Assignation GitHub Classroom d\u00e9di\u00e9e aux issues pour les \u00e9tudiants inscrits au cours de", 
+    course.ids = c(
+      'S-BIOG-025'         = !"C00Ga_{YY}M_issues",
+      'S-BIOG-043'         = !"D00Ga_{YY}C_issues"),
+    course.urls = c(
+      'S-BIOG-025'         = "https://classroom.github.com/g/s_U7VaAO",
+      'S-BIOG-043'         = "https://classroom.github.com/a/..."),
+    course.ends = c(
+      'S-BIOG-025'         = !"{W[53]+5} 23:59:59",
+      'S-BIOG-937-958-959' = !"{W[53]+6} 23:59:59"),
+    term = "", level = 0,
+    toc = "Poser ses questions dans une issue.", n = 100,
+    texts = learnitdown::assignment2_fr(
+      title = "Rejoignez le projet",
+      course = "[Projet GitHub Classroom d\u00e9di\u00e9e aux issues pour les \u00e9tudiants inscrits au cours de {course_name}]({course_url}){{target=\"_blank\"}}", 
       alt = "Les issues ne sont pas accessibles aux \u00e9tudiants externes."))
 ```
 
-*Note : vos enseignants sont également accessibles par mail sdd@sciviews.org.*
+*Note : vos enseignants sont également accessibles par mail via sdd@sciviews.org.*
 
-Vous pouvez retrouver directement ce dépôt via la bannière du site.
+Une fois que vous avez rejoint l'équipe **`r !"C{YY}"`**, il n'est plus nécessaire d'utiliser le lien GitHub Classroom vers ces issues. Vous pouvez retrouver directement les issues liées à ce dépôt via la bannière du site.
 
 ![](images/00-preambule/issues.png)

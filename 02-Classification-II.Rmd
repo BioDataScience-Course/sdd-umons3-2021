@@ -615,7 +615,7 @@ if (exists("assignment2"))
       'S-BIOG-025'         = !"{W[4]+5} 23:59:59"),
     term = "Q1", level = 4, n = 4,
     toc = "Optimisation de classifieur",
-    clone = FALSE)
+    clone = TRUE)
 ```
 
 ## Récapitulatif des exercices
